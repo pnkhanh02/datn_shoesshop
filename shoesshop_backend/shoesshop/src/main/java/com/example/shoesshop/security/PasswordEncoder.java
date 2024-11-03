@@ -20,7 +20,7 @@ public class PasswordEncoder {
         }
         return instance;
     }
-    public  String encodePassword(String password) {
+    public String encodePassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] hashedPassword = md.digest(password.getBytes());
@@ -30,10 +30,10 @@ public class PasswordEncoder {
         }
     }
 
-    public   boolean matches(String raw, String hasPassword){
+    public boolean matches(String raw, String hasPassword){
         return encodePassword(raw).equals(hasPassword);
     }
-    public  String bytesToHex(byte[] bytes) {
+    public String bytesToHex(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (byte b : bytes) {
             result.append(String.format("%02x", b));
