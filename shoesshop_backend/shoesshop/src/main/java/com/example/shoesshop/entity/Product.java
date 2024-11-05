@@ -20,7 +20,7 @@ public class Product implements Serializable {
     private String description;
 
 
-    @Column(name = "image_url", length = 100)
+    @Column(name = "image_url", length = 255)
     private String image_url;
 
 

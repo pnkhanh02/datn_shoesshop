@@ -13,17 +13,16 @@ public class ProductType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    public ProductType(String name) {
-        this.name = name;
-    }
-
     @Column(name = "type_name", length = 50, nullable = false, unique = true)
     private String name;
-
 
     @OneToMany(mappedBy = "typeProduct")
     private List<Product> products;
     public ProductType() {
+    }
+
+    public ProductType(String name) {
+        this.name = name;
     }
 
     public int getId() {
