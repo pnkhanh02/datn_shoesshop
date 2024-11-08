@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -38,6 +39,20 @@ public class ProductTypeController {
         });
 
         return new ResponseEntity<>(dtoPage, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/full")
+    public ResponseEntity<?> getFullProductTypes(){
+        List<ProductType> entities = productTypeService.getFullProductType();
+        ArrayList<ProductTypeDTO> productTypeDTOS = new ArrayList<>();
+        for(ProductType productType: entities){
+            ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+            productTypeDTO.setId(productType.getId());
+            productTypeDTO.setName(productType.getName());
+
+            productTypeDTOS.add(productTypeDTO);
+        }
+        return new ResponseEntity<>(productTypeDTOS, HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")

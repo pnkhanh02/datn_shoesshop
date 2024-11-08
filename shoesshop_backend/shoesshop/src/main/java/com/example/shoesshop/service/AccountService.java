@@ -5,13 +5,19 @@ import com.example.shoesshop.entity.Customer;
 import com.example.shoesshop.repository.AccountRepository;
 import com.example.shoesshop.request.AccountRequest;
 import com.example.shoesshop.security.PasswordEncoder;
+import com.example.shoesshop.specification.AccountSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.swing.*;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,10 +33,10 @@ public class AccountService {
     // check exist of email or username
     public boolean checkExistEmailOrUsername(String email, String username){
         Optional<Account> optionalEmail = accountRepository.findByEmail(email);
-        Optional<Account> optionalUserName = accountRepository.findByUsername(username);
+        Account existUserName = accountRepository.findByUsername(username);
 
         if(optionalEmail.isPresent()) return true;
-        if(optionalUserName.isPresent()) return true;
+        if(existUserName != null) return true;
 
         return false;
     }
@@ -57,4 +63,39 @@ public class AccountService {
 
         accountRepository.save(customer);
     }
+
+    public Page<Account> getAllAccounts(Pageable pageable, String search) {
+        Specification<Account> where = null;
+        if(!StringUtils.isEmpty(search)){
+            AccountSpecification accountSpecification = new AccountSpecification("name","LIKE", search);
+            where = Specification.where(accountSpecification);
+        }
+        return accountRepository.findAll(Specification.where(where), pageable);
+    }
+
+    public Account getAccountByUsername(String username) {
+        return accountRepository.findByUsername(username);
+    }
+
+    public Account getAccountById(int id) {
+        return accountRepository.getAccountById(id);
+    }
+
+    public void deleteAccount(int id) {
+        accountRepository.deleteById(id);
+    }
+
+    public void deleteAccounts(List<Integer> ids) {
+        accountRepository.deleteByIds(ids);
+    }
+
+    public Page<Account> getAllAccountsByRole(Pageable pageable, String role) {
+        Specification<Account> where = null;
+        if(!StringUtils.isEmpty(role)){
+            AccountSpecification accountSpecification = new AccountSpecification("Role","=", role);
+            where = Specification.where(accountSpecification);
+        }
+        return accountRepository.findAll(Specification.where(where), pageable);
+    }
+
 }

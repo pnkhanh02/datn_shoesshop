@@ -30,6 +30,11 @@ public class ProductTypeService {
         return productTypeRepository.findAll(Specification.where(where), pageable);
     }
 
+    //get Full ProductType
+    public List<ProductType> getFullProductType() {
+        return productTypeRepository.findAll();
+    }
+
     //create ProductType
     public void createProductType(ProductTypeRequest productTypeRequest) {
         ProductType productType = new ProductType();
