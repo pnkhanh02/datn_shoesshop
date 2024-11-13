@@ -1,0 +1,16 @@
+.AdminLayout {
+    display: flex;
+    height: 100vh;
+    font-weight: 500;
+}
+
+.AdminContent {
+    padding: 16px;
+    background-color: #fff;
+    overflow-y: auto;
+}
+
+.AdminLayout_title{
+    color: white;
+    padding: 20px;
+}
