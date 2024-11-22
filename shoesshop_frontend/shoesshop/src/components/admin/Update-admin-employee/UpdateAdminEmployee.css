@@ -1,0 +1,46 @@
+.Register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-left: 270px; /* Điều chỉnh theo chiều rộng của sidebar */
+}
+
+.Register_container {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 450px;
+}
+
+.form-item input,
+.form-item .ant-picker,
+.form-item .ant-radio-group {
+  width: 100%;
+}
+
+.form-item .error {
+  color: red;
+  margin-top: 5px;
+}
+
+button.login-form-button {
+  background-color: black;
+  color: white;
+  width: 100%;
+}
+
+button.login-form-button:hover {
+  background-color: #333;
+}

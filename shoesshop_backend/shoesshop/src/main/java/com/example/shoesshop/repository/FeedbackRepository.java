@@ -1,6 +1,7 @@
 package com.example.shoesshop.repository;
 
 import com.example.shoesshop.entity.Feedback;
+import com.example.shoesshop.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,4 +27,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer>  {
     <T> Page<Feedback> findAll(Specification<T> where, Pageable pageable);
 
     ArrayList<Feedback> findAll();
+
+    //List<Feedback> findByProductFeedback(Product product);
 }

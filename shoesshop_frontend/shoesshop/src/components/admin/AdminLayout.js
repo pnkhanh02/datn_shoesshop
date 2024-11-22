@@ -25,6 +25,22 @@ import {
 import SalesManager from "./Sale_Manager/SalesManager";
 import AddSales from "./Sale_Manager/AddSales";
 import UpdateSales from "./Sale_Manager/UpdateSales";
+import UpdateAdminEmployee from "./Update-admin-employee/UpdateAdminEmployee";
+import UserManager from "./User-Manager/UserManager";
+import ProductTypeManager from "./ProductTypeManager/ProductTypeManager";
+import ProductManager from "./Product-Manager/ProductManager";
+import UpdateProduct from "./Product-Manager/UpdateProduct";
+import AddProduct from "./Product-Manager/AddProduct";
+import ProductDetailManager from "./ProductDetailManager/ProductDetailManager";
+import ProductDetailManagerById from "./ProductDetailManager/ProductDetailManagerById";
+import AddProductDetail from "./ProductDetailManager/AddProductDetail";
+import UpdateProductDetail from "./ProductDetailManager/UpdateProductDetail";
+import FeedbackManagement from "./FeedbackManagement/FeedbackManagement";
+import PaymentMethod from "./Order/PaymentMethod";
+import ManagerOrder from "./Order/ManagerOrder";
+import OrderComfirmation from "./Order/OrderComfirmation";
+import CheckOrder from "./Order/CheckOrder";
+import ReportChart from "./ReportChart/ReportChart";
 
 const { Sider, Content } = Layout;
 
@@ -103,6 +119,43 @@ const AdminLayout = () => {
         <Layout>
           <Content className="AdminContent">
             <Routes>
+              <Route path="/report" element={<ReportChart />} />
+              <Route path="/users" element={<UserManager />} />
+              <Route path="/reports" element={<ReportChart />} />
+              <Route path="/products" element={<ProductManager />} />
+              <Route
+                path="/products-detail"
+                element={<ProductDetailManager />}
+              />
+              <Route
+                path="/products-detail/:id"
+                element={<ProductDetailManagerById />}
+              />
+              <Route path="/products-type" element={<ProductTypeManager />} />
+              <Route path="/products/add-product" element={<AddProduct />} />
+              <Route
+                path="/products-detail/:id/add-product-detail"
+                element={<AddProductDetail />}
+              />
+              <Route path="/products/update/:id" element={<UpdateProduct />} />
+              <Route
+                path="/productdetails/update/:id"
+                element={<UpdateProductDetail />}
+              />
+              <Route path="/orders" element={<ManagerOrder />}></Route>
+              <Route path="/orders-comfirm" element={<OrderComfirmation />} />
+              <Route path="/payment" element={<PaymentMethod />} />
+              <Route
+                path="/feedback-management"
+                element={<FeedbackManagement />}
+              />
+              <Route path="users/add" element={<UpdateAdminEmployee />} />
+
+              <Route
+                path="/orders/checkOrder/:id"
+                element={<CheckOrder />}
+              ></Route>
+
               <Route path="/sales/create" element={<AddSales />}></Route>
               <Route path="/sales/" element={<SalesManager />}></Route>
               <Route path="/sales/:id" element={<UpdateSales />}></Route>

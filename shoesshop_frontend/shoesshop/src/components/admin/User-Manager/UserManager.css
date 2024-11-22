@@ -1,0 +1,36 @@
+.UserManager {
+    padding: 20px;
+  }
+  
+  .Paginate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .Paginate button {
+    background-color: #1890ff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .Paginate button:hover {
+    background-color: #40a9ff;
+  }
+  
+  .Paginate button:disabled {
+    background-color: #f0f0f0;
+    color: #bfbfbf;
+    cursor: not-allowed;
+  }
+  
+  .Paginate span {
+    margin: 0 10px;
+  }
+  

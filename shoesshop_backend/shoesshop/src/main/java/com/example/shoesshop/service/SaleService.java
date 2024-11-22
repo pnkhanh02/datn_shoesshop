@@ -1,6 +1,5 @@
 package com.example.shoesshop.service;
 
-import ch.qos.logback.core.util.StringUtil;
 import com.example.shoesshop.entity.Sale;
 import com.example.shoesshop.repository.SaleRepository;
 import com.example.shoesshop.request.SaleRequest;

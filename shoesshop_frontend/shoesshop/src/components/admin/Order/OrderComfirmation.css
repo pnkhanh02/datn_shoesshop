@@ -1,0 +1,28 @@
+.order-comfirmation-container {
+    padding: 20px;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .button1,
+  .button2,
+  .button3 {
+    width: 90px;
+    height: 30px;
+    margin: 0 5px;
+    border-radius: 5px;
+    background-color: #bebebe;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button1:hover,
+  .button2:hover,
+  .button3:hover {
+    background-color: #727272;
+  }
+  

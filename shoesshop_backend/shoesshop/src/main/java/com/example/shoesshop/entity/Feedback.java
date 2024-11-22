@@ -101,4 +101,12 @@ public class Feedback implements Serializable  {
     public void setProduct_feedback(Product product_feedback) {
         this.product_feedback = product_feedback;
     }
+
+    public Account getAccount_customer() {
+        return customer;
+    }
+
+    public void setAccount_customer(Account customer) {
+        this.customer = customer;
+    }
 }
