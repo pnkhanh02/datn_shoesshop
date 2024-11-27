@@ -42,21 +42,21 @@ public class OrderController {
             @Override
             public OrderDTO apply(Order order) {
 
-                if(order.getOderStatus() == Order.OderStatus.ADDED_TO_CARD){
+                if(order.getOrderStatus() == Order.OrderStatus.ADDED_TO_CARD){
                     OrderDTO dto = new OrderDTO(order.getId(),
-                            order.getOder_date(),
-                            order.getOderStatus(),
+                            order.getOrder_date(),
+                            order.getOrderStatus(),
                             order.getCustomer().getId());
                     Account customer = order.getCustomer();
                     dto.setCustomer_name(customer.getFirstName()+" "+customer.getFirstName());
                     dto.setPhone(customer.getPhone());
 
                     return dto;
-                }else if(order.getOderStatus() == Order.OderStatus.TO_PAY || order.getOderStatus() == Order.OderStatus.CANCELED){
+                }else if(order.getOrderStatus() == Order.OrderStatus.TO_PAY || order.getOrderStatus() == Order.OrderStatus.CANCELED){
                     OrderDTO dto = new OrderDTO(order.getId(),
                             order.getTotal_amount(),
-                            order.getOder_date(),
-                            order.getOderStatus(),
+                            order.getOrder_date(),
+                            order.getOrderStatus(),
                             order.getCustomer().getId(),
                             order.getPayment_method().getId());
                     return dto;
@@ -64,16 +64,16 @@ public class OrderController {
                     if(order.getEmployee() == null){
                         OrderDTO dto = new OrderDTO(order.getId(),
                                 order.getTotal_amount(),
-                                order.getOder_date(),
-                                order.getOderStatus(),
+                                order.getOrder_date(),
+                                order.getOrderStatus(),
                                 order.getCustomer().getId(),
                                 order.getPayment_method().getId());
                         return dto;
                     }else{
                         OrderDTO dto = new OrderDTO(order.getId(),
                                 order.getTotal_amount(),
-                                order.getOder_date(),
-                                order.getOderStatus(),
+                                order.getOrder_date(),
+                                order.getOrderStatus(),
                                 order.getCustomer().getId(),
                                 order.getEmployee().getId(),
                                 order.getPayment_method().getId());
@@ -93,13 +93,13 @@ public class OrderController {
         ArrayList<Order> orders = orderService.getAll();
         ArrayList<OrderDTO> orderDTOS = new ArrayList<>();
         for(Order order : orders){
-            if(order.getOderStatus() == Order.OderStatus.ADDED_TO_CARD){
+            if(order.getOrderStatus() == Order.OrderStatus.ADDED_TO_CARD){
                 continue;
-            }else if(order.getOderStatus() == Order.OderStatus.TO_PAY || order.getOderStatus() == Order.OderStatus.CANCELED){
+            }else if(order.getOrderStatus() == Order.OrderStatus.TO_PAY || order.getOrderStatus() == Order.OrderStatus.CANCELED){
                 OrderDTO dto = new OrderDTO(order.getId(),
                         order.getTotal_amount(),
-                        order.getOder_date(),
-                        order.getOderStatus(),
+                        order.getOrder_date(),
+                        order.getOrderStatus(),
                         (order.getCustomer().getFirstName()+order.getCustomer().getLastName()),
                         order.getAddress(),
                         order.getPhone(),
@@ -109,8 +109,8 @@ public class OrderController {
                 if(order.getEmployee() == null){
                     OrderDTO dto = new OrderDTO(order.getId(),
                             order.getTotal_amount(),
-                            order.getOder_date(),
-                            order.getOderStatus(),
+                            order.getOrder_date(),
+                            order.getOrderStatus(),
                             (order.getCustomer().getFirstName()+order.getCustomer().getLastName()),
                             order.getAddress(),
                             order.getPhone(),
@@ -119,8 +119,8 @@ public class OrderController {
                 }else{
                     OrderDTO dto = new OrderDTO(order.getId(),
                             order.getTotal_amount(),
-                            order.getOder_date(),
-                            order.getOderStatus(),
+                            order.getOrder_date(),
+                            order.getOrderStatus(),
                             (order.getCustomer().getFirstName()+order.getCustomer().getLastName()),
                             (order.getEmployee().getFirstName()+order.getEmployee().getLastName()),
                             order.getAddress(),
@@ -182,11 +182,11 @@ public class OrderController {
     @GetMapping(value = "/getByID/{id}")
     public ResponseEntity<?> getByID(@PathVariable(name = "id") int id){
         Order order = orderService.getOrderById(id);
-        if(order.getOderStatus() == Order.OderStatus.TO_PAY){
+        if(order.getOrderStatus() == Order.OrderStatus.TO_PAY){
             OrderDTO dto = new OrderDTO(order.getId(),
                     order.getTotal_amount(),
-                    order.getOder_date(),
-                    order.getOderStatus(),
+                    order.getOrder_date(),
+                    order.getOrderStatus(),
                     (order.getCustomer().getFirstName()+order.getCustomer().getLastName()),
                     order.getAddress(),
                     order.getPhone(),
@@ -195,8 +195,8 @@ public class OrderController {
         }else{
             OrderDTO dto = new OrderDTO(order.getId(),
                     order.getTotal_amount(),
-                    order.getOder_date(),
-                    order.getOderStatus(),
+                    order.getOrder_date(),
+                    order.getOrderStatus(),
                     (order.getCustomer().getFirstName()+order.getCustomer().getLastName()),
                     (order.getEmployee().getFirstName()+order.getEmployee().getLastName()),
                     order.getAddress(),
@@ -212,7 +212,7 @@ public class OrderController {
         List<Order> orders = orderService.getOrderByCustomer(id);
         int cartId = 0;
         for (Order order: orders){
-            if(order.getOderStatus() == Order.OderStatus.ADDED_TO_CARD){
+            if(order.getOrderStatus() == Order.OrderStatus.ADDED_TO_CARD){
                 cartId = order.getId();
             }
         }
@@ -241,11 +241,11 @@ public class OrderController {
         ArrayList<Order> orders = orderService.getOrderToPayAndToReceiveAndCompleted();
         ArrayList<OrderDTO> orderDTOS = new ArrayList<>();
         for(Order order : orders){
-            System.out.println(order.getOderStatus());
+            System.out.println(order.getOrderStatus());
             OrderDTO dto = new OrderDTO(order.getId(),
                     order.getTotal_amount(),
-                    order.getOder_date(),
-                    order.getOderStatus(),
+                    order.getOrder_date(),
+                    order.getOrderStatus(),
                     (order.getCustomer().getFirstName()+order.getCustomer().getLastName()),
                     order.getAddress(),
                     order.getPhone(),
@@ -263,11 +263,11 @@ public class OrderController {
         List<Order> orders = orderService.getOrderByCustomer(id);
         ArrayList<CustomerOrderDTO> customerOrderDTOS = new ArrayList<>();
         for(Order order : orders){
-            if(order.getOderStatus() != Order.OderStatus.ADDED_TO_CARD) {
+            if(order.getOrderStatus() != Order.OrderStatus.ADDED_TO_CARD) {
                 CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO();
                 customerOrderDTO.setIdOrder(order.getId());
-                customerOrderDTO.setOderStatus(order.getOderStatus());
-                customerOrderDTO.setOrderDate(order.getOder_date());
+                customerOrderDTO.setOrderStatus(order.getOrderStatus());
+                customerOrderDTO.setOrderDate(order.getOrder_date());
                 customerOrderDTO.setPaymentName(order.getPayment_method().getName());
                 int totalQuantity = order.getOrderItems().size();
                 customerOrderDTO.setTotalQuantity(totalQuantity);

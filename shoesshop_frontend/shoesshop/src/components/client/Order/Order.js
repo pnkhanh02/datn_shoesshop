@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./Order.css";
-import { Button, ConfigProvider, Flex, Image, message, Popconfirm, Table, Tabs, Tag } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  Flex,
+  Image,
+  message,
+  Popconfirm,
+  Table,
+  Tabs,
+  Tag,
+} from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -124,14 +134,12 @@ function TO_PAY() {
     axios
       .put(
         `http://localhost:8080/api/v1/orders/cancel/${_orderId}`,
-        {}
-        // ,
-        // {
-        //   auth: {
-        //     username: userData.username,
-        //     password: userData.password,
-        //   },
-        // }
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       )
       .then((response) => {
         console.log(response.data);
@@ -145,7 +153,7 @@ function TO_PAY() {
   };
 
   const handleViewDetail = (orderId) => {
-    navigate(`/order/${orderId}`);
+    navigate(`/client/order/${orderId}`);
   };
 
   const columns = [
@@ -222,14 +230,11 @@ function TO_PAY() {
     setLoading(true);
 
     axios
-      .get(`http://localhost:8080/api/v1/orders/status/${userData.id}`
-    //     , {
-    //     auth: {
-    //       username: userData.username,
-    //       password: userData.password,
-    //     },
-    //   }
-    )
+      .get(`http://localhost:8080/api/v1/orders/status/${userData.id}`, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         console.log(response.data);
 
@@ -240,7 +245,7 @@ function TO_PAY() {
               subQuantity: pd.subQuantity,
               productName: pd.productName,
             },
-            status: pd.oderStatus,
+            status: pd.orderStatus,
             totalAmount: pd.totalAmount,
             key: pd.idOrder,
             orderDate: pd.orderDate,
@@ -291,7 +296,7 @@ function TO_RECEIVE() {
   const navigate = useNavigate();
 
   const handleViewDetail = (orderId) => {
-    navigate(`/order/${orderId}`);
+    navigate(`/client/order/${orderId}`);
   };
 
   const columns = [
@@ -356,14 +361,11 @@ function TO_RECEIVE() {
     setLoading(true);
 
     axios
-      .get(`http://localhost:8080/api/v1/orders/status/${userData.id}`
-    //     , {
-    //     auth: {
-    //       username: userData.username,
-    //       password: userData.password,
-    //     },
-    //   }
-    )
+      .get(`http://localhost:8080/api/v1/orders/status/${userData.id}`, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         console.log(response.data);
 
@@ -374,7 +376,7 @@ function TO_RECEIVE() {
               subQuantity: pd.subQuantity,
               productName: pd.productName,
             },
-            status: pd.oderStatus,
+            status: pd.orderStatus,
             totalAmount: pd.totalAmount,
             key: pd.idOrder,
             orderDate: pd.orderDate,
@@ -418,7 +420,7 @@ function COMPLETED() {
   const navigate = useNavigate();
 
   const handleViewDetail = (orderId) => {
-    navigate(`/order/${orderId}`);
+    navigate(`/client/order/${orderId}`);
   };
 
   const columns = [
@@ -483,14 +485,11 @@ function COMPLETED() {
     setLoading(true);
 
     axios
-      .get(`http://localhost:8080/api/v1/orders/status/${userData.id}`
-    //     , {
-    //     auth: {
-    //       username: userData.username,
-    //       password: userData.password,
-    //     },
-    //   }
-    )
+      .get(`http://localhost:8080/api/v1/orders/status/${userData.id}`, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         console.log(response.data);
 
@@ -501,16 +500,17 @@ function COMPLETED() {
               subQuantity: pd.subQuantity,
               productName: pd.productName,
             },
-            status: pd.oderStatus,
+            status: pd.orderStatus,
             totalAmount: pd.totalAmount,
             key: pd.idOrder,
             orderDate: pd.orderDate,
             paymentName: pd.paymentName,
           };
         });
+        console.log(dataForState);
 
         dataForState = dataForState.filter((pd) => {
-          return pd.status === "COMPLETED";
+          return (pd.status === "COMPLETED" || pd.status === "FEEDBACK_COMPLETED") ;
         });
 
         console.log(dataForState);
@@ -593,14 +593,11 @@ function CANCELED() {
     setLoading(true);
 
     axios
-      .get(`http://localhost:8080/api/v1/orders/status/${userData.id}`
-    //     , {
-    //     auth: {
-    //       username: userData.username,
-    //       password: userData.password,
-    //     },
-    //   }
-    )
+      .get(`http://localhost:8080/api/v1/orders/status/${userData.id}`, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         console.log(response.data);
 
@@ -611,7 +608,7 @@ function CANCELED() {
               subQuantity: pd.subQuantity,
               productName: pd.productName,
             },
-            status: pd.oderStatus,
+            status: pd.orderStatus,
             totalAmount: pd.totalAmount,
             key: pd.idOrder,
             orderDate: pd.orderDate,

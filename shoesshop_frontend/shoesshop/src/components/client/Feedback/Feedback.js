@@ -33,9 +33,8 @@ const Feedback = ({
       const { data } = await axios.get(
         `http://localhost:8080/api/v1/productDetails/${orderData.group.product_detail_id}`,
         {
-          auth: {
-            username: userData.username,
-            password: userData.password,
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
           },
         }
       );
@@ -66,9 +65,8 @@ const Feedback = ({
         "http://localhost:8080/api/v1/feedbacks/customer",
         feedbackData,
         {
-          auth: {
-            username: userData.username,
-            password: userData.password,
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
           },
         }
       );

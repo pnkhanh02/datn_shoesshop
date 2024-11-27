@@ -26,6 +26,8 @@ const Checkout = () => {
   const [customerNote, setCustomerNote] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
 
+  const userData = JSON.parse(localStorage.getItem("user"));
+
   const successMessage = () => {
     messageApi.open({
       type: "success",
@@ -44,13 +46,25 @@ const Checkout = () => {
     axios
       .get(`https://esgoo.net/api-tinhthanh/2/${cityId}.htm`)
       .then((response) => {
-        const distrcitList = response.data.data.map((district) => {
-          return {
-            value: district.id,
-            label: district.full_name,
-          };
-        });
-        setDistrict(distrcitList);
+        // const districtList = response.data.data.map((district) => {
+        //   return {
+        //     value: district.id,
+        //     label: district.full_name,
+        //   };
+        // });
+        // setDistrict(districtList);
+        if (response.data && response.data.data.length > 0) {
+          const districtList = response.data.data.map((district) => {
+            return {
+              value: district.id,
+              label: district.full_name,
+            };
+          });
+          setDistrict(districtList);
+        } else {
+          console.warn(`No districts found for cityId: ${cityId}`);
+          setDistrict([]); // Reset districts nếu không có dữ liệu
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -108,7 +122,11 @@ const Checkout = () => {
       });
 
     axios
-      .get("http://localhost:8080/api/v1/paymentMethods/all")
+      .get("http://localhost:8080/api/v1/paymentMethods/full", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         const payments_arr = response.data.map((p) => {
           return {
@@ -125,7 +143,12 @@ const Checkout = () => {
 
     axios
       .get(
-        "http://localhost:8080/api/v1/products/all?page=1&size=5&sort=id,desc&search="
+        "http://localhost:8080/api/v1/products/all?page=1&size=5&sort=id,desc&search=",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       )
       .then((response) => {
         console.log(response.data);
@@ -149,7 +172,8 @@ const Checkout = () => {
 
   const handleChangeCityOption = (selectedCityOption) => {
     setSelectedCityOption(selectedCityOption);
-    getDistrict(selectedCityOption.value);
+    console.log(selectedCityOption);
+    getDistrict(selectedCityOption);
     // let districts_arr = citys.filter((city) => {
     //   return city.value === selectedCityOption.value;
     // });
@@ -169,7 +193,8 @@ const Checkout = () => {
 
   const handleChangeDistrictOption = (selectedCityOption) => {
     setSelectedDistrictOption(selectedCityOption);
-    getWard(selectedCityOption.value);
+    console.log(selectedCityOption);
+    getWard(selectedCityOption);
   };
 
   const handleChangeWardOption = (selectedDistrictOption) => {
@@ -235,9 +260,8 @@ const Checkout = () => {
 
     axios
       .post("http://localhost:8080/api/v1/orders/create", newOrder, {
-        auth: {
-          username: currentUser.username,
-          password: currentUser.password,
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
         },
       })
       .then((response) => {

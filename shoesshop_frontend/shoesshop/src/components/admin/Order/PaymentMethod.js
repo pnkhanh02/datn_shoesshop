@@ -5,6 +5,7 @@ import axios from "axios";
 
 const PaymentMethod = () => {
   const adminData = JSON.parse(localStorage.getItem("user")); // Đảm bảo adminData luôn có sẵn
+  const userData = JSON.parse(localStorage.getItem("user"));
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [newMethod, setNewMethod] = useState(""); // State để lưu tên phương thức thanh toán mới
   const [newDescription, setNewDescription] = useState(""); // State để lưu mô tả mới
@@ -23,13 +24,12 @@ const PaymentMethod = () => {
         try {
           const response = await axios.get(
             "http://localhost:8080/api/v1/paymentMethods/all"
-            // ,
-            // {
-            //   auth: {
-            //     username: adminData.username,
-            //     password: adminData.password,
-            //   },
-            // }
+            ,
+            {
+              headers: {
+                Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+              },
+            }
           );
           console.log(response.data);
           setPaymentMethods(response.data);

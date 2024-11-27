@@ -40,13 +40,12 @@ const LineChartExample = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/orders/CountOrderMonthly`
-        //     , {
-        //   auth: {
-        //     username: userData.username,
-        //     password: userData.password
-        //   }
-        // }
+        `http://localhost:8080/api/v1/orders/CountOrderMonthly`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       );
 
       // Chuyển đổi số tháng thành tên tiếng Anh

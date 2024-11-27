@@ -24,6 +24,7 @@ const UpdateSales = () => {
   const [salesData, setSalesData] = useState({});
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const successMessage = () => {
     messageApi.open({
@@ -47,14 +48,13 @@ const UpdateSales = () => {
       const response = await axios.get(
         `http://localhost:8080/api/v1/sales/${id}`,
         {
-          auth: {
-            username: currentUser.username,
-            password: currentUser.password,
-          },
           headers: {
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
           },
         }
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
       );
       const data = response.data;
       setSalesData(data);
@@ -78,15 +78,16 @@ const UpdateSales = () => {
 
   const handleUpdateSales = async (data) => {
     axios
-      .put(`http://localhost:8080/api/v1/sales/update/${id}`, data, {
-        auth: {
-          username: currentUser.username,
-          password: currentUser.password,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .put(`http://localhost:8080/api/v1/sales/update/${id}`, data, 
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
+      )
       .then((response) => {
         console.log("Update sales successfully");
         successMessage();

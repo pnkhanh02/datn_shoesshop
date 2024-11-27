@@ -7,9 +7,9 @@ import java.time.LocalDate;
 public class OrderRequest {
     private float total_amount;
 
-    private LocalDate oder_date;
+    private LocalDate order_date;
 
-    private Order.OderStatus oderStatus;
+    private Order.OrderStatus orderStatus;
 
     private int customer_id;
 
@@ -32,20 +32,20 @@ public class OrderRequest {
         this.total_amount = total_amount;
     }
 
-    public LocalDate getOder_date() {
-        return oder_date;
+    public LocalDate getOrder_date() {
+        return order_date;
     }
 
-    public void setOder_date(LocalDate oder_date) {
-        this.oder_date = oder_date;
+    public void setOrder_date(LocalDate order_date) {
+        this.order_date = order_date;
     }
 
-    public Order.OderStatus getOderStatus() {
-        return oderStatus;
+    public Order.OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOderStatus(Order.OderStatus oderStatus) {
-        this.oderStatus = oderStatus;
+    public void setOrderStatus(Order.OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public int getCustomer_id() {

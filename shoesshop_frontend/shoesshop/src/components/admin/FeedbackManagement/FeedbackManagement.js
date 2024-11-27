@@ -9,19 +9,16 @@ const FeedbackManagement = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(false);
   const adminData = JSON.parse(localStorage.getItem("user"));
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const fetchData = () => {
     setLoading(true);
     axios
-      .get(
-        "http://localhost:8080/api/v1/feedbacks/getAll"
-        //     , {
-        //   auth: {
-        //     username: adminData.username,
-        //     password: adminData.password,
-        //   },
-        // }
-      )
+      .get("http://localhost:8080/api/v1/feedbacks/getAll", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         const feedbacksFormatted = response.data.map((feedback) => {
           return {

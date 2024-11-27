@@ -62,7 +62,7 @@ const Cart = () => {
   };
 
   const handleSendCheckout = () => {
-    navigate("/checkout", { state: [cartdetails, selectedItems] });
+    navigate("/client/checkout", { state: [cartdetails, selectedItems] });
   };
 
   useEffect(() => {
@@ -72,12 +72,12 @@ const Cart = () => {
       axios
         .get(
           `http://localhost:8080/api/v1/orders/getCartByCustomer/${id}`
-          //     , {
-          //   auth: {
-          //     username: userData.username,
-          //     password: userData.password,
-          //   },
-          // }
+              , 
+              {
+                headers: {
+                  Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+                },
+              }
         )
         .then((response) => {
           const data = response.data.map((pd, index) => {
@@ -231,12 +231,12 @@ const CartItem = (props) => {
     axios
       .delete(
         `http://localhost:8080/api/v1/orderItems/delete/${iddelete}`
-        //     , {
-        //     auth: {
-        //       username: userData.username,
-        //       password: userData.password,
-        //     },
-        //   }
+            , 
+            {
+              headers: {
+                Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+              },
+            }
       )
       .then((response) => {
         successMessage3();

@@ -1,8 +1,8 @@
 package com.example.shoesshop.entity;
 
-import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -28,13 +28,13 @@ public class Order implements Serializable  {
     @Column(name = "orderDate", nullable = false)
 //    @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private LocalDate oder_date;
+    private LocalDate order_date;
 
     @Column(name = "oderStatus")
     @Enumerated(EnumType.STRING)
-    private OderStatus oderStatus;
+    private OrderStatus orderStatus;
 
-    public enum OderStatus {
+    public enum OrderStatus {
         ADDED_TO_CARD, TO_PAY, TO_RECEIVE, COMPLETED, CANCELED, FEEDBACK_COMPLETED;
     }
 
@@ -53,33 +53,33 @@ public class Order implements Serializable  {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
-    public Order(Date oderDate, int customerId, PaymentMethod paymentMethod) {
+    public Order(Date orderDate, int customerId, PaymentMethod paymentMethod) {
     }
 
-    public Order(float total_amount, String address, String phone, LocalDate oder_date, OderStatus oderStatus, Account customer, PaymentMethod payment_method) {
+    public Order(float total_amount, String address, String phone, LocalDate order_date, OrderStatus orderStatus, Account customer, PaymentMethod payment_method) {
         this.total_amount = total_amount;
         this.address = address;
         this.phone = phone;
-        this.oder_date = oder_date;
-        this.oderStatus = oderStatus;
+        this.order_date = order_date;
+        this.orderStatus = orderStatus;
         this.customer = customer;
         this.payment_method = payment_method;
     }
 
-    public Order(String address, String phone, LocalDate oder_date, OderStatus oderStatus, Account customer, PaymentMethod payment_method) {
+    public Order(String address, String phone, LocalDate order_date, OrderStatus orderStatus, Account customer, PaymentMethod payment_method) {
         this.address = address;
         this.phone = phone;
-        this.oder_date = oder_date;
-        this.oderStatus = oderStatus;
+        this.order_date = order_date;
+        this.orderStatus = orderStatus;
         this.customer = customer;
         this.payment_method = payment_method;
     }
 
-    public Order(String address, String phone, LocalDate oder_date, OderStatus oderStatus, Account customer) {
+    public Order(String address, String phone, LocalDate order_date, OrderStatus orderStatus, Account customer) {
         this.address = address;
         this.phone = phone;
-        this.oder_date = oder_date;
-        this.oderStatus = oderStatus;
+        this.order_date = order_date;
+        this.orderStatus = orderStatus;
         this.customer = customer;
     }
 
@@ -102,20 +102,20 @@ public class Order implements Serializable  {
         this.total_amount = total_amount;
     }
 
-    public LocalDate getOder_date() {
-        return oder_date;
+    public LocalDate getOrder_date() {
+        return order_date;
     }
 
-    public void setOder_date(LocalDate oder_date) {
-        this.oder_date = oder_date;
+    public void setOrder_date(LocalDate order_date) {
+        this.order_date = order_date;
     }
 
-    public OderStatus getOderStatus() {
-        return oderStatus;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOderStatus(OderStatus oderStatus) {
-        this.oderStatus = oderStatus;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public Account getCustomer() {

@@ -8,10 +8,17 @@ const Product = () => {
   const [typeFilter, setTypeFilter] = useState([]);
   const [colorFilter, setColorFilter] = useState([]);
   const [sizeFilter, setSizeFilter] = useState([]);
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const fetchData = () => {
     axios
-      .get("http://localhost:8080/api/v1/productTypes/full")
+      .get("http://localhost:8080/api/v1/productTypes/full",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+      )
       .then((response) => {
         let formattedType = response.data.map((_type) => {
           return {
@@ -33,7 +40,13 @@ const Product = () => {
       });
 
     axios
-      .get("http://localhost:8080/api/v1/products/allcolor")
+      .get("http://localhost:8080/api/v1/products/allcolor",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+      )
       .then((response) => {
         let formattedColor = response.data.map((color) => ({
           name: color,
@@ -52,7 +65,13 @@ const Product = () => {
       });
 
     axios
-      .get("http://localhost:8080/api/v1/products/allsize")
+      .get("http://localhost:8080/api/v1/products/allsize",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+      )
       .then((response) => {
         let formattedSize = response.data.map((Size) => ({
           name: Size,
@@ -155,7 +174,13 @@ const Product = () => {
     axios
       .get(
         `http://localhost:8080/api/v1/products/filter?${dataFilterForColor}&${dataFilterForSize}&${dataFilterForType}`
-      )
+      ,
+      {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      }
+    )
       .then((response) => {
         // console.log(response.data);
         setProducts(response.data);
@@ -171,7 +196,13 @@ const Product = () => {
     fetchData();
 
     axios
-      .get("http://localhost:8080/api/v1/products/full")
+      .get("http://localhost:8080/api/v1/products/full",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+      )
       .then((response) => {
         // console.log(response.data);
         setProducts(response.data);
@@ -265,7 +296,7 @@ const Product = () => {
               <Link
                 className="Shop_right_shoes"
                 key={index}
-                to={`/product/${shoes.id}`}
+                to={`/client/product/${shoes.id}`}
               >
                 <div className="shoes_top">
                   <div className="shoes_top_img">

@@ -126,9 +126,8 @@ const OrderDetail = () => {
       const responseOrder = await axios.get(
         `http://localhost:8080/api/v1/orders/getOrderbyID/${id}`,
         {
-          auth: {
-            username: userData.username,
-            password: userData.password,
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
           },
         }
       );
@@ -136,9 +135,8 @@ const OrderDetail = () => {
       const responseStatus = await axios.get(
         `http://localhost:8080/api/v1/orders/status/${userData.id}`,
         {
-          auth: {
-            username: userData.username,
-            password: userData.password,
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
           },
         }
       );

@@ -47,7 +47,7 @@ public class OrderItemService {
         int order_id;
         order_id = 0;
         for(Order order : orderArrayList){
-            if(order.getOderStatus() == Order.OderStatus.ADDED_TO_CARD){
+            if(order.getOrderStatus() == Order.OrderStatus.ADDED_TO_CARD){
                 order_id = order.getId();
             }
         }
@@ -86,7 +86,7 @@ public class OrderItemService {
         OrderItem orderItem = orderItemRepository.getOrderItemById(id);
         Order order = orderItem.getOrder();
         ProductDetail productDetail = orderItem.getProduct_detail_order();
-        if (order.getOderStatus() == Order.OderStatus.TO_PAY){
+        if (order.getOrderStatus() == Order.OrderStatus.TO_PAY){
             productDetail.setQuantity(productDetail.getQuantity() - orderItem.getQuantity());
             productDetail.setQuantity(productDetail.getQuantity()+ orderItemUpdateRequest.getQuantity());
         }

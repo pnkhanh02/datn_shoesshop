@@ -11,18 +11,15 @@ const ManagerOrder = () => {
   const [loading, setLoading] = useState(false);
   const [optionVisible, setOptionVisible] = useState(false);
   const adminData = JSON.parse(localStorage.getItem("user"));
+  const userData = JSON.parse(localStorage.getItem("user"));
   const fetchData = () => {
     setLoading(true);
     axios
-      .get(
-        "http://localhost:8080/api/v1/orders/getAll"
-        //     , {
-        //   auth: {
-        //     username: adminData.username,
-        //     password: adminData.password,
-        //   },
-        // }
-      )
+      .get("http://localhost:8080/api/v1/orders/getAll", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
 
       .then((response) => {
         console.log(response.data);

@@ -3,7 +3,7 @@ import "./ProductDetail.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { message, Rate } from "antd";
 import axios from "axios";
-import { RATING_OPTIONS } from './../../../constants/index';
+import { RATING_OPTIONS } from "./../../../constants/index";
 import TextArea from "antd/es/input/TextArea";
 
 const ProductDetail = () => {
@@ -58,14 +58,11 @@ const ProductDetail = () => {
       };
 
       axios
-        .post("http://localhost:8080/api/v1/orderItems/create", data
-        //     , {
-        //   auth: {
-        //     username: userData.username,
-        //     password: userData.password,
-        //   },
-        // }
-    )
+        .post("http://localhost:8080/api/v1/orderItems/create", data, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        })
         .then((response) => {
           console.log("Add cart successfully");
           successMessage();
@@ -102,7 +99,11 @@ const ProductDetail = () => {
     window.scrollTo(0, 0);
 
     axios
-      .get("http://localhost:8080/api/v1/products/full")
+      .get("http://localhost:8080/api/v1/products/full", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         const product_arr = response.data;
         const curr = product_arr.filter((p) => {
@@ -118,14 +119,11 @@ const ProductDetail = () => {
 
     // Fetch feedbacks for the product
     axios
-      .get("http://localhost:8080/api/v1/feedbacks/getAll"
-    //     , {
-    //     auth: {
-    //       username: userData.username,
-    //       password: userData.password,
-    //     },
-    //   }
-    )
+      .get("http://localhost:8080/api/v1/feedbacks/getAll", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then(({ data }) => {
         const productFeedbacks = data
           .filter((fb) => fb.product_id.toString() === id)
@@ -137,7 +135,11 @@ const ProductDetail = () => {
       });
 
     axios
-      .get(`http://localhost:8080/api/v1/products/productDetail/${id}`, {})
+      .get(`http://localhost:8080/api/v1/products/productDetail/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         // console.log(response.data);
         const data = response.data;
@@ -320,7 +322,7 @@ const ProductDetail = () => {
               <Link
                 className="Shop_right_shoes"
                 key={shoes.id}
-                to={`/product/${shoes.id}`}
+                to={`/client/product/${shoes.id}`}
               >
                 <div className="shoes_top">
                   <div className="shoes_top_img">

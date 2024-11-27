@@ -2,103 +2,64 @@ package com.example.shoesshop.config;
 
 
 import com.example.shoesshop.service.AccountService;
-import com.example.shoesshop.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-@Configuration
-//@EnableWebSecurity
-public class WebSecurityConfiguration {
-
-    /*@Autowired
+@Configuration // kết hợp với @Bean để tạo thành 1 bean trong spring IOC
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // Để có thể phân quyền tại controller
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter  {
+    @Autowired
     private AccountService accountService;
 
+    @Autowired
+    JwtRequestFilter jwtRequestFilter;
 
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(accountService);
+        auth.userDetailsService(accountService)// Cấu hình UserDetailsService để khi xác thực người dùng sẽ gọi tới hàm loadUserByUsername()
+                .passwordEncoder(new BCryptPasswordEncoder());// Cấu hình phương thức để mã hoá mật khẩu
     }
 
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                .authorizeRequests()
-                //
-                .requestMatchers("/api/v1/customers/register").permitAll()
-                .requestMatchers("/api/v1/orderItems/delete/{id}").hasAnyAuthority("CUSTOMER")
-                .requestMatchers("/api/v1/orderItems/create").hasAnyAuthority("CUSTOMER")
-                .requestMatchers("/api/v1/orders/getCartByCustomer/{id}").hasAnyAuthority("CUSTOMER")
-                .requestMatchers("/api/v1/orders/status/{id}").hasAnyAuthority("CUSTOMER")
-                .requestMatchers("/api/v1/orders/create").hasAnyAuthority("CUSTOMER")
-                .requestMatchers("/api/v1/orders/changeStatus/{id}").hasAnyAuthority("EMPLOYEE","ADMIN")
-                .requestMatchers("/api/v1/orders/getAll").hasAnyAuthority("ADMIN","EMPLOYEE")
+        http.authorizeRequests()
+// config những API ko cần xác thực
+                .antMatchers("api/not-authenticated","/api/v1/auth/**").permitAll()
+// Config những API phải có Authority là ADMIN thì mới được truy cập
+//                .antMatchers(HttpMethod.GET,"/api/v1/zoom/**").hasAuthority("ADMIN")
+// Config những API phải có Authority là ADMIN hoặc User thì mới được truy cập
+                //.antMatchers("api/admin-or-user").hasAnyAuthority("ADMIN", "User")
+                .antMatchers("api/not-authenticated","/api/v1/products/**").permitAll()
 
-                .requestMatchers("/api/v1/orders/getOrderToPayAndToReceive").hasAnyAuthority("ADMIN","EMPLOYEE")
-                .requestMatchers("/api/v1/orders/monthly").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/orders/CountOrderMonthly").hasAnyAuthority("ADMIN")
+                .anyRequest().authenticated()// Những đường dẫn còn lại cần được xác thực
 
 
-                .requestMatchers("/api/v1/orders/getOrderbyID/{id}").hasAnyAuthority("ADMIN", "CUSTOMER")
-                .requestMatchers("/api/v1/orders/getByID/{id}").hasAnyAuthority("ADMIN", "CUSTOMER")
-                .requestMatchers("/api/v1/orders/cancel/{id}").hasAnyAuthority("CUSTOMER")
-                .requestMatchers("/api/v1/login").permitAll()
-                .requestMatchers("/api/v1/accounts/**").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/accounts").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/employees/create").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/paymentMethods/all").permitAll()
-                .requestMatchers("/api/v1/paymentMethods/create").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/paymentMethods/update/{id}").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/paymentMethods/delete").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/productTypes/full").permitAll()
-                .requestMatchers("/api/v1/productTypes/create").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/productTypes/update/{id}").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/productTypes/delete/{id}").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/products/full").permitAll()
-                .requestMatchers("/api/v1/products/update/{id}").hasAnyAuthority("ADMIN", "EMPLOYEE")
-                .requestMatchers("/api/v1/products/create").hasAnyAuthority("ADMIN", "EMPLOYEE")
-                .requestMatchers("/api/v1/products/productDetail/{id}").permitAll()
-                .requestMatchers("/api/v1/productDetails/update/{id}").hasAnyAuthority("ADMIN", "EMPLOYEE")
-                .requestMatchers("/api/v1/productDetails/create/{id}").hasAnyAuthority("ADMIN", "EMPLOYEE")
-                .requestMatchers("/api/v1/productDetails/delete/{id}").hasAnyAuthority("ADMIN", "EMPLOYEE")
-                .requestMatchers("/api/v1/sales").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/sales/create").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/sales/update/{id}").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/sales/delete/{id}").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/products/filter").permitAll()
-                .requestMatchers("/api/v1/products/allsize").permitAll()
-                .requestMatchers("/api/v1/products/allcolor").permitAll()
-                .requestMatchers("/api/v1/products/all").permitAll()
-                .requestMatchers("/api/v1/sales").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/sales/**").hasAnyAuthority("ADMIN")
-                //
+                .and().httpBasic()// Kích hoạt cấu hình http basic trong Spring Security
 
 
+// tắt tính năng Cross-Site Request Forgery (CSRF) trong Spring Security.
+                .and().cors().and().csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-                .requestMatchers("/api/v1/products/{id}").permitAll()
-                .requestMatchers("/api/v1/products/type/{id}").permitAll()
-                .requestMatchers("/api/v1/feedbacks/**").hasAnyAuthority("ADMIN", "CUSTOMER")
-                .requestMatchers("/api/v1/feedbacks/customer").hasAnyAuthority("CUSTOMER")
-                .requestMatchers("/api/v1/customers").permitAll()
-                .requestMatchers("/api/v1/customers/**").permitAll()
-//                .requestMatchers("/api/v1/paymentMethods/**").permitAll()
-                .requestMatchers("/api/v1/customers/update/{id}").permitAll()
-                .requestMatchers("/api/v1/employees/**").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/v1/employees/update/{id}").hasAnyAuthority("EMPLOYEE")
+        //Khai báo lớp filter vừa tạo sẽ được thực hiện trước khi xác thực và phân quyền
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
 
-                .requestMatchers("/api/v1/admins").hasAnyAuthority("ADMIN")
-//                .requestMatchers("/api/v1/orders/checkCart/{id}").hasAnyAuthority("CUSTOMER")
-//                .requestMatchers("/api/v1/orders/createCart").hasAnyAuthority("CUSTOMER")
-                .requestMatchers("/api/v1/orders/update").hasAnyAuthority("EMPLOYEE", "CUSTOMER")
-//                .requestMatchers("api/v1/orderItems/**").hasAnyAuthority("ADMIN", "CUSTOMER")
-//                .requestMatchers("/api/v1/orderItems/update/{id}").hasAnyAuthority("CUSTOMER")
-//                .requestMatchers("api/v1/productDetails/**").hasAnyAuthority("ADMIN", "EMPLOYEE")
-
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .csrf().disable();
-    }*/
+//    @Override // Config cho đường dẫn (swagger) ko bị chặn bởi security
+//    public void configure(WebSecurity web) {
+//        web.ignoring().antMatchers("/swagger-ui/**")
+//                .antMatchers("/swagger-resources/**")
+//                .antMatchers("/v3/api-docs/**");
+//    }
 }

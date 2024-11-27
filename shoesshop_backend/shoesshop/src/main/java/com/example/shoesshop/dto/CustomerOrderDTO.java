@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class CustomerOrderDTO {
     private int idOrder;
-    private Order.OderStatus oderStatus;
+    private Order.OrderStatus orderStatus;
     private String checkFeedback;
     private LocalDate orderDate;
     private String paymentName;
@@ -20,9 +20,9 @@ public class CustomerOrderDTO {
     public CustomerOrderDTO() {
     }
 
-    public CustomerOrderDTO(int idOrder, Order.OderStatus oderStatus, String checkFeedback, LocalDate orderDate, String paymentName, int totalQuantity, float totalAmount, String img_url, String color, int subQuantity, String productName) {
+    public CustomerOrderDTO(int idOrder, Order.OrderStatus orderStatus, String checkFeedback, LocalDate orderDate, String paymentName, int totalQuantity, float totalAmount, String img_url, String color, int subQuantity, String productName) {
         this.idOrder = idOrder;
-        this.oderStatus = oderStatus;
+        this.orderStatus = orderStatus;
         this.checkFeedback = checkFeedback;
         this.orderDate = orderDate;
         this.paymentName = paymentName;
@@ -42,12 +42,12 @@ public class CustomerOrderDTO {
         this.idOrder = idOrder;
     }
 
-    public Order.OderStatus getOderStatus() {
-        return oderStatus;
+    public Order.OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOderStatus(Order.OderStatus oderStatus) {
-        this.oderStatus = oderStatus;
+    public void setOrderStatus(Order.OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getCheckFeedback() {

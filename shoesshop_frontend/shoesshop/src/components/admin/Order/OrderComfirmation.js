@@ -9,20 +9,19 @@ const OrderComfirmation = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [itemsData, setItemsData] = useState([]);
   const adminData = JSON.parse(localStorage.getItem("user"));
+  const userData = JSON.parse(localStorage.getItem("user"));
   const [loading, setLoading] = useState(false);
 
   const fetchData = () => {
     setLoading(true);
     axios
       .get(
-        "http://localhost:8080/api/v1/orders/getOrderToPayAndToReceiveAndCompleted"
-        //   ,
-        //   {
-        //     auth: {
-        //       username: adminData.username,
-        //       password: adminData.password,
-        //     },
-        //   }
+        "http://localhost:8080/api/v1/orders/getOrderToPayAndToReceiveAndCompleted",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       )
       .then((response) => {
         const ordersFormatted = response.data.map((order) => ({
@@ -54,14 +53,12 @@ const OrderComfirmation = () => {
   const handleDelete = async (orderId) => {
     try {
       await axios.delete(
-        `http://localhost:8080/api/v1/orders/delete/${orderId}`
-        //   ,
-        //   {
-        //     auth: {
-        //       username: adminData.username,
-        //       password: adminData.password,
-        //     },
-        //   }
+        `http://localhost:8080/api/v1/orders/delete/${orderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       );
       setItemsData(itemsData.filter((order) => order.order_id !== orderId));
       message.success("Order deleted successfully");
@@ -91,14 +88,12 @@ const OrderComfirmation = () => {
     try {
       const response = await axios.put(
         `http://localhost:8080/api/v1/orders/changeStatus/${orderId}`,
-        { employee_id: adminData.id, oderStatus: newStatus }
-        //   ,
-        //   {
-        //     auth: {
-        //       username: adminData.username,
-        //       password: adminData.password,
-        //     },
-        //   }
+        { employee_id: adminData.id, oderStatus: newStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       );
       fetchData();
 

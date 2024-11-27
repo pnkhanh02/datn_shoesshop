@@ -21,7 +21,7 @@ const ClientLayout = () => {
         <Header />
         <div className="Content">
             <Routes>
-                <Route path="" element={<Home />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/product" element={<Product />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/cart" element={<Cart />} />
@@ -31,7 +31,7 @@ const ClientLayout = () => {
                 <Route path="/male" element={<GenderFill />} />
                 <Route path="/female" element={<FemaleFilter />} />
                 <Route path="/about-us" element={<AboutShop />} />
-                {/* <Route path="/oldForNew" element={<ExchangeShoes />} /> */}
+                {/* <Route path="/exchangeShoes" element={<ExchangeShoes />} /> */}
             </Routes>
         </div>
         <Footer />

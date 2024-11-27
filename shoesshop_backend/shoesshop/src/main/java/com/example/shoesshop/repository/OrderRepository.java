@@ -32,9 +32,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     ArrayList<Order> findAll();
 
     //    ArrayList<Order> findByOderStatus(Order.OderStatus oderStatus);
-    @Query("SELECT o FROM Order o WHERE o.oderStatus IN :statuses")
+    @Query("SELECT o FROM Order o WHERE o.orderStatus IN :statuses")
 
-    ArrayList<Order> findByOderStatus(List<Order.OderStatus> statuses);
+    ArrayList<Order> findByOderStatus(List<Order.OrderStatus> statuses);
 
 
     @Query(value = "SELECT COALESCE(SUM(o.totalAmount), 0) AS totalAmount, " +

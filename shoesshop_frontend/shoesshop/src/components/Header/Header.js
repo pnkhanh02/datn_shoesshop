@@ -4,9 +4,11 @@ import "./Header.css";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchVisible, setSearchVisible] = useState(false);
   const [isLoginPopup, setIsLoginPopup] = useState(false);
   const [isRegisterPopup, setIsRegisterPopup] = useState(false);
@@ -44,7 +46,8 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    window.location.reload();
+    navigate("/login");
+    // window.location.reload();
   };
 
   useEffect(() => {
@@ -76,13 +79,13 @@ const Header = () => {
         {!searchVisible && (
           <div className="Header_link">
             <Link
-              to="/"
-              className={location.pathname === "/" ? "active_link" : ""}
+              to="/client"
+              className={location.pathname === "/client" ? "active_link" : ""}
             >
               TRANG CHỦ
             </Link>
             <Link
-              to="/product"
+              to="/client/product"
               className={
                 location.pathname.startsWith("/product") ? "active_link" : ""
               }
@@ -90,7 +93,7 @@ const Header = () => {
               SẢN PHẨM
             </Link>
             <Link
-              to="/male"
+              to="/client/male"
               className={
                 location.pathname.startsWith("/male") ? "active_link" : ""
               }
@@ -98,7 +101,7 @@ const Header = () => {
               GIÀY NAM
             </Link>
             <Link
-              to="/female"
+              to="/client/female"
               className={
                 location.pathname.startsWith("/female") ? "active_link" : ""
               }
@@ -106,9 +109,11 @@ const Header = () => {
               GIÀY NỮ
             </Link>
             <Link
-              to="/oldForNew"
+              to="/client/exchangeShoes"
               className={
-                location.pathname.startsWith("/oldForNew") ? "active_link" : ""
+                location.pathname.startsWith("/exchangeShoes")
+                  ? "active_link"
+                  : ""
               }
             >
               THU CŨ ĐỔI MỚI
@@ -155,11 +160,12 @@ const Header = () => {
           {boxUserPopup && (
             <div className="Header-user-box">
               <div className="User-box-top">
-                <h4>{currentUser?.fullName}</h4>
+                <h4>{currentUser?.username}</h4>
                 <span>{currentUser?.role}</span>
               </div>
               <hr></hr>
               <div className="User-box-option">
+                <button>Thông tin tài khoản</button>
                 {(currentUser?.role === "ADMIN" ||
                   currentUser?.role === "EMPLOYEE") && (
                   <Link to="/admin">
@@ -167,13 +173,13 @@ const Header = () => {
                   </Link>
                 )}
                 {currentUser?.role === "CUSTOMER" ? (
-                  <Link to="/order">
+                  <Link to="/client/order">
                     <button>Đơn hàng của bạn</button>
                   </Link>
                 ) : (
                   ""
                 )}
-                {/* <button onClick={handleLogout}>Đăng xuất</button> */}
+                <button onClick={handleLogout}>Đăng xuất</button>
               </div>
             </div>
           )}

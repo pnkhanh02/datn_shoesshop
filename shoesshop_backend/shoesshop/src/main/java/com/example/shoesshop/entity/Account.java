@@ -1,8 +1,8 @@
 package com.example.shoesshop.entity;
 
-import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 

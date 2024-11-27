@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class OrderUpdateRequest {
 
-    private Date oder_date;
+    private Date order_date;
 
-    private Order.OderStatus oderStatus;
+    private Order.OrderStatus orderStatus;
 
     private int employee_id;
 
@@ -17,20 +17,20 @@ public class OrderUpdateRequest {
     public OrderUpdateRequest() {
     }
 
-    public Date getOder_date() {
-        return oder_date;
+    public Date getOrder_date() {
+        return order_date;
     }
 
-    public void setOder_date(Date oder_date) {
-        this.oder_date = oder_date;
+    public void setOder_date(Date order_date) {
+        this.order_date = order_date;
     }
 
-    public Order.OderStatus getOderStatus() {
-        return oderStatus;
+    public Order.OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOderStatus(Order.OderStatus oderStatus) {
-        this.oderStatus = oderStatus;
+    public void setOderStatus(Order.OrderStatus oderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public int getEmployee_id() {

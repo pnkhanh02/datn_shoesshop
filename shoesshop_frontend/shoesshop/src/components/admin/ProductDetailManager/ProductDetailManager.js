@@ -7,24 +7,30 @@ const ProductDetailManager = () => {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user"))
   );
+  const userData = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     window.scrollTo(0, 0);
 
     axios
-      .get("http://localhost:8080/api/v1/products/full")
+      .get("http://localhost:8080/api/v1/products/full",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+      )
       .then((response) => {
         const product_arr = response.data;
 
         axios
           .get(
             `http://localhost:8080/api/v1/productDetails?page=1&size=99&sort=id,asc&search=`
-            // ,
-            // {
-            //   auth: {
-            //     username: currentUser.username,
-            //     password: currentUser.password,
-            //   },
-            // }
+            ,
+            {
+              headers: {
+                Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+              },
+            }
           )
           .then((response) => {
             const data = response.data.content.map((pd, index) => {

@@ -1,10 +1,21 @@
-import { Breadcrumb, Button, Flex, Form, Input, InputNumber, message, Select, Spin, Upload } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Flex,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Select,
+  Spin,
+  Upload,
+} from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { PlusOutlined } from '@ant-design/icons';
-import { storage } from '../../../firebase';
-import imageCompression from 'browser-image-compression';
+import { PlusOutlined } from "@ant-design/icons";
+import { storage } from "../../../firebase";
+import imageCompression from "browser-image-compression";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const { TextArea } = Input;
@@ -30,6 +41,7 @@ const UpdateProduct = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
   const [fileList, setFileList] = useState([]);
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const successMessage = () => {
     messageApi.open({
@@ -49,17 +61,19 @@ const UpdateProduct = () => {
 
   const handleUpdateProduct = async (data) => {
     axios
-      .put(`http://localhost:8080/api/v1/products/update/${id}`, data
-    //     , {
-    //     auth: {
-    //       username: currentUser.username,
-    //       password: currentUser.password,
-    //     },
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    )
+      .put(
+        `http://localhost:8080/api/v1/products/update/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //   }
+      )
       .then((response) => {
         console.log("Update product successfully");
         successMessage();
@@ -141,7 +155,11 @@ const UpdateProduct = () => {
   const getProductByID = () => {
     setLoading(true);
     axios
-      .get(`http://localhost:8080/api/v1/products/${id}`)
+      .get(`http://localhost:8080/api/v1/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         console.log(response.data);
         setProductData(response.data);
@@ -165,7 +183,11 @@ const UpdateProduct = () => {
     getProductByID();
 
     axios
-      .get("http://localhost:8080/api/v1/productTypes/full")
+      .get("http://localhost:8080/api/v1/productTypes/full", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
 
       .then((response) => {
         // console.log(response.data);
@@ -177,14 +199,12 @@ const UpdateProduct = () => {
 
     axios
       .get(
-        "http://localhost:8080/api/v1/sales?page=1&size=20&sort=id,asc&search="
-        // ,
-        // {
-        //   auth: {
-        //     username: currentUser.username,
-        //     password: currentUser.password,
-        //   },
-        // }
+        "http://localhost:8080/api/v1/sales?page=1&size=20&sort=id,asc&search=",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       )
       .then((response) => {
         // console.log(response.data.content);

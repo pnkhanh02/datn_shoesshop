@@ -5,14 +5,14 @@ import com.example.shoesshop.entity.Order;
 public class ChangeStatusDTO {
     private int employee_id;
 
-    private Order.OderStatus oderStatus;
+    private Order.OrderStatus orderStatus;
 
     public ChangeStatusDTO() {
     }
 
-    public ChangeStatusDTO(int employee_id, Order.OderStatus oderStatus) {
+    public ChangeStatusDTO(int employee_id, Order.OrderStatus orderStatus) {
         this.employee_id = employee_id;
-        this.oderStatus = oderStatus;
+        this.orderStatus = orderStatus;
     }
 
     public int getCustomer_id() {
@@ -23,12 +23,12 @@ public class ChangeStatusDTO {
         this.employee_id = customer_id;
     }
 
-    public Order.OderStatus getOderStatus() {
-        return oderStatus;
+    public Order.OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOderStatus(Order.OderStatus oderStatus) {
-        this.oderStatus = oderStatus;
+    public void setOrderStatus(Order.OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public int getEmployee_id() {

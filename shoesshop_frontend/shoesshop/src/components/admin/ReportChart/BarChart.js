@@ -1,8 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  } from 'recharts';
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const BarChartExample = () => {
   const [data, setData] = useState([]);
@@ -31,13 +37,12 @@ const BarChartExample = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/orders/monthly`
-        //     , {
-        //   auth: {
-        //     username: userData.username,
-        //     password: userData.password
-        //   }
-        // }
+        `http://localhost:8080/api/v1/orders/monthly`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       );
       const transformedData = response.data.map((item) => ({
         ...item,

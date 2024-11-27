@@ -35,6 +35,7 @@ const UpdateProductDetail = () => {
   const [productData, setProductData] = useState();
   const [messageApi, contextHolder] = message.useMessage();
   const [fileList, setFileList] = useState([]);
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const successMessage = () => {
     messageApi.open({
@@ -60,12 +61,12 @@ const UpdateProductDetail = () => {
     axios
       .put(
         `http://localhost:8080/api/v1/productDetails/update/${id}`,
-        data
-        //     , {
-        //     auth: {
-        //         username: currentUser.username,
-        //         password: currentUser.password
-        //     },
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
         //     headers: {
         //         'Content-Type': 'application/json',
         //     }
@@ -147,17 +148,18 @@ const UpdateProductDetail = () => {
   const getProductByID = () => {
     setLoading(true);
     axios
-      .get(`http://localhost:8080/api/v1/productDetails/${id}`
-    //     , {
-    //     auth: {
-    //       username: currentUser.username,
-    //       password: currentUser.password,
-    //     },
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    )
+      .get(
+        `http://localhost:8080/api/v1/productDetails/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //   }
+      )
       .then((response) => {
         console.log(response.data);
         setProductData(response.data);

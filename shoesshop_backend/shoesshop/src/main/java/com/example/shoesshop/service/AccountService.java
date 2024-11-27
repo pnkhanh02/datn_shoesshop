@@ -10,6 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -17,11 +23,12 @@ import javax.swing.*;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountService {
+public class AccountService implements UserDetailsService {
 
     @Autowired
     AccountRepository accountRepository;
@@ -96,6 +103,21 @@ public class AccountService {
             where = Specification.where(accountSpecification);
         }
         return accountRepository.findAll(Specification.where(where), pageable);
+    }
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Account account = accountRepository.findByUsername(username);
+
+        // Kiểm tra nếu không tìm thấy tài khoản
+        if(account == null){
+            throw new UsernameNotFoundException(username);
+        }
+        List<GrantedAuthority> authorities = new ArrayList<>();
+//            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(accountOptional.get().getRole().toString());
+
+        authorities.add(new SimpleGrantedAuthority(account.getRole().name()));
+        return new User(username, account.getPassword(), authorities);
+
     }
 
 }

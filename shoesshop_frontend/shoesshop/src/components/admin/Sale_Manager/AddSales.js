@@ -14,6 +14,7 @@ import React, { useState } from "react";
 const AddSales = () => {
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const successMessage = () => {
     messageApi.open({
@@ -34,12 +35,12 @@ const AddSales = () => {
 
     axios
       .post("http://localhost:8080/api/v1/sales/create", data
-      //   , {
-      //   auth: {
-      //     username: adminData.username,
-      //     password: adminData.password,
-      //   },
-      // }
+        , 
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
     )
       .then((response) => {
         console.log("Add sales successfully");

@@ -55,10 +55,10 @@ public class OrderService {
     }
 
     public ArrayList<Order> getOrderToPayAndToReceiveAndCompleted() {
-        ArrayList<Order.OderStatus> statuses = new ArrayList<>();
-        statuses.add(Order.OderStatus.TO_PAY);
-        statuses.add(Order.OderStatus.TO_RECEIVE);
-        statuses.add(Order.OderStatus.COMPLETED);
+        ArrayList<Order.OrderStatus> statuses = new ArrayList<>();
+        statuses.add(Order.OrderStatus.TO_PAY);
+        statuses.add(Order.OrderStatus.TO_RECEIVE);
+        statuses.add(Order.OrderStatus.COMPLETED);
 
 
         return orderRepository.findByOderStatus(statuses);
@@ -74,7 +74,7 @@ public class OrderService {
                 orderCustomerRequest.getAddress(),
                 orderCustomerRequest.getPhone(),
                 creating_date,
-                Order.OderStatus.TO_PAY,
+                Order.OrderStatus.TO_PAY,
                 customer,
                 paymentMethod
         );
@@ -106,7 +106,7 @@ public class OrderService {
                 customer.getAddress(),
                 "0",
                 creating_date,
-                Order.OderStatus.ADDED_TO_CARD,
+                Order.OrderStatus.ADDED_TO_CARD,
                 customer
         );
         orderRepository.save(order);
@@ -134,8 +134,8 @@ public class OrderService {
             order.setPayment_method(paymentMethod);
         }
         order.setEmployee(employee);
-        order.setOderStatus(orderRequest.getOderStatus());
-        order.setOder_date(orderRequest.getOder_date());
+        order.setOrderStatus(orderRequest.getOrderStatus());
+        order.setOrder_date(orderRequest.getOrder_date());
         orderRepository.save(order);
 
     }
@@ -161,7 +161,7 @@ public class OrderService {
             productDetail.setQuantity(productDetail.getQuantity() + orderItem.getQuantity());
             productDetailRepository.save(productDetail);
         }
-        order.setOderStatus(Order.OderStatus.CANCELED);
+        order.setOrderStatus(Order.OrderStatus.CANCELED);
         orderRepository.save(order);
     }
 
@@ -170,7 +170,7 @@ public class OrderService {
         Order order = orderRepository.getOrderById(id);
 
         if (employee != null) {
-            order.setOderStatus(changeStatusDTO.getOderStatus());
+            order.setOrderStatus(changeStatusDTO.getOrderStatus());
             order.setEmployee(employee);
             orderRepository.save(order);
         }

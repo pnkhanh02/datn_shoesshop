@@ -15,6 +15,7 @@ const SalesManager = () => {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user"))
   );
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const fetchData = () => {
 
@@ -22,12 +23,12 @@ const SalesManager = () => {
 
     axios
       .get("http://localhost:8080/api/v1/sales?page=0&size=99&sort=id,asc&search=" 
-        // , {
-        //   auth: {
-        //     username: currentUser.username,
-        //     password: currentUser.password,
-        //   },
-        // }
+        , 
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
       )
       .then((response) => {
         const data = response.data.content.map((sl, index) => {
