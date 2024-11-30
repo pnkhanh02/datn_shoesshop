@@ -35,20 +35,20 @@ public class AuthController {
     @Autowired
     JWTTokenUtils jwtTokenUtils;
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody AccountRequest account) throws ParseException {
-
-        boolean checkExist =
-                accountService.checkExistEmailOrUsername(account.getEmail(), account.getUsername());
-
-        if (checkExist)
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(401, "null", "Email or Phone already exists"));
-
-        accountService.createAccount(account);
-
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(200, null, "success"));
-
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<?> signUp(@RequestBody AccountRequest account) throws ParseException {
+//
+//        boolean checkExist =
+//                accountService.checkExistEmailOrUsername(account.getEmail(), account.getUsername());
+//
+//        if (checkExist)
+//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(401, "null", "Email or Phone already exists"));
+//
+//        accountService.createAccount(account);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(200, null, "success"));
+//
+//    }
 
     @PostMapping("/login-jwt") //Thực hiện theo cách này thì cần mở public API này ra
     public LoginDTO loginJwt(@RequestBody LoginRequest request) {

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Chatbot from "../client/Chatbot/Chatbot";
 
 const Header = () => {
   const location = useLocation();
@@ -138,6 +139,9 @@ const Header = () => {
           </div>
         )}
         <div className="Header_option">
+          <div className="HO_main_option">
+            <Chatbot />
+          </div>
           {/* <div className="HO_main_option" onClick={(e) => handleSearchVisible(e)}><i className="fa-solid fa-magnifying-glass"></i></div> */}
           {!currentUser ? (
             <div

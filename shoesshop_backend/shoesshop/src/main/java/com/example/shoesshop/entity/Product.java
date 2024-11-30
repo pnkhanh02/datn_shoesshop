@@ -51,7 +51,6 @@ public class Product implements Serializable {
         MALE, FEMALE, UNISEX;
     }
 
-
     public List<ProductDetail> getProductDetails() {
         return productDetails;
     }

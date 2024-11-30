@@ -1,40 +1,19 @@
 package com.example.shoesshop.response;
 
-public class ResponseObject {
-    private int success;
-    private Object data;
-    private String message;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-    public ResponseObject() {
+public class ResponseObject <T> extends ResponseEntity<ResponseObject.Payload<T>> {
+    public ResponseObject(HttpStatus code, String message, T data) {
+        super(new Payload<>(code.value(), message, data),code);
     }
-
-    public ResponseObject(int success, Object data, String message) {
-        this.success = success;
-        this.data = data;
-        this.message = message;
-    }
-
-    public int getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(int success) {
-        this.success = success;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    @Builder
+    public static class Payload<T> {
+        public int code;
+        public String message;
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        public T data;
     }
 }

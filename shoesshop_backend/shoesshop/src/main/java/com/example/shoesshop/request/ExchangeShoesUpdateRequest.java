@@ -4,7 +4,8 @@ import com.example.shoesshop.entity.ExchangeShoes;
 
 import java.time.LocalDate;
 
-public class ExchangeShoesRequest {
+public class ExchangeShoesUpdateRequest {
+    private int exchangeShoesId;
     private String exchangeShoesName;
     private String exchangeShoesType;
     private LocalDate purchaseDate;
@@ -14,20 +15,24 @@ public class ExchangeShoesRequest {
     private ExchangeShoes.STATUS status;
     private boolean used;
     private int customerId;
+    private float exchangeShoesSales;
 
-    public ExchangeShoesRequest() {
+    public ExchangeShoesUpdateRequest() {
     }
 
-    public ExchangeShoesRequest(String exchangeShoesName, String exchangeShoesType, LocalDate purchaseDate, float price, String description, String img_url, ExchangeShoes.STATUS status, boolean used, int customerId) {
-        this.exchangeShoesName = exchangeShoesName;
-        this.exchangeShoesType = exchangeShoesType;
-        this.purchaseDate = purchaseDate;
-        this.price = price;
-        this.description = description;
-        this.img_url = img_url;
+    public ExchangeShoesUpdateRequest(int exchangeShoesId, ExchangeShoes.STATUS status, float exchangeShoesSales, boolean used) {
+        this.exchangeShoesId = exchangeShoesId;
         this.status = status;
+        this.exchangeShoesSales = exchangeShoesSales;
         this.used = used;
-        this.customerId = customerId;
+    }
+
+    public int getExchangeShoesId() {
+        return exchangeShoesId;
+    }
+
+    public void setExchangeShoesId(int exchangeShoesId) {
+        this.exchangeShoesId = exchangeShoesId;
     }
 
     public String getExchangeShoesName() {
@@ -78,6 +83,14 @@ public class ExchangeShoesRequest {
         this.img_url = img_url;
     }
 
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
     public ExchangeShoes.STATUS getStatus() {
         return status;
     }
@@ -86,19 +99,19 @@ public class ExchangeShoesRequest {
         this.status = status;
     }
 
+    public float getExchangeShoesSales() {
+        return exchangeShoesSales;
+    }
+
+    public void setExchangeShoesSales(float exchangeShoesSales) {
+        this.exchangeShoesSales = exchangeShoesSales;
+    }
+
     public boolean isUsed() {
         return used;
     }
 
     public void setUsed(boolean used) {
         this.used = used;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
     }
 }

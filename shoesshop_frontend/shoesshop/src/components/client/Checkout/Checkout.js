@@ -46,13 +46,6 @@ const Checkout = () => {
     axios
       .get(`https://esgoo.net/api-tinhthanh/2/${cityId}.htm`)
       .then((response) => {
-        // const districtList = response.data.data.map((district) => {
-        //   return {
-        //     value: district.id,
-        //     label: district.full_name,
-        //   };
-        // });
-        // setDistrict(districtList);
         if (response.data && response.data.data.length > 0) {
           const districtList = response.data.data.map((district) => {
             return {
@@ -174,21 +167,6 @@ const Checkout = () => {
     setSelectedCityOption(selectedCityOption);
     console.log(selectedCityOption);
     getDistrict(selectedCityOption);
-    // let districts_arr = citys.filter((city) => {
-    //   return city.value === selectedCityOption.value;
-    // });
-
-    // districts_arr = districts_arr[0].districts.map((district) => {
-    //   return {
-    //     value: district._id,
-    //     label: district.name,
-    //     wards: district.name_with_type,
-    //   };
-    // });
-
-    // setDistrict(districts_arr);
-    // setSelectedDistrictOption(null);
-    // setSelectedWardOption(null);
   };
 
   const handleChangeDistrictOption = (selectedCityOption) => {
@@ -205,50 +183,51 @@ const Checkout = () => {
     setSelectedMethod(selectedPaymentOption);
     console.log(selectedPaymentOption);
   };
-
-  // const handleChangeDistrictOption = (selectedDistrictOption) => {
-  //   setSelectedDistrictOption(selectedDistrictOption);
-  //   let wards_arr = districts.filter((district) => {
-  //     return district.value === selectedDistrictOption.value;
-  //   });
-
-  //   wards_arr = wards_arr[0].wards.map((ward) => {
-  //     return {
-  //       value: ward.code,
-  //       label: ward.name,
-  //     };
-  //   });
-
-  //   setWards(wards_arr);
-  //   setSelectedWardOption(null);
-  // };
-
-  // const handleChangeWardOption = (selectedWardOption) => {
-  //   setSelectedWardOption(selectedWardOption);
-  // };
   const handleCompleteOrder = () => {
-    //console.log(selectedCityOption);
-    // console.log(selectedDistrictOption);
-    // console.log(productForCheckout);
-    // console.log(selectedMethod);
-    // console.log(selectedWardOption);
-    // console.log(customerPhone);
+    console.log("Customer Phone in order:", customerPhone); 
+    const selectedCity = citys.find(
+      (city) => city.value === selectedCityOption
+    );
+    const selectedDistrict = districts.find(
+      (district) => district.value === selectedDistrictOption
+    );
+    const selectedWard = wards.find(
+      (ward) => ward.value === selectedWardOption
+    );
+
+    const selectedPaymentMethod = isPaymentMethod.find(
+      (paymentMethod) => paymentMethod.value === selectedMethod
+    );
+
+    if (!selectedCity || !selectedDistrict || !selectedWard || !selectedPaymentMethod) {
+      messageApi.open({
+        type: "error",
+        content: "Vui lòng điền đầy đủ thông tin!",
+      });
+      return; // Nếu thiếu thông tin, không gửi yêu cầu.
+    }
+    console.log(selectedCityOption);
+    console.log(selectedDistrictOption);
+    //console.log(productForCheckout);
+    console.log(selectedMethod);
+    console.log(selectedWardOption);
+    //console.log(customerPhone);
     // console.log(customerAddress);
     // console.log(customerNote);
     let fullAddress =
       customerAddress +
       ", " +
-      selectedWardOption.label +
+      selectedWard.label +
       ", " +
-      selectedDistrictOption.label +
+      selectedDistrict.label +
       ", " +
-      selectedCityOption.label;
+      selectedCity.label;
 
     const newOrder = {
       address: fullAddress,
       phone: customerPhone,
       customer_id: currentUser.id,
-      payment_method_id: selectedMethod.value,
+      payment_method_id: selectedPaymentMethod.value,
       orderItemForms: productForCheckout.map((pdfc) => {
         return {
           id: pdfc.id,
@@ -256,7 +235,6 @@ const Checkout = () => {
         };
       }),
     };
-    // console.log(fullAddress);
 
     axios
       .post("http://localhost:8080/api/v1/orders/create", newOrder, {
@@ -265,6 +243,7 @@ const Checkout = () => {
         },
       })
       .then((response) => {
+        console.log(newOrder);
         console.log("Add product successfully");
         successMessage();
         setTimeout(() => {
@@ -272,6 +251,7 @@ const Checkout = () => {
         }, 2000);
       })
       .catch((error) => {
+        console.log(newOrder);
         console.error("Error fetching data:", error);
         errorMessage();
       });

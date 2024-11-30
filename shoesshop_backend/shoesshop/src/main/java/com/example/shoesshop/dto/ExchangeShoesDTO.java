@@ -1,10 +1,11 @@
-package com.example.shoesshop.request;
+package com.example.shoesshop.dto;
 
 import com.example.shoesshop.entity.ExchangeShoes;
 
 import java.time.LocalDate;
 
-public class ExchangeShoesRequest {
+public class ExchangeShoesDTO {
+    private int exchangeShoesId;
     private String exchangeShoesName;
     private String exchangeShoesType;
     private LocalDate purchaseDate;
@@ -14,11 +15,13 @@ public class ExchangeShoesRequest {
     private ExchangeShoes.STATUS status;
     private boolean used;
     private int customerId;
+    private float exchangeShoesSales;
 
-    public ExchangeShoesRequest() {
+    public ExchangeShoesDTO() {
     }
 
-    public ExchangeShoesRequest(String exchangeShoesName, String exchangeShoesType, LocalDate purchaseDate, float price, String description, String img_url, ExchangeShoes.STATUS status, boolean used, int customerId) {
+    public ExchangeShoesDTO(int exchangeShoesId, String exchangeShoesName, String exchangeShoesType, LocalDate purchaseDate, float price, String description, String img_url, ExchangeShoes.STATUS status, boolean used, int customerId, float exchangeShoesSales) {
+        this.exchangeShoesId = exchangeShoesId;
         this.exchangeShoesName = exchangeShoesName;
         this.exchangeShoesType = exchangeShoesType;
         this.purchaseDate = purchaseDate;
@@ -28,6 +31,15 @@ public class ExchangeShoesRequest {
         this.status = status;
         this.used = used;
         this.customerId = customerId;
+        this.exchangeShoesSales = exchangeShoesSales;
+    }
+
+    public int getExchangeShoesId() {
+        return exchangeShoesId;
+    }
+
+    public void setExchangeShoesId(int exchangeShoesId) {
+        this.exchangeShoesId = exchangeShoesId;
     }
 
     public String getExchangeShoesName() {
@@ -100,5 +112,13 @@ public class ExchangeShoesRequest {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public float getExchangeShoesSales() {
+        return exchangeShoesSales;
+    }
+
+    public void setExchangeShoesSales(float exchangeShoesSales) {
+        this.exchangeShoesSales = exchangeShoesSales;
     }
 }

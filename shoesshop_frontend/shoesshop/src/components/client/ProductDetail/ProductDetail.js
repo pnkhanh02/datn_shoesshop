@@ -210,6 +210,7 @@ const ProductDetail = () => {
                 <h3>{product.price} vnđ</h3>
               )}
             </div>
+            <div>{product.description}</div>
             <div className="PD_con_right_info_color">
               <span>Màu sắc</span>
               <div>
