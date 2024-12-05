@@ -41,6 +41,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter  {
 // Config những API phải có Authority là ADMIN hoặc User thì mới được truy cập
                 //.antMatchers("api/admin-or-user").hasAnyAuthority("ADMIN", "User")
                 .antMatchers("api/not-authenticated","/api/v1/products/**").permitAll()
+                .antMatchers("api/not-authenticated","/api/v1/payment/vn-pay-callback").permitAll()
 
                 .anyRequest().authenticated()// Những đường dẫn còn lại cần được xác thực
 

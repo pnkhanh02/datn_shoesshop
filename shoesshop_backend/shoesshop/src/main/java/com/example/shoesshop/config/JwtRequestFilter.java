@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter  {
+public class JwtRequestFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
 
 
@@ -37,6 +37,7 @@ public class JwtRequestFilter extends OncePerRequestFilter  {
         //Lấy thông tin API hiện tại để kiểm tra API này có public hay không. Nếu được public -> không cần check token
         String request = httpServletRequest.getRequestURI();
         if (StringUtils.containsAnyIgnoreCase(request, "/api/v1/auth/")
+                || StringUtils.containsAnyIgnoreCase(request, "/api/v1/payment/vn-pay-callback")
                 || StringUtils.containsAnyIgnoreCase(request, "/api/v1/product/search")
                 || StringUtils.containsAnyIgnoreCase(request, "/swagger-ui")
                 || StringUtils.containsAnyIgnoreCase(request, "/swagger-resources")

@@ -9,6 +9,7 @@ const Chatbot = () => {
   const [userInput, setUserInput] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const chatBoxRef = useRef(null);
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
@@ -16,31 +17,36 @@ const Chatbot = () => {
     const userMessage = { role: "user", content: userInput };
     setMessages([...messages, userMessage]);
 
-    // try {
-    //   const response = await axios.post(
-    //     "http://localhost:8080/api/v1/chatbot/chat",
-    //     {
-    //       messages: [...messages, userMessage],
-    //     }
-    //   );
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/chatbot/chat",
+        {
+          messages: [...messages, userMessage],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
 
-    //   const botMessage = {
-    //     role: "assistant",
-    //     content: response.data.choices[0].message.content,
-    //   };
-    //   setMessages((prevMessages) => [...prevMessages, botMessage]);
+      const botMessage = {
+        role: "assistant",
+        content: response.data.choices[0].message.content,
+      };
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
 
       setUserInput("");
-    // } catch (error) {
-    //   console.error("Error communicating with the chatbot API:", error);
-    //   setMessages((prevMessages) => [
-    //     ...prevMessages,
-    //     {
-    //       role: "assistant",
-    //       content: "Error: Could not fetch response from the chatbot.",
-    //     },
-    //   ]);
-    // }
+    } catch (error) {
+      console.error("Error communicating with the chatbot API:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          role: "assistant",
+          content: "Error: Could not fetch response from the chatbot.",
+        },
+      ]);
+    }
   };
 
   const toggleChat = () => {

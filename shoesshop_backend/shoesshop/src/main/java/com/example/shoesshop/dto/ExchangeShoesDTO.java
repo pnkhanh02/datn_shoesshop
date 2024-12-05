@@ -8,7 +8,7 @@ public class ExchangeShoesDTO {
     private int exchangeShoesId;
     private String exchangeShoesName;
     private String exchangeShoesType;
-    private LocalDate purchaseDate;
+    private String purchaseDate;
     private float price;
     private String description;
     private String img_url;
@@ -20,7 +20,7 @@ public class ExchangeShoesDTO {
     public ExchangeShoesDTO() {
     }
 
-    public ExchangeShoesDTO(int exchangeShoesId, String exchangeShoesName, String exchangeShoesType, LocalDate purchaseDate, float price, String description, String img_url, ExchangeShoes.STATUS status, boolean used, int customerId, float exchangeShoesSales) {
+    public ExchangeShoesDTO(int exchangeShoesId, String exchangeShoesName, String exchangeShoesType, String purchaseDate, float price, String description, String img_url, ExchangeShoes.STATUS status, boolean used, int customerId, float exchangeShoesSales) {
         this.exchangeShoesId = exchangeShoesId;
         this.exchangeShoesName = exchangeShoesName;
         this.exchangeShoesType = exchangeShoesType;
@@ -58,11 +58,11 @@ public class ExchangeShoesDTO {
         this.exchangeShoesType = exchangeShoesType;
     }
 
-    public LocalDate getPurchaseDate() {
+    public String getPurchaseDate() {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(LocalDate purchaseDate) {
+    public void setPurchaseDate(String purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 

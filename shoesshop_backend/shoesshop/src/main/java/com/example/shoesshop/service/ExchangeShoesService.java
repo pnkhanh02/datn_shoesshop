@@ -3,6 +3,7 @@ package com.example.shoesshop.service;
 import com.example.shoesshop.entity.*;
 import com.example.shoesshop.repository.ExchangeShoesRepository;
 import com.example.shoesshop.request.ExchangeShoesRequest;
+import com.example.shoesshop.request.ExchangeShoesUpdateRequest;
 import com.example.shoesshop.request.FeedbackRequest;
 import com.example.shoesshop.specification.ExchangeShoesSpecification;
 import com.example.shoesshop.specification.FeedbackSpecification;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +38,19 @@ public class ExchangeShoesService {
         return exchangeShoesRepository.findAll(Specification.where(where), pageable);
     }
 
+    public Page<ExchangeShoes> findAllByCustomerId(int customerId, Pageable pageable){
+        return exchangeShoesRepository.findAllByCustomerId(customerId, pageable);
+    }
+
     public void createExchangeShoes(ExchangeShoesRequest exchangeShoesRequest) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate purchaseDate = LocalDate.parse(exchangeShoesRequest.getPurchaseDate(), formatter);
         Customer customer = customerService.getCustomerById(exchangeShoesRequest.getCustomerId());
-        //LocalDate creating_date = LocalDate.now();
         ExchangeShoes exchangeShoes = new ExchangeShoes();
 
         exchangeShoes.setExchangeShoesName(exchangeShoesRequest.getExchangeShoesName());
         exchangeShoes.setExchangeShoesType(exchangeShoesRequest.getExchangeShoesType());
-        exchangeShoes.setPurchaseDate(exchangeShoesRequest.getPurchaseDate());
+        exchangeShoes.setPurchaseDate(purchaseDate);
         exchangeShoes.setPrice(exchangeShoesRequest.getPrice());
         exchangeShoes.setDescription(exchangeShoesRequest.getDescription());
         exchangeShoes.setImg_url(exchangeShoesRequest.getImg_url());
@@ -52,6 +59,18 @@ public class ExchangeShoesService {
         exchangeShoes.setUsed(false);
 
         exchangeShoesRepository.save(exchangeShoes);
+    }
+
+    public void updateStatusExchangeShoes(int id, ExchangeShoesUpdateRequest exchangeShoesUpdateRequest){
+        ExchangeShoes exchangeShoes = exchangeShoesRepository.getExchangeShoesById(id);
+
+        if(exchangeShoes != null){
+            exchangeShoes.setStatus(exchangeShoesUpdateRequest.getStatus());
+            exchangeShoes.setExchangeShoesSales(exchangeShoesUpdateRequest.getStatus() == ExchangeShoes.STATUS.APPROVE
+                    ? exchangeShoesUpdateRequest.getExchangeShoesSales()
+                    : 0);
+            exchangeShoesRepository.save(exchangeShoes);
+        }
     }
 
     public ArrayList<ExchangeShoes> getAll() {

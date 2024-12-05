@@ -13,10 +13,9 @@ import Cart from "./Cart/Cart";
 import Order from "./Order/Order";
 import OrderDetail from "./Order/OrderDetail";
 import Checkout from "./Checkout/Checkout";
-import ExchangeShoes from "./ExchangeShoes/ExchangeShoesForm";
-import Chatbot from "./Chatbot/Chatbot";
 import ExchangeShoesForm from "./ExchangeShoes/ExchangeShoesForm";
 import ExchangeShoesClient from "./ExchangeShoes/ExchangeShoesClient";
+import ExchangeShoesClientDetail from "./ExchangeShoes/ExchangeShoesClientDetail";
 
 const ClientLayout = () => {
   return (
@@ -36,6 +35,7 @@ const ClientLayout = () => {
           <Route path="/about-us" element={<AboutShop />} />
           <Route path="/exchangeShoes" element={<ExchangeShoesClient/>} />
           <Route path="/exchange-shoes-form" element={<ExchangeShoesForm />} />
+          <Route path="/exchangeShoes/:id" element={<ExchangeShoesClientDetail/>}/>
         </Routes>
       </div>
       <Footer />

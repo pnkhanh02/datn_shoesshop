@@ -11,9 +11,9 @@ import {
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
-import "./ExchangeShoesClient.css";
+import "./ExchangeShoesManager.css";
 
-const ExchangeShoesClient = () => {
+const ExchangeShoesManager = () => {
   const { confirm } = Modal;
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -28,7 +28,7 @@ const ExchangeShoesClient = () => {
 
     axios
       .get(
-        `http://localhost:8080/api/v1/exchange-shoes/getAllByCustomerId/${userData.id}?page=0&size=99&sort=id,asc`,
+        `http://localhost:8080/api/v1/exchange-shoes/getAllExchangeShoes?page=0&size=99&sort=id,asc`,
         {
           headers: {
             Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
@@ -41,6 +41,7 @@ const ExchangeShoesClient = () => {
             key: sl.id,
             id: sl.exchangeShoesId,
             exchangeShoesName: sl.exchangeShoesName,
+            customerId: sl.customerId,
             status: sl.status,
             exchangeShoesSales: sl.exchangeShoesSales,
           };
@@ -81,6 +82,11 @@ const ExchangeShoesClient = () => {
       title: "Tên sản phẩm",
       dataIndex: "exchangeShoesName",
       key: "exchangeShoesName",
+    },
+    {
+      title: "CustomerId",
+      dataIndex: "customerId",
+      key: "customerId",
     },
     {
       title: "Trạng thái",
@@ -189,12 +195,12 @@ const ExchangeShoesClient = () => {
 
   // Handle view details
   const handleViewDetails = (record) => {
-    navigate(`/client/exchangeShoes/${record.id}`, { state: record });
+    navigate(`/admin/exchangeShoes/${record.id}`, { state: record });
   };
 
   // Handle add new product
   const handleAddNewProduct = () => {
-    navigate("/client/exchange-shoes-form");
+    navigate("/exchange-shoes-form");
   };
 
   return (
@@ -241,4 +247,4 @@ const ExchangeShoesClient = () => {
   );
 };
 
-export default ExchangeShoesClient;
+export default ExchangeShoesManager;

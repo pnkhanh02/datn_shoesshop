@@ -18,6 +18,11 @@ public interface ExchangeShoesRepository extends JpaRepository<ExchangeShoes, In
 
     void deleteById(int id);
 
+    @Transactional
+    @Query("SELECT e FROM ExchangeShoes e WHERE e.customer.id = :customerId")
+    <T> Page<ExchangeShoes> findAllByCustomerId(@Param("customerId") int customerId, Pageable pageable);
+
+
     @Modifying
     @Transactional
     @Query("DELETE FROM ExchangeShoes WHERE id IN(:ids)")

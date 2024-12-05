@@ -36,9 +36,10 @@ public class ChatbotController {
 
             // Prepare request body
             Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("model", "gpt-3.5"); // Sử dụng GPT-3.5
+            requestBody.put("model", "gpt-3.5-turbo"); // Sử dụng GPT-3.5
             requestBody.put("messages", chatRequest.getMessages());
-            requestBody.put("temperature", 0.7); // Tùy chỉnh độ sáng tạo
+            requestBody.put("temperature", 0.5); // Tùy chỉnh độ sáng tạo
+            requestBody.put("max_tokens", 50);
 
             // Create the HTTP Entity
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);

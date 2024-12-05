@@ -151,9 +151,34 @@ const Checkout = () => {
       });
   }, []);
 
-  const handleOrderCheckout = () => {
-    // setIsCompleteOrder(true);
-    handleCompleteOrder();
+  // const handleOrderCheckout = () => {
+  //   // setIsCompleteOrder(true);
+  //   handleCompleteOrder();
+  // };
+    const handleOrderCheckout = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/v1/payment/vn-pay", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+        params: {
+          // Thêm các tham số cần thiết nếu có, ví dụ:
+          amount: handleGetTotal(), // Tổng tiền thanh toán
+          vnp_BankCode: "NCB", // Mã ngân hàng, có thể để null nếu không chọn
+        },
+      });
+      if (response.data.code === 200) {
+        const { paymentUrl } = response.data.data;
+        handleCompleteOrder();
+        // Chuyển hướng người dùng đến URL thanh toán
+        window.location.href = paymentUrl;
+      } else {
+        alert("Không thể tạo thanh toán. Vui lòng thử lại!");
+      }
+    } catch (error) {
+      console.error("Lỗi khi tạo thanh toán:", error);
+      alert("Đã xảy ra lỗi trong quá trình thanh toán. Vui lòng thử lại!");
+    }
   };
 
   const handleGetTotal = () => {

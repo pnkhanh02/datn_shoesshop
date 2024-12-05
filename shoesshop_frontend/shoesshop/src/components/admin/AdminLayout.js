@@ -41,6 +41,8 @@ import ManagerOrder from "./Order/ManagerOrder";
 import OrderComfirmation from "./Order/OrderComfirmation";
 import CheckOrder from "./Order/CheckOrder";
 import ReportChart from "./ReportChart/ReportChart";
+import ExchangeShoesManager from "./ExchangeShoesManager/ExchangeShoesManager";
+import ExchangeShoesDetail from "./ExchangeShoesManager/ExchangeShoesDetail";
 
 const { Sider, Content } = Layout;
 
@@ -114,6 +116,15 @@ const AdminLayout = () => {
                 <Link to="sales">Quản lý khuyến mãi</Link>
               </Menu.Item>
             </Menu.SubMenu>
+            <Menu.SubMenu
+              key="exchangeShoes"
+              icon={<PercentageOutlined />}
+              title="Thu cũ đổi mới"
+            >
+              <Menu.Item key="exchangeShoes" icon={<BarsOutlined />}>
+                <Link to="exchangeShoes">Thu cũ đổi mới</Link>
+              </Menu.Item>
+            </Menu.SubMenu>
           </Menu>
         </Sider>
         <Layout>
@@ -159,6 +170,9 @@ const AdminLayout = () => {
               <Route path="/sales/create" element={<AddSales />}></Route>
               <Route path="/sales/" element={<SalesManager />}></Route>
               <Route path="/sales/:id" element={<UpdateSales />}></Route>
+
+              <Route path="/exchangeShoes/" element={<ExchangeShoesManager />}></Route>
+              <Route path="/exchangeShoes/:id" element={<ExchangeShoesDetail />}></Route>
             </Routes>
           </Content>
         </Layout>
