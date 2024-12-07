@@ -18,18 +18,13 @@ const SalesManager = () => {
   const userData = JSON.parse(localStorage.getItem("user"));
 
   const fetchData = () => {
-
     setLoading(true);
-
     axios
-      .get("http://localhost:8080/api/v1/sales?page=0&size=99&sort=id,asc&search=" 
-        , 
-        {
-          headers: {
-            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
-          },
-        }
-      )
+      .get("http://localhost:8080/api/v1/sales?page=0&size=99&sort=id,asc&search=", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
       .then((response) => {
         const data = response.data.content.map((sl, index) => {
           return {
@@ -37,7 +32,7 @@ const SalesManager = () => {
             id: sl.id,
             sale_info: sl.sale_info,
             percent_sale: sl.percent_sale,
-            start_date: moment(sl.start_date).format('YYYY-MM-DD'), 
+            start_date: moment(sl.start_date).format('YYYY-MM-DD'),
             end_date: moment(sl.end_date).format('YYYY-MM-DD'),
           };
         });
@@ -48,14 +43,12 @@ const SalesManager = () => {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }
+  };
 
   useEffect(() => {
-
     window.scrollTo(0, 0);
     fetchData();
-
-}, [])
+  }, []);
 
   const successMessage = () => {
     messageApi.open({
@@ -110,34 +103,54 @@ const SalesManager = () => {
       title: "Sửa",
       dataIndex: "update_sales",
       render: (_, record) => (
-        <Link to={`/admin/sales/${record.id}`}><i class="fa-solid fa-pen-to-square" style={{fontSize: "18px"}}></i></Link>
+        <Link to={`/admin/sales/${record.id}`}>
+          <i className="fa-solid fa-pen-to-square" style={{ fontSize: "18px" }}></i>
+        </Link>
       ),
     },
   ];
 
   const rowSelection = {
-    salesSelected,
+    selectedRowKeys: salesSelected, // Dùng `salesSelected` làm giá trị của `selectedRowKeys`
     onChange: (selectedRowKeys) => {
-      !selectedRowKeys.length ? setOptionVisible(false) : setOptionVisible(true);
-      setSalesSelected(selectedRowKeys);
-      console.log(selectedRowKeys.join(","));
+      setSalesSelected(selectedRowKeys); // Cập nhật lại trạng thái `salesSelected` khi người dùng chọn hàng
+      setOptionVisible(selectedRowKeys.length > 0); // Hiển thị hoặc ẩn phần tùy chọn dựa trên số lượng lựa chọn
     },
   };
 
-  const handleDeleteSales = () => {};
+  const handleDeleteSales = () => {
+    axios
+      .delete(
+        `http://localhost:8080/api/v1/sales?ids=${salesSelected.join(
+          ","
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+      )
+      .then((response) => {
+        // Xóa các bản ghi đã chọn khỏi bảng
+        setSales((prevData) =>
+          prevData.filter((item) => !salesSelected.includes(item.id))
+        );
+        setSalesSelected([]); // Reset các mục đã chọn
+        setOptionVisible(false); // Ẩn các tùy chọn
+        successMessage(); // Hiển thị thông báo thành công
+      })
+      .catch((error) => {
+        errorMessage(); // Hiển thị thông báo lỗi nếu có lỗi
+      });
+  };
 
   const handleDeselectAll = () => {
-    // setSalesSelected([]);
-    // setOptionVisible(false);
+    setSalesSelected([]); // Xóa tất cả các lựa chọn
+    setOptionVisible(false); // Ẩn các tùy chọn khi không còn sản phẩm nào được chọn
   };
 
   return (
-    <Flex
-      className="SalesManager"
-      vertical="true"
-      gap={20}
-      style={{ position: "relative" }}
-    >
+    <Flex className="SalesManager" vertical="true" gap={20} style={{ position: "relative" }}>
       {contextHolder}
       <Breadcrumb
         items={[
@@ -179,11 +192,6 @@ const SalesManager = () => {
         dataSource={sales}
         loading={loading}
         pagination={true}
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: (event) => {},
-          };
-        }}
         size="large"
       />
     </Flex>
@@ -191,3 +199,4 @@ const SalesManager = () => {
 };
 
 export default SalesManager;
+

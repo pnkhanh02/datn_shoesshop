@@ -48,7 +48,7 @@ const UpdateProduct = () => {
       type: "success",
       content: "Cập nhật sản phẩm thành công",
     });
-    navigate("/admin/products");
+    //navigate("/admin/products");
   };
 
   const errorMessage = () => {
@@ -56,7 +56,7 @@ const UpdateProduct = () => {
       type: "error",
       content: "Cập nhật sản phẩm thất bại",
     });
-    navigate("/admin/products");
+    //navigate("/admin/products");
   };
 
   const handleUpdateProduct = async (data) => {

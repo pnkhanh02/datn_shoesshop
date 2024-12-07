@@ -163,6 +163,13 @@ const ProductDetail = () => {
       });
   }, [id]);
 
+  const calculateAverageRating = (feedbacks) => {
+    if (feedbacks.length === 0) return 0; // Nếu không có đánh giá, trả về 0
+    const totalRating = feedbacks.reduce((sum, feedback) => sum + feedback.rating, 0);
+    return (totalRating / feedbacks.length).toFixed(1); // Làm tròn đến 1 chữ số thập phân
+  };
+  
+
   return (
     <div className="ProductDetail">
       {contextHolder}
@@ -274,7 +281,19 @@ const ProductDetail = () => {
       </div>
 
       <div className="ProductDetail_recommended">
-        <h3>Đánh giá</h3>
+      <div style={{ display: "flex", alignItems: "center" }}>
+    <h3>Đánh giá</h3>
+    {feedbacks.length > 0 && (
+      <div style={{ marginLeft: "10px", display: "flex", alignItems: "center" }}>
+        <span>({calculateAverageRating(feedbacks)})</span>
+        {/* <Rate
+          value={calculateAverageRating(feedbacks)}
+          disabled
+          style={{ fontSize: "16px", marginRight: "5px" }}
+        /> */}
+      </div>
+    )}
+  </div>
         <div style={{ marginLeft: "20px" }}>
           {feedbacks.map((feedback, index) => (
             <div

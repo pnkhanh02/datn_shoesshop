@@ -1,168 +1,186 @@
 .payment-method-list {
-    max-width: 700px;
-    height: 570px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .payment-method-list h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .payment-method-list ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .payment-method-list li {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .payment-method-list li:hover {
-    background-color: #f9f9f9;
-  }
-  
-  .payment-method {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .payment-method span {
-    font-weight: bold;
-    align-items: center;
-  }
-  
-  .payment-method p {
-    margin: 5px 0 0;
-    color: #666;
-    flex-grow: 1;
-    padding-left: 10px;
-    font-weight: bold;
-  }
-  
-  .icon-container {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .edit-icon,
-  .delete-icon {
-    cursor: pointer;
-  }
-  
-  .edit-icon:hover,
-  .delete-icon:hover {
-    color: #007bff;
-  }
-  
-  .add-method {
-    margin-top: 20px;
-  }
-  
-  .add-method h3 {
-    margin-bottom: 10px;
-  }
-  
-  .add-method-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .add-method-container input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .add-method-container button {
-    padding: 10px 15px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .add-method-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 10px;
-  }
-  
-  .edit-method {
-    margin-top: 20px;
-  }
-  
-  .edit-method h3 {
-    margin-bottom: 10px;
-  }
-  
-  .edit-method input {
-    width: calc(100% - 10px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .edit-method .save-button {
-    padding: 10px 15px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .edit-method .save-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .delete-confirm-dialog {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-  }
-  
-  .delete-confirm-dialog p {
-    margin-bottom: 10px;
-  }
-  
-  .button-container {
-    display: flex;
-    gap: 10px; /* Khoảng cách giữa các nút */
-  }
-  
-  .delete-confirm-dialog button {
-    flex: 1;
-    padding: 10px 15px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .delete-confirm-dialog button:hover {
-    background-color: #0056b3;
-  }
-  
+  max-width: 700px;
+  height: 570px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.payment-method-list h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.payment-method-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.payment-method-list li {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-method-list li:hover {
+  background-color: #f9f9f9;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.payment-method span {
+  font-weight: bold;
+  align-items: center;
+}
+
+.payment-method p {
+  margin: 5px 0 0;
+  color: #666;
+  flex-grow: 1;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.icon-container {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-icon,
+.delete-icon {
+  cursor: pointer;
+}
+
+.edit-icon:hover,
+.delete-icon:hover {
+  color: #007bff;
+}
+
+.add-method {
+  margin-top: 20px;
+}
+
+.add-method h3 {
+  margin-bottom: 10px;
+}
+
+.add-method-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-method-container input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.add-method-container button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-method-container button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.edit-method {
+  margin-top: 20px;
+}
+
+.edit-method h3 {
+  margin-bottom: 10px;
+}
+
+.edit-method input {
+  width: calc(100% - 10px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.edit-method .save-button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-method .save-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-confirm-dialog {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.delete-confirm-dialog p {
+  margin-bottom: 10px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+.delete-confirm-dialog button {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-confirm-dialog button:hover {
+  background-color: #0056b3;
+}
+
+.payment-method-container {
+  max-height: 250px; /* Giới hạn chiều cao của danh sách */
+  overflow-y: auto; /* Cho phép cuộn dọc nếu nội dung vượt quá chiều cao */
+  margin-bottom: 20px; /* Khoảng cách dưới danh sách */
+}
+
+.scrollable-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: #ddd; /* Màu của đường kẻ */
+  margin: 20px 0; /* Khoảng cách trên dưới của đường kẻ */
+}

@@ -1,0 +1,56 @@
+.Signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 102;
+  overflow: hidden;
+  background-image: url('../../images/shoes_2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.Signup_container {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.Signup_form-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 450px;
+}
+
+.Signup_form-item input,
+.Signup_form-item .ant-picker,
+.Signup_form-item .ant-radio-group {
+  width: 100%;
+}
+
+.Signup_error {
+  color: red;
+  margin-top: 5px;
+}
+
+button.Signup_button {
+  background-color: black;
+  color: white;
+  width: 100%;
+}
+
+button.Signup_button:hover {
+  background-color: #333;
+}

@@ -68,10 +68,14 @@ public class ProductService {
     public void updateProduct(int id, ProductRequest productRequest){
         ProductType productType = productTypeRepository.findById(productRequest.getType_id());
         Product product = productRepository.getProductById(id);
+        Sale sale = saleRepository.getSaleById(productRequest.getSale_id());
         product.setName(productRequest.getName());
         product.setDescription(productRequest.getDescription());
         product.setImage_url(productRequest.getImage_url());
+        product.setPrice(productRequest.getPrice());
         product.setTypeProduct(productType);
+        product.setGender_type(productRequest.getGenderType());
+        product.setSale(sale);
 
         productRepository.save(product);
     }

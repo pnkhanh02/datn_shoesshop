@@ -4,6 +4,7 @@ import AdminLayout from './components/admin/AdminLayout';
 import ClientLayout from './components/client/ClientLayout';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './components/Login/Login';
+import Signup from './components/Signup/Signup';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/admin/*" element={<AdminLayout />} />
         <Route path="/client/*" element={<ClientLayout />} />
         <Route path= "/login" element={<Login/>} />
+        <Route path= "/register" element={<Signup/>} />
       </Routes>
     </div>
   );

@@ -57,8 +57,8 @@ const AddSales = () => {
     const newSales = {
       sale_info: values.sale_info,
       percent_sale: values.percent_sale,
-      start_date: values.start_date,
-      end_date: values.end_date,
+      start_date: values.start_date.format("YYYY-MM-DD"),
+      end_date: values.end_date.format("YYYY-MM-DD"),
     };
     handleCreateSales(newSales);
     setLoading(false);

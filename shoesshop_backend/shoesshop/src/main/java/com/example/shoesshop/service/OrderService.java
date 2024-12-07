@@ -166,7 +166,7 @@ public class OrderService {
     }
 
     public void changeStatus(int id, ChangeStatusDTO changeStatusDTO) {
-        Employee employee = employeeRepository.getEmployeeById(changeStatusDTO.getCustomer_id());
+        Employee employee = employeeRepository.getEmployeeById(changeStatusDTO.getEmployee_id());
         Order order = orderRepository.getOrderById(id);
 
         if (employee != null) {

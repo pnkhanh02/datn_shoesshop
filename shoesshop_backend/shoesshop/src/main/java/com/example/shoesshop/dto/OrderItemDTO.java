@@ -123,7 +123,7 @@ public class OrderItemDTO {
         return isFeedbackReceived;
     }
 
-    public void setFeedbackReceived(boolean feedbackReceived) {
-        isFeedbackReceived = feedbackReceived;
+    public void setFeedbackReceived(boolean isFeedbackReceived) {
+        this.isFeedbackReceived = isFeedbackReceived;
     }
 }

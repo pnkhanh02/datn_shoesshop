@@ -12,21 +12,24 @@ public class AccountDTO {
     private Account.Gender gender;
     private String lastName;
     private  String firstName;
+    private String phone;
+    private String address;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate createdDate;
+    private LocalDate birthday;
+    private String createdDate;
     private Account.Role role;
 
     public AccountDTO() {
     }
 
-    public AccountDTO(String username, String lastName, LocalDate createdDate, Account.Role role) {
+    public AccountDTO(String username, String lastName, String createdDate, Account.Role role) {
         this.username = username;
         this.lastName = lastName;
         this.createdDate = createdDate;
         this.role = role;
     }
 
-    public AccountDTO(String username, String lastName,String firstName, LocalDate createdDate, Account.Role role, String email, int id, Account.Gender gender) {
+    public AccountDTO(String username, String lastName,String firstName, String createdDate, Account.Role role, String email, int id, Account.Gender gender) {
         this.username=username;
         this.lastName=lastName;
         this.firstName=firstName;
@@ -35,6 +38,20 @@ public class AccountDTO {
         this.email=email;
         this.id=id;
         this.gender=gender;
+    }
+
+    public AccountDTO(int id, String username, String email, Account.Gender gender, String lastName, String firstName, String phone, String address, LocalDate birthday, String createdDate, Account.Role role) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.gender = gender;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phone = phone;
+        this.address = address;
+        this.birthday = birthday;
+        this.createdDate = createdDate;
+        this.role = role;
     }
 
     public int getId() {
@@ -85,11 +102,11 @@ public class AccountDTO {
         this.firstName = firstName;
     }
 
-    public LocalDate getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -99,5 +116,29 @@ public class AccountDTO {
 
     public void setRole(Account.Role role) {
         this.role = role;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import "./Chatbot.css";
+import { marked } from "marked";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
@@ -21,7 +22,7 @@ const Chatbot = () => {
       const response = await axios.post(
         "http://localhost:8080/api/v1/chatbot/chat",
         {
-          messages: [...messages, userMessage],
+          messages: userInput,
         },
         {
           headers: {
@@ -29,14 +30,15 @@ const Chatbot = () => {
           },
         }
       );
+      
+      setUserInput("");
 
       const botMessage = {
         role: "assistant",
-        content: response.data.choices[0].message.content,
+        content: response.data.candidates[0].content.parts[0].text,
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
 
-      setUserInput("");
     } catch (error) {
       console.error("Error communicating with the chatbot API:", error);
       setMessages((prevMessages) => [
@@ -56,9 +58,10 @@ const Chatbot = () => {
   // Cuộn xuống cuối mỗi khi tin nhắn thay đổi
   useEffect(() => {
     if (chatBoxRef.current) {
+      console.log("hello");
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages.length]);
 
   return (
     <div className="chatbot-header-container">
@@ -68,7 +71,7 @@ const Chatbot = () => {
 
       {isChatOpen && (
         <div className="chatbot-container">
-          <div className="chat-box">
+          <div className="chat-box" ref={chatBoxRef}>
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -76,7 +79,12 @@ const Chatbot = () => {
                   message.role === "user" ? "user-message" : "assistant-message"
                 }`}
               >
-                <div className="message-content">{message.content}</div>
+                <div
+                  className="message-content"
+                  dangerouslySetInnerHTML={{
+                    __html: marked.parse(message.content),
+                  }}
+                />
               </div>
             ))}
           </div>

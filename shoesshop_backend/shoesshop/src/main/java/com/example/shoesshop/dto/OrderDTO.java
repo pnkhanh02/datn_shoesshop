@@ -44,7 +44,7 @@ public class OrderDTO {
         this.payment_method = payment_method;
     }
 
-    public OrderDTO(int id, float total_amount, LocalDate oder_date, Order.OrderStatus orderStatus, int customer_id, int employee_id, int payment_method_id) {
+    public OrderDTO(int id, float total_amount, LocalDate order_date, Order.OrderStatus orderStatus, int customer_id, int employee_id, int payment_method_id) {
         this.id =id;
         this.total_amount = total_amount;
         this.order_date = order_date;
@@ -62,7 +62,7 @@ public class OrderDTO {
         this.customer_id = customer_id;
     }
 
-    public OrderDTO(int id, float total_amount, LocalDate order_date, Order.OrderStatus oderStatus, int customer_id, int payment_method_id) {
+    public OrderDTO(int id, float total_amount, LocalDate order_date, Order.OrderStatus orderStatus, int customer_id, int payment_method_id) {
         this.id = id;
         this.total_amount = total_amount;
         this.order_date = order_date;
@@ -95,11 +95,11 @@ public class OrderDTO {
         this.order_date = order_date;
     }
 
-    public Order.OrderStatus getOderStatus() {
+    public Order.OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOderStatus(Order.OrderStatus orderStatus) {
+    public void setOrderStatus(Order.OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 

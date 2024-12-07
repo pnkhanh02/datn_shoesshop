@@ -121,8 +121,8 @@ public class OrderController {
                             order.getTotal_amount(),
                             order.getOrder_date(),
                             order.getOrderStatus(),
-                            (order.getCustomer().getFirstName()+order.getCustomer().getLastName()),
-                            (order.getEmployee().getFirstName()+order.getEmployee().getLastName()),
+                            (order.getCustomer().getFirstName()+ " " +order.getCustomer().getLastName()),
+                            (order.getEmployee().getFirstName()+ " " +order.getEmployee().getLastName()),
                             order.getAddress(),
                             order.getPhone(),
                             order.getPayment_method().getName());
@@ -246,7 +246,7 @@ public class OrderController {
                     order.getTotal_amount(),
                     order.getOrder_date(),
                     order.getOrderStatus(),
-                    (order.getCustomer().getFirstName()+order.getCustomer().getLastName()),
+                    (order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName()),
                     order.getAddress(),
                     order.getPhone(),
                     order.getPayment_method().getName());

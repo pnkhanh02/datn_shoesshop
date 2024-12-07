@@ -40,7 +40,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query(value = "SELECT COALESCE(SUM(o.totalAmount), 0) AS totalAmount, " +
             "MONTH(o.orderDate) AS month " +
             "FROM `Order` o " +
-            "WHERE o.oderStatus IN ('COMPLETE', 'FEEDBACK_COMPLETED') " +
+            "WHERE o.oderStatus IN ('COMPLETED', 'FEEDBACK_COMPLETED') " +
             "AND YEAR(o.orderDate) = YEAR(CURDATE()) " +
             "GROUP BY MONTH(o.orderDate) " +
             "ORDER BY MONTH(o.orderDate)",
@@ -49,7 +49,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Query(value = "SELECT MONTH(o.orderDate) AS month, COUNT(*) AS orderCount " +
             "FROM `Order` o " +
-            "WHERE o.oderStatus IN ('COMPLETE', 'FEEDBACK_COMPLETED') " +
+            "WHERE o.oderStatus IN ('COMPLETED', 'FEEDBACK_COMPLETED') " +
             "AND YEAR(o.orderDate) = YEAR(CURDATE()) " +
             "GROUP BY MONTH(o.orderDate) " +
             "ORDER BY MONTH(o.orderDate)",

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./PaymentMethod.css";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
+import { Button, Input, message, Modal } from "antd";
 
 const PaymentMethod = () => {
   const adminData = JSON.parse(localStorage.getItem("user")); // Đảm bảo adminData luôn có sẵn
@@ -17,47 +18,41 @@ const PaymentMethod = () => {
   const [deleteMethodId, setDeleteMethodId] = useState(null); // State để lưu id của phương thức thanh toán muốn xóa
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // State để hiển thị hộp thoại xác nhận xóa
 
-  useEffect(
-    () => {
-      const fetchPaymentMethods = async () => {
-        setLoading(true);
-        try {
-          const response = await axios.get(
-            "http://localhost:8080/api/v1/paymentMethods/all"
-            ,
-            {
-              headers: {
-                Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
-              },
-            }
-          );
-          console.log(response.data);
-          setPaymentMethods(response.data);
-        } catch (error) {
-          console.error("Error fetching payment methods:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/paymentMethods/full",
+          {
+            headers: {
+              Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+            },
+          }
+        );
+        console.log(response.data);
+        setPaymentMethods(response.data);
+      } catch (error) {
+        console.error("Error fetching payment methods:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchPaymentMethods();
-    }
-    //   , [adminData.username, adminData.password]
-  );
+    fetchPaymentMethods();
+  }, [userData.token]);
 
   const handleAddMethod = async () => {
     if (newMethod && newDescription) {
       try {
         const response = await axios.post(
           "http://localhost:8080/api/v1/paymentMethods/create",
-          { name: newMethod, description_payment: newDescription }
-          //   ,
-          //   {
-          //     auth: {
-          //       username: adminData.username,
-          //       password: adminData.password,
-          //     },
-          //   }
+          { name: newMethod, description_payment: newDescription },
+          {
+            headers: {
+              Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+            },
+          }
         );
         setPaymentMethods(
           paymentMethods.map((method) =>
@@ -73,8 +68,13 @@ const PaymentMethod = () => {
         setNewMethod(""); // Reset input field
         setNewDescription(""); // Reset description field
         setError(null); // Clear any previous error
+        message.success("Thêm phương thức thanh toán thành công");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       } catch (error) {
         console.error("Error adding payment method:", error);
+        message.error("Thêm phương thức thanh toán thất bại");
         setError("Thêm phương thức thanh toán thất bại");
       }
     } else {
@@ -87,14 +87,12 @@ const PaymentMethod = () => {
       try {
         await axios.put(
           `http://localhost:8080/api/v1/paymentMethods/update/${editMethodId}`,
-          { name: editMethodName, description_payment: editDescription }
-          //   ,
-          //   {
-          //     auth: {
-          //       username: adminData.username,
-          //       password: adminData.password,
-          //     },
-          //   }
+          { name: editMethodName, description_payment: editDescription },
+          {
+            headers: {
+              Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+            },
+          }
         );
         setPaymentMethods(
           paymentMethods.map((method) =>
@@ -111,8 +109,10 @@ const PaymentMethod = () => {
         setEditMethodName("");
         setEditDescription("");
         setError(null); // Clear any previous error
+        message.success("Chỉnh sửa thành công");
       } catch (error) {
         console.error("Error updating payment method:", error);
+        message.error("Chỉnh sửa thất bại");
         setError("Chỉnh sửa thất bại");
       }
     } else {
@@ -124,14 +124,12 @@ const PaymentMethod = () => {
     if (deleteMethodId) {
       try {
         await axios.delete(
-          `http://localhost:8080/api/v1/paymentMethods/delete/${deleteMethodId}`
-          //   ,
-          //   {
-          //     auth: {
-          //       username: adminData.username,
-          //       password: adminData.password,
-          //     },
-          //   }
+          `http://localhost:8080/api/v1/paymentMethods/delete/${deleteMethodId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+            },
+          }
         );
         setPaymentMethods(
           paymentMethods.filter((method) => method.id !== deleteMethodId)
@@ -139,8 +137,10 @@ const PaymentMethod = () => {
         setShowDeleteConfirm(false); // Hide the confirmation dialog
         setDeleteMethodId(null); // Clear the delete method id
         setError(null); // Clear any previous error
+        message.success("Xóa thành công");
       } catch (error) {
         console.error("Error deleting payment method:", error);
+        message.error("Xóa thất bại");
         setError("Xóa thất bại");
       }
     }
@@ -152,7 +152,8 @@ const PaymentMethod = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <ul>
+        <div className="payment-method-container">
+        <ul className="scrollable-list">
           {paymentMethods.map((method) => (
             <li key={method.id}>
               <div className="payment-method">
@@ -179,45 +180,81 @@ const PaymentMethod = () => {
             </li>
           ))}
         </ul>
-      )}
-      {editMethodId && (
-        <div className="edit-method">
-          <h3>Edit Payment Method</h3>
-          <div>
-            <input
-              type="text"
-              value={editMethodName}
-              onChange={(e) => setEditMethodName(e.target.value)}
-              placeholder="Edit method name"
-            />
-            <input
-              type="text"
-              value={editDescription}
-              onChange={(e) => setEditDescription(e.target.value)}
-              placeholder="Edit description"
-            />
-            <button className="save-button" onClick={handleEditMethod}>
-              Save
-            </button>
-          </div>
         </div>
       )}
-      {showDeleteConfirm && (
-        <div className="delete-confirm-dialog">
-          <p>Are you sure you want to delete this payment method?</p>
-          <div className="button-container">
-            <button onClick={handleDeleteMethod}>Xóa</button>
-            <button
-              onClick={() => {
-                setShowDeleteConfirm(false);
-                setDeleteMethodId(null);
-              }}
-            >
-              Hủy
-            </button>
-          </div>
+      <Modal
+        title="Edit Payment Method"
+        open={!!editMethodId}
+        onCancel={() => {
+          setEditMethodId(null);
+          setEditMethodName("");
+          setEditDescription("");
+        }}
+        footer={[
+          <Button
+            key="cancel"
+            onClick={() => {
+              setEditMethodId(null);
+              setEditMethodName("");
+              setEditDescription("");
+            }}
+          >
+            Hủy
+          </Button>,
+          <Button key="save" type="primary" onClick={handleEditMethod}>
+            Lưu
+          </Button>,
+        ]}
+      >
+        <div>
+          <Input
+            type="text"
+            value={editMethodName}
+            onChange={(e) => setEditMethodName(e.target.value)}
+            placeholder="Edit method name"
+            style={{ marginBottom: "10px" }}
+          />
+          <Input
+            type="text"
+            value={editDescription}
+            onChange={(e) => setEditDescription(e.target.value)}
+            placeholder="Edit description"
+          />
         </div>
-      )}
+      </Modal>
+
+      <Modal
+        title="Confirm Deletion"
+        open={showDeleteConfirm}
+        onCancel={() => {
+          setShowDeleteConfirm(false);
+          setDeleteMethodId(null);
+        }}
+        footer={[
+          <Button
+            key="cancel"
+            onClick={() => {
+              setShowDeleteConfirm(false);
+              setDeleteMethodId(null);
+            }}
+          >
+            Hủy
+          </Button>,
+          <Button
+            key="delete"
+            type="primary"
+            danger
+            onClick={handleDeleteMethod}
+          >
+            Xóa
+          </Button>,
+        ]}
+      >
+        <p>Bạn có chắc chắn muốn xóa phương thức thanh toán này?</p>
+      </Modal>
+
+      <hr className="divider" />
+
       <div className="add-method">
         <h3>Add New Payment Method</h3>
         <div className="add-method-container">

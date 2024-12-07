@@ -1,5 +1,5 @@
 import { Button, Checkbox, Form, Input, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import "../../images/shoes_2.png";
@@ -16,7 +16,7 @@ const Login = (props) => {
     messageApi.open({
       type: "success",
       content: "Đăng nhập thành công",
-      duration: 1
+      duration: 1,
     });
   };
 
@@ -47,14 +47,18 @@ const Login = (props) => {
           password, // Lưu password (nếu cần thiết, nhưng nên tránh vì lý do bảo mật)
           username,
         };
-        
+
         // Lưu thông tin user vào localStorage
         localStorage.setItem("user", JSON.stringify(userData));
-        
+
         success();
         console.log("Đăng nhập thành công");
         setTimeout(() => {
-          navigate("/client/");
+          if (userData.role === "CUSTOMER") {
+            navigate("/client/");
+          } else {
+            navigate("/admin/");
+          }
         }, 1000);
         //navigate("/client/");
         //window.location.reload();
@@ -140,7 +144,9 @@ const Login = (props) => {
                 Đăng nhập
               </Button>
             </Form.Item>
-            Hoặc <a>Đăng ký!</a>
+            <p>
+              Chưa có tài khoản? Hãy <Link to="/register">Đăng ký!</Link>
+            </p>
           </Form>
         </div>
       </div>

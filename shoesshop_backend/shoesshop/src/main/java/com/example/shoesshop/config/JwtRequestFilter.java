@@ -39,6 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (StringUtils.containsAnyIgnoreCase(request, "/api/v1/auth/")
                 || StringUtils.containsAnyIgnoreCase(request, "/api/v1/payment/vn-pay-callback")
                 || StringUtils.containsAnyIgnoreCase(request, "/api/v1/product/search")
+                || StringUtils.containsAnyIgnoreCase(request, "/api/v1/customers/register")
                 || StringUtils.containsAnyIgnoreCase(request, "/swagger-ui")
                 || StringUtils.containsAnyIgnoreCase(request, "/swagger-resources")
                 || StringUtils.containsAnyIgnoreCase(request, "/v3/api-docs")) {

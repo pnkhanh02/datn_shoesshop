@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -45,27 +46,30 @@ public class CustomerService {
         LocalDate createDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthday =  LocalDate.parse(accountRequest.getBirthday(), formatter);
-        String password = PasswordEncoder.getInstance().encodePassword(accountRequest.getPassword());
+        //String password = PasswordEncoder.getInstance().encodePassword(accountRequest.getPassword());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(accountRequest.getPassword());
+
         Customer customer = new Customer();
         customer.setUsername(accountRequest.getUsername());
-        customer.setPassword(password);
+        customer.setPassword(encodedPassword);
         customer.setFirstName(accountRequest.getFirstName());
         customer.setLastName(accountRequest.getLastName());
         customer.setAddress(accountRequest.getAddress());
         customer.setBirthday(birthday);
         customer.setEmail(accountRequest.getEmail());
         customer.setPhone(accountRequest.getPhone());
-        customer.setRole(Account.Role.EMPLOYEE);
+        customer.setRole(Account.Role.CUSTOMER);
         customer.setGender(accountRequest.getGender());
         customer.setCreatedDate(createDate);
 //        LocalDate creating_date = LocalDate.now();
 //        Order order = new Order(
 //                creating_date,
-//                Order.OderStatus.ADDED_TO_CARD,
+//                Order.OrderStatus.ADDED_TO_CARD,
 //                customer
 //        );
         accountRepository.save(customer);
-//        oderRepository.save(order);
+//        orderRepository.save(order);
 
     }
 

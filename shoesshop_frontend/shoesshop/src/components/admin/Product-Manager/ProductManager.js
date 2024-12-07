@@ -63,7 +63,8 @@ const ProductManager = () => {
             type_name: product.type_name,
             update_product: product.id,
           };
-        });
+        })
+        .sort((a, b) => b.key - a.key);
 
         setProducts(productsFormatted);
         setLoading(false);
@@ -158,12 +159,14 @@ const ProductManager = () => {
   ];
 
   const rowSelection = {
-    productSelected,
+    // productSelected,
+    selectedRowKeys: productSelected,
     onChange: (selectedRowKeys) => {
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      !selectedRowKeys.length
-        ? setOptionVisible(false)
-        : setOptionVisible(true);
+      // !selectedRowKeys.length
+      //   ? setOptionVisible(false)
+      //   : setOptionVisible(true);
+      setOptionVisible(selectedRowKeys.length > 0);
       setProductSelected(selectedRowKeys);
       console.log(selectedRowKeys.join(","));
     },
@@ -200,7 +203,8 @@ const ProductManager = () => {
   };
 
   const handleDeselectAll = () => {
-    // setProductSelected([]);
+    setProductSelected([]);
+    setOptionVisible(false);
   };
 
   return (

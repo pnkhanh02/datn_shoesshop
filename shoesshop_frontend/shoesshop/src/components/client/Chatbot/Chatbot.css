@@ -11,7 +11,7 @@
 }
 
 .header-chat-icon:hover {
-  color: #f1f1f1;;
+  color: #f1f1f1;
 }
 
 .chatbot-container {
@@ -32,11 +32,12 @@
 .chat-box {
   flex: 1;
   padding: 10px;
+  display: flex;
   flex-direction: column;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #d9d9d9 transparent;
-  flex-direction: column-reverse; 
+  /* flex-direction: column-reverse;  */
 }
 
 .chat-box::-webkit-scrollbar {

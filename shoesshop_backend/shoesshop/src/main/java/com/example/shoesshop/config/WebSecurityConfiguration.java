@@ -42,6 +42,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter  {
                 //.antMatchers("api/admin-or-user").hasAnyAuthority("ADMIN", "User")
                 .antMatchers("api/not-authenticated","/api/v1/products/**").permitAll()
                 .antMatchers("api/not-authenticated","/api/v1/payment/vn-pay-callback").permitAll()
+                .antMatchers("api/not-authenticated","/api/v1/customers/register").permitAll()
 
                 .anyRequest().authenticated()// Những đường dẫn còn lại cần được xác thực
 

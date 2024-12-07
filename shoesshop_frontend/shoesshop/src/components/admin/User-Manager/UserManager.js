@@ -1,31 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./UserManager.css";
 import axios from "axios";
-import { Input, Table } from "antd";
+import { Button, Input, Table } from "antd";
+import {useNavigate } from "react-router-dom";
 
 const userData = JSON.parse(localStorage.getItem("user"));
 
-const columns = [
-  {
-    title: "Id",
-    dataIndex: "id",
-  },
-  {
-    title: "Name",
-    dataIndex: "fullName",
-  },
-  {
-    title: "Gender",
-    dataIndex: "gender",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-  },
-];
 
 const UserManager = () => {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,9 +35,11 @@ const UserManager = () => {
         const { content, totalPages, totalElements } = response.data;
         const accountFormatted = content.map((account) => ({
           id: account.id,
+          username: account.username,
           fullName: account.firstName + " " + account.lastName,
+          role: account.role,
           gender: account.gender,
-          email: account.email,
+          phone: account.phone,
         }));
         setData(accountFormatted);
         setTotalPages(totalPages);
@@ -80,6 +66,45 @@ const UserManager = () => {
     setCurrentPage(newPage);
   };
 
+  const handleViewDetails = (record) => {
+    navigate(`/admin/accountDetail/${record.id}`, { state: record });
+  };
+
+  const columns = [
+    {
+      title: "Id",
+      dataIndex: "id",
+    },
+    {
+      title: "UserName",
+      dataIndex: "username",
+    },
+    {
+      title: "Name",
+      dataIndex: "fullName",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+    },
+    {
+      title: "Chức năng",
+        render: (_, record) => (
+          <Button type="link" onClick={() => handleViewDetails(record)}>
+            Xem chi tiết
+          </Button>
+        ),
+    },
+  ];
+
   return (
     <div className="UserManager">
       <Input
@@ -95,7 +120,7 @@ const UserManager = () => {
         dataSource={data}
       />
 
-      <div style={{ marginTop: 20, textAlign: "center" }}>
+      {/* <div style={{ marginTop: 20, textAlign: "center" }}>
         <div className="Paginate">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -113,7 +138,7 @@ const UserManager = () => {
             Next
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

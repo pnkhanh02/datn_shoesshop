@@ -46,8 +46,8 @@ public class OrderItem implements Serializable  {
         this.product_detail_order = product_detail_order;
     }
 
-    public void setFeedbackReceived(boolean feedbackReceived) {
-        isFeedbackReceived = feedbackReceived;
+    public void setFeedbackReceived(boolean isFeedbackReceived) {
+        this.isFeedbackReceived = isFeedbackReceived;
     }
 
     public int getId() {

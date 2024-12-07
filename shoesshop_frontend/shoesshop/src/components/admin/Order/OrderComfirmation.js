@@ -26,12 +26,13 @@ const OrderComfirmation = () => {
       .then((response) => {
         const ordersFormatted = response.data.map((order) => ({
           order_id: order.id,
-          employee_id: adminData.id,
+          employee_id: userData.id,
           customer_name: order.customer_name,
           phone: order.phone,
-          status: order.oderStatus,
+          status: order.orderStatus,
           order_date: moment(order.order_date).format("YYYY-MM-DD"),
-        }));
+        }))
+        .sort((a, b) => b.order_id - a.order_id); // Sắp xếp giảm dần theo order_id
         console.log(response.data);
         setItemsData(ordersFormatted);
         setLoading(false);
@@ -47,7 +48,7 @@ const OrderComfirmation = () => {
       window.scrollTo(0, 0);
       fetchData();
     }
-    // , [adminData.username, adminData.password]
+    , [userData.token]
   );
 
   const handleDelete = async (orderId) => {
@@ -88,7 +89,7 @@ const OrderComfirmation = () => {
     try {
       const response = await axios.put(
         `http://localhost:8080/api/v1/orders/changeStatus/${orderId}`,
-        { employee_id: adminData.id, oderStatus: newStatus },
+        { employee_id: userData.id, orderStatus: newStatus },
         {
           headers: {
             Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
@@ -101,7 +102,7 @@ const OrderComfirmation = () => {
       setItemsData(
         itemsData.map((order) =>
           order.order_id === orderId
-            ? { ...order, status: updatedOrder.oderStatus }
+            ? { ...order, status: updatedOrder.orderStatus }
             : order
         )
       );

@@ -70,6 +70,8 @@ public class CustomerController {
         CustomerDTO dto = new CustomerDTO();
         dto.setId(customer.getId());
         dto.setUsername(customer.getUsername());
+        dto.setFirstName(customer.getFirstName());
+        dto.setLastName(customer.getLastName());
         dto.setAddress(customer.getAddress());
         dto.setBirthday(customer.getBirthday());
         dto.setEmail(customer.getEmail());

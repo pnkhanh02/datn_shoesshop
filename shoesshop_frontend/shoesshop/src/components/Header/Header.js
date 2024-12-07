@@ -20,6 +20,7 @@ const Header = () => {
   const [currentUser, setCurrentUser] = useState();
 
   const [messageApi, contextHolder] = message.useMessage();
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   const success = () => {
     messageApi.open({
@@ -169,7 +170,9 @@ const Header = () => {
               </div>
               <hr></hr>
               <div className="User-box-option">
+              <Link to={`/client/customerDetail/${userData.id}`}>
                 <button>Thông tin tài khoản</button>
+                </Link>
                 {(currentUser?.role === "ADMIN" ||
                   currentUser?.role === "EMPLOYEE") && (
                   <Link to="/admin">

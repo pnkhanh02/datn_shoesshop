@@ -21,6 +21,7 @@ import {
   BarsOutlined,
   FileTextOutlined,
   PercentageOutlined,
+  SwapOutlined,
 } from "@ant-design/icons";
 import SalesManager from "./Sale_Manager/SalesManager";
 import AddSales from "./Sale_Manager/AddSales";
@@ -43,10 +44,12 @@ import CheckOrder from "./Order/CheckOrder";
 import ReportChart from "./ReportChart/ReportChart";
 import ExchangeShoesManager from "./ExchangeShoesManager/ExchangeShoesManager";
 import ExchangeShoesDetail from "./ExchangeShoesManager/ExchangeShoesDetail";
+import AccountDetail from "./AccountDetail/AccountDetail";
 
 const { Sider, Content } = Layout;
 
 const AdminLayout = () => {
+  const userData = JSON.parse(localStorage.getItem("user"));
   return (
     <>
       <Layout className="AdminLayout">
@@ -118,11 +121,23 @@ const AdminLayout = () => {
             </Menu.SubMenu>
             <Menu.SubMenu
               key="exchangeShoes"
-              icon={<PercentageOutlined />}
+              icon={<SwapOutlined />}
               title="Thu cũ đổi mới"
             >
               <Menu.Item key="exchangeShoes" icon={<BarsOutlined />}>
                 <Link to="exchangeShoes">Thu cũ đổi mới</Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+            <Menu.SubMenu
+              key="account"
+              icon={<UserOutlined />}
+              title="Tài khoản"
+            >
+              <Menu.Item key="accountDetail" icon={<BarsOutlined />}>
+                <Link to={`/admin/accountDetail/${userData.id}`}>Thông tin tài khoản</Link>
+              </Menu.Item>
+              <Menu.Item key="exchangeShoes" icon={<BarsOutlined />}>
+                <Link to="/">Đăng xuất</Link>
               </Menu.Item>
             </Menu.SubMenu>
           </Menu>
@@ -173,6 +188,8 @@ const AdminLayout = () => {
 
               <Route path="/exchangeShoes/" element={<ExchangeShoesManager />}></Route>
               <Route path="/exchangeShoes/:id" element={<ExchangeShoesDetail />}></Route>
+
+              <Route path="/accountDetail/:id" element={<AccountDetail />}></Route>
             </Routes>
           </Content>
         </Layout>

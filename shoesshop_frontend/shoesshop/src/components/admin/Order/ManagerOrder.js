@@ -27,8 +27,8 @@ const ManagerOrder = () => {
           return {
             order_id: order.id,
             total_amount: order.total_amount,
-            oder_date: order.oder_date,
-            oderStatus: order.oderStatus,
+            order_date: order.order_date,
+            orderStatus: order.orderStatus,
             customer_name: order.customer_name,
             employee_id: order.employeeId,
             address: order.address,
@@ -36,7 +36,8 @@ const ManagerOrder = () => {
             paymentName: order.payment_method,
           };
           //   console.log("response :", response.data);
-        });
+        })
+        .sort((a, b) => b.order_id - a.order_id);
 
         setOrders(OrdersFormatted);
         setLoading(false);
@@ -66,11 +67,11 @@ const ManagerOrder = () => {
     },
     {
       title: "Ngày đặt",
-      dataIndex: "oder_date",
+      dataIndex: "order_date",
     },
     {
       title: "Trạng thái",
-      dataIndex: "oderStatus",
+      dataIndex: "orderStatus",
     },
     {
       title: "Khách hàng",

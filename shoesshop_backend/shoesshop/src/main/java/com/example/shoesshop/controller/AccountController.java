@@ -1,7 +1,9 @@
 package com.example.shoesshop.controller;
 
 import com.example.shoesshop.dto.AccountDTO;
+import com.example.shoesshop.dto.AdminDTO;
 import com.example.shoesshop.entity.Account;
+import com.example.shoesshop.entity.Admin;
 import com.example.shoesshop.response.ResponseObject;
 import com.example.shoesshop.service.AccountService;
 import io.jsonwebtoken.Claims;
@@ -52,15 +54,34 @@ public class AccountController {
                 AccountDTO dto = new AccountDTO();
                 dto.setId(account.getId());
                 dto.setUsername(account.getUsername());
+                dto.setPhone(account.getPhone());
                 dto.setEmail(account.getEmail());
                 dto.setFirstName(account.getFirstName());
                 dto.setLastName(account.getLastName());
                 dto.setGender(account.getGender());
                 dto.setRole(account.getRole());
-                dto.setCreatedDate(account.getCreatedDate());
+                dto.setCreatedDate(account.getCreatedDate().toString());
                 return dto;
             }
         });
         return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getAccountById(@PathVariable(name = "id") int id){
+        Account account = accountService.getAccountById(id);
+        AccountDTO dto = new AccountDTO();
+        dto.setId(account.getId());
+        dto.setUsername(account.getUsername());
+        dto.setFirstName(account.getFirstName());
+        dto.setLastName(account.getLastName());
+        dto.setPhone(account.getPhone());
+        dto.setAddress(account.getAddress());
+        dto.setBirthday(account.getBirthday());
+        dto.setEmail(account.getEmail());
+        dto.setCreatedDate(account.getCreatedDate().toString());
+        dto.setGender(account.getGender());
+        dto.setRole(account.getRole());
+        return new ResponseEntity<AccountDTO>(dto, HttpStatus.OK);
     }
 }

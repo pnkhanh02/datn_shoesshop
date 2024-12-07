@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -41,10 +42,14 @@ public class EmployeeService {
         LocalDate createDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthday =  LocalDate.parse(accountRequest.getBirthday(), formatter);
-        String password = PasswordEncoder.getInstance().encodePassword(accountRequest.getPassword());
+        //String password = PasswordEncoder.getInstance().encodePassword(accountRequest.getPassword());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(accountRequest.getPassword());
+
+
         Employee employee = new Employee();
         employee.setUsername(accountRequest.getUsername());
-        employee.setPassword(password);
+        employee.setPassword(encodedPassword);
         employee.setFirstName(accountRequest.getFirstName());
         employee.setLastName(accountRequest.getLastName());
         employee.setAddress(accountRequest.getAddress());

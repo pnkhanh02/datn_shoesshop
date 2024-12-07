@@ -110,10 +110,12 @@ const OrderDetail = () => {
         return (
           <Button
             color="blue"
-            disabled={record.isFeedbackReceived}
+            disabled={record.isFeedbackReceived === true || record.isFeedbackReceived === 1}
             onClick={() => onReview(value)}
           >
-            {record.isFeedbackReceived ? "Đã đánh giá" : "Đánh giá"}
+            {record.isFeedbackReceived === true || record.isFeedbackReceived === 1 
+            ? "Đã đánh giá" 
+            : "Đánh giá"}
           </Button>
         );
       },
@@ -159,7 +161,7 @@ const OrderDetail = () => {
           product_detail_name: item.product_detail_name,
           product_detail_id: item.product_detail_id,
         },
-        status: orderStatus.oderStatus,
+        status: orderStatus.orderStatus,
         totalAmount: item.subtotal,
         key: item.id,
         orderDate: orderStatus.orderDate,
@@ -176,6 +178,8 @@ const OrderDetail = () => {
         (item) => item.status === "COMPLETED"
       );
       setShowReviewColumn(allCompleted);
+      console.log("Order data for state:", dataForState);
+
 
       setLoading(false);
     } catch (error) {
