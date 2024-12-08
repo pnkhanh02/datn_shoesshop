@@ -38,9 +38,9 @@ public class ProductDetailService {
         ProductDetail productDetail = new ProductDetail();
         productDetail.setQuantity(productDetailRequest.getQuantity());
         productDetail.setImg_url(productDetailRequest.getImg_url());
-        productDetail.setColor(productDetail.getColor());
-        productDetail.setSize(productDetail.getSize());
-        productDetail.setProduct_detail(productDetail.getProduct_detail());
+        productDetail.setColor(productDetailRequest.getColor());
+        productDetail.setSize(productDetailRequest.getSize());
+        productDetail.setProduct_detail(product);
 
         productDetailRepository.save(productDetail);
     }

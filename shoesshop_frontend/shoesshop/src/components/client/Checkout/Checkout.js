@@ -208,6 +208,7 @@ const Checkout = () => {
     setSelectedMethod(selectedPaymentOption);
     console.log(selectedPaymentOption);
   };
+
   const handleCompleteOrder = () => {
     console.log("Customer Phone in order:", customerPhone); 
     const selectedCity = citys.find(

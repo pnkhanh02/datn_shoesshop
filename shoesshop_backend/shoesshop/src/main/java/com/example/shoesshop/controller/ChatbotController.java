@@ -3,6 +3,7 @@ package com.example.shoesshop.controller;
 import com.example.shoesshop.entity.Product;
 import com.example.shoesshop.request.ChatRequest;
 import com.example.shoesshop.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.File;
 import java.util.*;
 
 @Slf4j
@@ -55,6 +57,10 @@ public class ChatbotController {
 
                 chatMessage = productInfo.toString();
             }
+
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            Product shoeData = objectMapper.readValue(new File("E:\\product.json"), Product.class);
+
 
             chatMessage += userMessage;
 

@@ -63,78 +63,94 @@ const AdminLayout = () => {
             </Button>
           </Flex>
           <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-            <Menu.Item key="1" icon={<DashboardOutlined />}>
-              <Link to="reports">Báo cáo thống kê</Link>
-            </Menu.Item>
-            <Menu.SubMenu key="UM" icon={<UserOutlined />} title="Người dùng">
-              <Menu.Item key="users" icon={<BarsOutlined />}>
-                <Link to="users">Quản lý người dùng</Link>
+            {userData?.role === "ADMIN" && (
+              <Menu.Item key="1" icon={<DashboardOutlined />}>
+                <Link to="reports">Báo cáo thống kê</Link>
               </Menu.Item>
-
-              <Menu.Item key="feedback-management" icon={<BarsOutlined />}>
-                <Link to="feedback-management">Quản lý feedback</Link>
-              </Menu.Item>
-              <Menu.Item key="users/add" icon={<PlusOutlined />}>
-                <Link to="users/add">Thêm mới nhân sự</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu
-              key="UM2"
-              icon={<FileTextOutlined />}
-              title="Đơn hàng"
-            >
-              <Menu.Item key="orders" icon={<BarsOutlined />}>
-                <Link to="orders">Quản lý đơn hàng</Link>
-              </Menu.Item>
+            )}
+            {userData?.role === "ADMIN" && (
               <Menu.Item key="payment" icon={<BarsOutlined />}>
                 <Link to="payment">Kiểu thanh toán</Link>
               </Menu.Item>
-              <Menu.Item key="orders_comfirm" icon={<PlusOutlined />}>
-                <Link to="orders-comfirm">Xác nhận đơn hàng</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="PM" icon={<BuildOutlined />} title="Sản phẩm">
-              <Menu.Item key="products/add_product" icon={<PlusOutlined />}>
-                <Link to="products/add-product">Thêm sản phẩm</Link>
-              </Menu.Item>
-              <Menu.Item key="products" icon={<BarsOutlined />}>
-                <Link to="products">Quản lý sản phẩm</Link>
-              </Menu.Item>
-              <Menu.Item key="product_type" icon={<BarsOutlined />}>
-                <Link to="products-type">Loại sản phẩm</Link>
-              </Menu.Item>
-              <Menu.Item key="product_detail" icon={<BarsOutlined />}>
-                <Link to="products-detail">Chi tiết sản phẩm</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu
-              key="sale"
-              icon={<PercentageOutlined />}
-              title="Khuyến mãi"
-            >
-              <Menu.Item key="sales/create" icon={<PlusOutlined />}>
-                <Link to="sales/create">Thêm khuyến mãi</Link>
-              </Menu.Item>
-              <Menu.Item key="sales" icon={<BarsOutlined />}>
-                <Link to="sales">Quản lý khuyến mãi</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu
-              key="exchangeShoes"
-              icon={<SwapOutlined />}
-              title="Thu cũ đổi mới"
-            >
-              <Menu.Item key="exchangeShoes" icon={<BarsOutlined />}>
-                <Link to="exchangeShoes">Thu cũ đổi mới</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
+            )}
+            {userData?.role === "ADMIN" && (
+              <Menu.SubMenu key="UM" icon={<UserOutlined />} title="Người dùng">
+                <Menu.Item key="users" icon={<BarsOutlined />}>
+                  <Link to="users">Quản lý người dùng</Link>
+                </Menu.Item>
+
+                <Menu.Item key="feedback-management" icon={<BarsOutlined />}>
+                  <Link to="feedback-management">Quản lý feedback</Link>
+                </Menu.Item>
+                <Menu.Item key="users/add" icon={<PlusOutlined />}>
+                  <Link to="users/add">Thêm mới nhân sự</Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
+            {userData?.role === "EMPLOYEE" && (
+              <Menu.SubMenu
+                key="UM2"
+                icon={<FileTextOutlined />}
+                title="Đơn hàng"
+              >
+                <Menu.Item key="orders" icon={<BarsOutlined />}>
+                  <Link to="orders">Quản lý đơn hàng</Link>
+                </Menu.Item>
+                <Menu.Item key="orders_comfirm" icon={<PlusOutlined />}>
+                  <Link to="orders-comfirm">Xác nhận đơn hàng</Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
+            {userData?.role === "EMPLOYEE" && (
+              <Menu.SubMenu key="PM" icon={<BuildOutlined />} title="Sản phẩm">
+                <Menu.Item key="products/add_product" icon={<PlusOutlined />}>
+                  <Link to="products/add-product">Thêm sản phẩm</Link>
+                </Menu.Item>
+                <Menu.Item key="products" icon={<BarsOutlined />}>
+                  <Link to="products">Quản lý sản phẩm</Link>
+                </Menu.Item>
+                <Menu.Item key="product_type" icon={<BarsOutlined />}>
+                  <Link to="products-type">Loại sản phẩm</Link>
+                </Menu.Item>
+                <Menu.Item key="product_detail" icon={<BarsOutlined />}>
+                  <Link to="products-detail">Chi tiết sản phẩm</Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
+            {userData?.role === "ADMIN" && (
+              <Menu.SubMenu
+                key="sale"
+                icon={<PercentageOutlined />}
+                title="Khuyến mãi"
+              >
+                <Menu.Item key="sales/create" icon={<PlusOutlined />}>
+                  <Link to="sales/create">Thêm khuyến mãi</Link>
+                </Menu.Item>
+                <Menu.Item key="sales" icon={<BarsOutlined />}>
+                  <Link to="sales">Quản lý khuyến mãi</Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
+            {userData?.role === "ADMIN" && (
+              <Menu.SubMenu
+                key="exchangeShoes"
+                icon={<SwapOutlined />}
+                title="Thu cũ đổi mới"
+              >
+                <Menu.Item key="exchangeShoes" icon={<BarsOutlined />}>
+                  <Link to="exchangeShoes">Thu cũ đổi mới</Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            )}
             <Menu.SubMenu
               key="account"
               icon={<UserOutlined />}
               title="Tài khoản"
             >
               <Menu.Item key="accountDetail" icon={<BarsOutlined />}>
-                <Link to={`/admin/accountDetail/${userData.id}`}>Thông tin tài khoản</Link>
+                <Link to={`/admin/accountDetail/${userData.id}`}>
+                  Thông tin tài khoản
+                </Link>
               </Menu.Item>
               <Menu.Item key="exchangeShoes" icon={<BarsOutlined />}>
                 <Link to="/">Đăng xuất</Link>
@@ -186,10 +202,19 @@ const AdminLayout = () => {
               <Route path="/sales/" element={<SalesManager />}></Route>
               <Route path="/sales/:id" element={<UpdateSales />}></Route>
 
-              <Route path="/exchangeShoes/" element={<ExchangeShoesManager />}></Route>
-              <Route path="/exchangeShoes/:id" element={<ExchangeShoesDetail />}></Route>
+              <Route
+                path="/exchangeShoes/"
+                element={<ExchangeShoesManager />}
+              ></Route>
+              <Route
+                path="/exchangeShoes/:id"
+                element={<ExchangeShoesDetail />}
+              ></Route>
 
-              <Route path="/accountDetail/:id" element={<AccountDetail />}></Route>
+              <Route
+                path="/accountDetail/:id"
+                element={<AccountDetail />}
+              ></Route>
             </Routes>
           </Content>
         </Layout>

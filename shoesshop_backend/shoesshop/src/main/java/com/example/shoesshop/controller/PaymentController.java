@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,17 +19,28 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class PaymentController {
     private final PaymentService paymentService;
+
     @GetMapping("/vn-pay")
     public ResponseObject<PaymentDTO.VNPayResponse> pay(HttpServletRequest request) {
         return new ResponseObject<>(HttpStatus.OK, "Success", paymentService.createVnPayPayment(request));
     }
+
+    //    @GetMapping("/vn-pay-callback")
+//    public ResponseObject<PaymentDTO.VNPayResponse> payCallbackHandler(HttpServletRequest request) {
+//        String status = request.getParameter("vnp_ResponseCode");
+//        if (status.equals("00")) {
+//            return new ResponseObject<>(HttpStatus.OK, "Success", new PaymentDTO.VNPayResponse("00", "Success", ""));
+//        } else {
+//            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Failed", null);
+//        }
+//    }
     @GetMapping("/vn-pay-callback")
-    public ResponseObject<PaymentDTO.VNPayResponse> payCallbackHandler(HttpServletRequest request) {
+    public RedirectView payCallbackHandler(HttpServletRequest request) {
         String status = request.getParameter("vnp_ResponseCode");
-        if (status.equals("00")) {
-            return new ResponseObject<>(HttpStatus.OK, "Success", new PaymentDTO.VNPayResponse("00", "Success", ""));
+        if ("00".equals(status)) {
+            return new RedirectView("http://localhost:3000/client/result?status=success");
         } else {
-            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Failed", null);
+            return new RedirectView("http://localhost:3000/client/result?status=fail");
         }
     }
 }

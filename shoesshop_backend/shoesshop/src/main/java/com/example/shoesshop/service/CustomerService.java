@@ -2,8 +2,10 @@ package com.example.shoesshop.service;
 
 import com.example.shoesshop.entity.Account;
 import com.example.shoesshop.entity.Customer;
+import com.example.shoesshop.entity.Order;
 import com.example.shoesshop.repository.AccountRepository;
 import com.example.shoesshop.repository.CustomerRepository;
+import com.example.shoesshop.repository.OrderRepository;
 import com.example.shoesshop.request.AccountRequest;
 import com.example.shoesshop.request.AccountUpdateRequest;
 import com.example.shoesshop.security.PasswordEncoder;
@@ -28,6 +30,9 @@ public class CustomerService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     public Page<Customer> getAllCustomers(Pageable pageable, String search) {
         Specification<Customer> where = null;
@@ -62,14 +67,14 @@ public class CustomerService {
         customer.setRole(Account.Role.CUSTOMER);
         customer.setGender(accountRequest.getGender());
         customer.setCreatedDate(createDate);
-//        LocalDate creating_date = LocalDate.now();
-//        Order order = new Order(
-//                creating_date,
-//                Order.OrderStatus.ADDED_TO_CARD,
-//                customer
-//        );
+        LocalDate creating_date = LocalDate.now();
+        Order order = new Order(
+                creating_date,
+                Order.OrderStatus.ADDED_TO_CARD,
+                customer
+        );
         accountRepository.save(customer);
-//        orderRepository.save(order);
+        orderRepository.save(order);
 
     }
 

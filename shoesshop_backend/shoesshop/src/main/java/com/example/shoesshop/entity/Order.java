@@ -56,6 +56,12 @@ public class Order implements Serializable  {
     public Order(Date orderDate, int customerId, PaymentMethod paymentMethod) {
     }
 
+    public Order(LocalDate order_date, OrderStatus oderStatus, Account customer) {
+        this.order_date = order_date;
+        this.orderStatus = oderStatus;
+        this.customer = customer;
+    }
+
     public Order(float total_amount, String address, String phone, LocalDate order_date, OrderStatus orderStatus, Account customer, PaymentMethod payment_method) {
         this.total_amount = total_amount;
         this.address = address;

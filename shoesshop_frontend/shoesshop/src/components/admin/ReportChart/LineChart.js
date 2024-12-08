@@ -31,6 +31,7 @@ const getMonthName = (monthNumber) => {
 
 const LineChartExample = () => {
   const [data, setData] = useState([]);
+  const [yDomain, setYDomain] = useState([0, 0]); // Tạo state để lưu domain Y
   const userData = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
@@ -54,6 +55,11 @@ const LineChartExample = () => {
         month: getMonthName(parseInt(item.month)),
       }));
 
+      // Tính toán domain Y
+      const maxOrder = Math.max(...transformedData.map((item) => item.order_Count));
+      const minOrder = Math.min(...transformedData.map((item) => item.order_Count));
+      setYDomain([Math.max(0, minOrder - 2), maxOrder + 2]); // Thêm khoảng đệm trên/dưới
+
       setData(transformedData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -69,7 +75,7 @@ const LineChartExample = () => {
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="month" />
-      <YAxis />
+      <YAxis domain={yDomain}/>
       <Tooltip />
       <Legend />
       <Line

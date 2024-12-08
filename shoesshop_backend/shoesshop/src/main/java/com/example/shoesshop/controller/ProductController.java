@@ -2,6 +2,8 @@ package com.example.shoesshop.controller;
 
 import com.example.shoesshop.dto.ProductDTO;
 import com.example.shoesshop.dto.ProductDetailDTO;
+import com.example.shoesshop.dto.TopRatingProductDTO;
+import com.example.shoesshop.dto.TopSellingProductDTO;
 import com.example.shoesshop.entity.Product;
 import com.example.shoesshop.entity.ProductDetail;
 import com.example.shoesshop.entity.ProductType;
@@ -319,5 +321,17 @@ public class ProductController {
             productDetailDTOArrayList.add(dto);
         }
         return new ResponseEntity<>(productDetailDTOArrayList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/topSellingProduct")
+    public ResponseEntity<?> findTopSellingProducts(){
+        List<TopSellingProductDTO> topProducts = productService.findTopSellingProducts();
+        return new ResponseEntity<>(topProducts, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/topRatingProduct")
+    public ResponseEntity<?> findTopRatingProducts(){
+        List<TopRatingProductDTO> topProducts = productService.findTopRatingProducts();
+        return new ResponseEntity<>(topProducts, HttpStatus.OK);
     }
 }

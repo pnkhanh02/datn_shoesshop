@@ -175,7 +175,7 @@ const ProductDetail = () => {
       {contextHolder}
       <div className="ProductDetail_container">
         <div className="ProductDetail_container_left">
-          <Link to="/product">
+          <Link to="client/product">
             <ion-icon name="arrow-back"></ion-icon>
           </Link>
           <div className="PD_con_left_mainImg">

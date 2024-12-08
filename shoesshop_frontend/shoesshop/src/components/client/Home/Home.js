@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import sneaker from "../../../images/sneaker.png";
 import "./Home.css";
 import { Link } from "react-router-dom";
+import TopSellingProducts from "../Product/TopSellingProducts";
+import TopRatingProducts from "../Product/TopRatingProducts";
 
 const Home = () => {
   useEffect(() => {
@@ -63,7 +65,7 @@ const Home = () => {
       </div>
 
       <div className="Home_bestSeller">
-        <h2>Bán chạy nhất</h2>
+        {/* <h2>Bán chạy nhất</h2>
         <div className="Shop_right">
           {shoeses.map((shoes, index) => {
             return (
@@ -89,7 +91,12 @@ const Home = () => {
               </Link>
             );
           })}
-        </div>
+        </div> */}
+        <TopSellingProducts/>
+
+        <hr></hr>
+
+        <TopRatingProducts/>
       </div>
     </div>
   );
