@@ -56,8 +56,11 @@ public class JWTTokenUtils {
                 Account.Role role = Account.Role.valueOf(claims.get("authorities").toString());
 //                String userAgent = claims.get("user-Agent").toString();
                 // Gán các thông tin vào đối tượng LoginDto, có thể sử dụng constructor
+                Integer userId = Integer.valueOf(claims.getId());
+
                 loginDto.setUsername(user);
                 loginDto.setRole(role);
+                loginDto.setId(userId);
 //                loginDto.setUserAgent(userAgent);
             } catch (Exception e) {
                 log.error(e.getMessage());

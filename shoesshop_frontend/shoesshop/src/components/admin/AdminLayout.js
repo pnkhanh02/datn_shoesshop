@@ -56,11 +56,11 @@ const AdminLayout = () => {
         <Sider width={280} theme="dark" style={{ padding: 10 }}>
           <Flex justify="space-between" align="center">
             <h1 className="AdminLayout_title">SHOES SHOP</h1>
-            <Button type="text" style={{ color: "white" }}>
+            {/* <Button type="text" style={{ color: "white" }}>
               <Link to="/">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </Link>
-            </Button>
+            </Button> */}
           </Flex>
           <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
             {userData?.role === "ADMIN" && (

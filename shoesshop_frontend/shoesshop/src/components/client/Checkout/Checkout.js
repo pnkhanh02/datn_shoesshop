@@ -25,6 +25,10 @@ const Checkout = () => {
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerNote, setCustomerNote] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
+  const [exchangeShoesData, setExchangeShoesData] = useState([]);
+  const [exchangeShoesSales, setExchangeShoesSales] = useState(0);
+  const [selectedExchangeShoeData, setSelectedExchangeShoeData] =
+    useState(null);
 
   const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -136,7 +140,7 @@ const Checkout = () => {
 
     axios
       .get(
-        "http://localhost:8080/api/v1/products/all?page=1&size=5&sort=id,desc&search=",
+        "http://localhost:8080/api/v1/products/all?page=1&size=10&sort=id,desc&search=",
         {
           headers: {
             Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
@@ -151,25 +155,63 @@ const Checkout = () => {
       });
   }, []);
 
+  const updateUsedExchangeShoes = async (id, updateData) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/api/v1/exchange-shoes/updateUsed/${id}`,
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Thay `userData.token` bằng token của bạn
+          },
+        }
+      );
+      console.log(response.data);
+      message.success("Cập nhật trạng thái thành công!");
+    } catch (error) {
+      console.error("Lỗi khi cập nhật trạng thái:", error);
+      message.error("Cập nhật trạng thái thất bại!");
+    }
+  };
+
   // const handleOrderCheckout = () => {
   //   // setIsCompleteOrder(true);
   //   handleCompleteOrder();
   // };
-    const handleOrderCheckout = async () => {
+
+  const handleGetTotal = () => {
+    return productForCheckout.reduce(
+      (total, product) => total + (product.price * product.quantity || 0),
+      0
+    );
+  };
+
+  const shippingCost = 50000;
+  const totalAmount = handleGetTotal() + shippingCost - exchangeShoesSales;
+  const handleOrderCheckout = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/v1/payment/vn-pay", {
-        headers: {
-          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
-        },
-        params: {
-          // Thêm các tham số cần thiết nếu có, ví dụ:
-          amount: handleGetTotal(), // Tổng tiền thanh toán
-          vnp_BankCode: "NCB", // Mã ngân hàng, có thể để null nếu không chọn
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:8080/api/v1/payment/vn-pay",
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+          params: {
+            // Thêm các tham số cần thiết nếu có, ví dụ:
+            amount: totalAmount, // Tổng tiền thanh toán
+            vnp_BankCode: "NCB", // Mã ngân hàng, có thể để null nếu không chọn
+          },
+        }
+      );
       if (response.data.code === 200) {
         const { paymentUrl } = response.data.data;
         handleCompleteOrder();
+        // Kiểm tra nếu có selectedExchangeShoeData và gọi updateUsedExchangeShoes
+        if (selectedExchangeShoeData) {
+          updateUsedExchangeShoes(selectedExchangeShoeData.id, {
+            used: selectedExchangeShoeData.used,
+          });
+        }
         // Chuyển hướng người dùng đến URL thanh toán
         window.location.href = paymentUrl;
       } else {
@@ -179,13 +221,6 @@ const Checkout = () => {
       console.error("Lỗi khi tạo thanh toán:", error);
       alert("Đã xảy ra lỗi trong quá trình thanh toán. Vui lòng thử lại!");
     }
-  };
-
-  const handleGetTotal = () => {
-    return productForCheckout.reduce(
-      (total, product) => total + (product.price * product.quantity || 0),
-      0
-    );
   };
 
   const handleChangeCityOption = (selectedCityOption) => {
@@ -210,7 +245,7 @@ const Checkout = () => {
   };
 
   const handleCompleteOrder = () => {
-    console.log("Customer Phone in order:", customerPhone); 
+    console.log("Customer Phone in order:", customerPhone);
     const selectedCity = citys.find(
       (city) => city.value === selectedCityOption
     );
@@ -225,7 +260,12 @@ const Checkout = () => {
       (paymentMethod) => paymentMethod.value === selectedMethod
     );
 
-    if (!selectedCity || !selectedDistrict || !selectedWard || !selectedPaymentMethod) {
+    if (
+      !selectedCity ||
+      !selectedDistrict ||
+      !selectedWard ||
+      !selectedPaymentMethod
+    ) {
       messageApi.open({
         type: "error",
         content: "Vui lòng điền đầy đủ thông tin!",
@@ -281,6 +321,61 @@ const Checkout = () => {
         console.error("Error fetching data:", error);
         errorMessage();
       });
+  };
+
+  const fetchData = () => {
+    console.log(localStorage.getItem("user"));
+
+    axios
+      .get(
+        `http://localhost:8080/api/v1/exchange-shoes/getAllByCustomerId/${userData.id}?page=0&size=99&sort=id,asc`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+          },
+        }
+      )
+      .then((response) => {
+        // Lọc dữ liệu lấy những phần tử thỏa mãn điều kiện
+        const filteredData = response.data.content
+          .filter((item) => item.status === "APPROVE" && !item.used)
+          .map((sl, index) => {
+            return {
+              key: sl.id,
+              id: sl.exchangeShoesId,
+              exchangeShoesName: sl.exchangeShoesName,
+              status: sl.status,
+              exchangeShoesSales: sl.exchangeShoesSales,
+              used: sl.used,
+            };
+          });
+
+        setExchangeShoesData(filteredData);
+      })
+      .catch((error) => {
+        message.error("Failed to load data from API");
+      });
+  };
+
+  useEffect(() => {
+    fetchData(); // Gọi hàm để lấy dữ liệu exchangeShoes
+  }, []);
+
+  const handleExchangeShoesChange = (value) => {
+    const selectedExchangeShoe = exchangeShoesData.find(
+      (item) => item.id === value
+    );
+    if (selectedExchangeShoe) {
+      setExchangeShoesSales(selectedExchangeShoe.exchangeShoesSales);
+
+      // Lưu thông tin exchange shoe vào state
+      setSelectedExchangeShoeData({
+        id: selectedExchangeShoe.id,
+        used: true,
+      });
+    } else {
+      setExchangeShoesSales(0); // Nếu không chọn gì, giá trị sẽ là 0
+    }
   };
 
   return (
@@ -459,6 +554,29 @@ const Checkout = () => {
                 }}
               />
             </div>
+            <div className="Checkout_left_row">
+              <span>Giảm giá do thu lại giày cũ:</span>
+              <Select
+                options={exchangeShoesData.map((item) => ({
+                  value: item.id,
+                  label: `${item.exchangeShoesName} : ${item.exchangeShoesSales} đ`,
+                }))}
+                onChange={handleExchangeShoesChange}
+                placeholder="Chọn giày để đổi"
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 5,
+                  minHeight: "50px",
+                  colors: {
+                    ...theme.colors,
+                    primary25: "rgb(209, 209, 209)",
+                    primary50: "rgb(209, 209, 209)",
+                    primary: "black",
+                  },
+                })}
+                className="select"
+              />
+            </div>
           </div>
           <div className="Checkout_right">
             <div className="Checkout_right_title">
@@ -511,14 +629,26 @@ const Checkout = () => {
               </div>
               <div className="Checkout_right_table-row">
                 <h4>Vận chuyển</h4>
-                <span>50.000đ</span>
+                <span>
+                  {shippingCost
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                  đ
+                </span>
+              </div>
+              <div className="Checkout_right_table-row">
+                <h4>Giảm giá thu lại giày cũ</h4>
+                <span>
+                  {exchangeShoesSales
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                  đ
+                </span>
               </div>
               <div className="Checkout_right_table-row">
                 <h4>Thành tiền</h4>
                 <h3>
-                  {(handleGetTotal() + 50000)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                  {totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                   đ
                 </h3>
               </div>

@@ -4,6 +4,7 @@ import com.example.shoesshop.entity.*;
 import com.example.shoesshop.repository.ExchangeShoesRepository;
 import com.example.shoesshop.request.ExchangeShoesRequest;
 import com.example.shoesshop.request.ExchangeShoesUpdateRequest;
+import com.example.shoesshop.request.ExchangeShoesUsedRequest;
 import com.example.shoesshop.request.FeedbackRequest;
 import com.example.shoesshop.specification.ExchangeShoesSpecification;
 import com.example.shoesshop.specification.FeedbackSpecification;
@@ -69,6 +70,15 @@ public class ExchangeShoesService {
             exchangeShoes.setExchangeShoesSales(exchangeShoesUpdateRequest.getStatus() == ExchangeShoes.STATUS.APPROVE
                     ? exchangeShoesUpdateRequest.getExchangeShoesSales()
                     : 0);
+            exchangeShoesRepository.save(exchangeShoes);
+        }
+    }
+
+    public void updateUsedExchangeShoes(int id, ExchangeShoesUsedRequest exchangeShoesUsedRequest){
+        ExchangeShoes exchangeShoes = exchangeShoesRepository.getExchangeShoesById(id);
+
+        if(exchangeShoes != null){
+            exchangeShoes.setUsed(exchangeShoesUsedRequest.getUsed());
             exchangeShoesRepository.save(exchangeShoes);
         }
     }

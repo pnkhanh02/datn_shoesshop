@@ -279,7 +279,28 @@ public class ProductController {
         }
         ArrayList<ProductDTO> productDTOS = new ArrayList<>();
         for(Product product : products){
-            ProductDTO dto = new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getImage_url(),product.getPrice(),product.getTypeProduct().getName(),product.getTypeProduct().getId(), product.getGender_type().toString());
+            ProductDTO dto = new ProductDTO();
+            dto.setId(product.getId());
+            dto.setName(product.getName());
+            dto.setDescription(product.getDescription());
+            dto.setImage_url(product.getImage_url());
+            dto.setPrice(product.getPrice());
+            dto.setType_id(product.getTypeProduct().getId());
+            dto.setType_name(product.getTypeProduct().getName());
+            dto.setGender_for(product.getGender_type().toString());
+            if(product.getSale() != null){
+                dto.setSale_id(product.getSale().getId());
+                dto.setSale_percent(product.getSale().getPercent_sale());
+            }
+//                ProductDTO dto = new ProductDTO(product.getId(),
+//                        product.getName(),
+//                        product.getDescription(),
+//                        product.getImage_url(),
+//                        product.getPrice(),
+//                        product.getTypeProduct().getName(),
+//                        product.getTypeProduct().getId(),
+//                        product.getGender_type().toString());
+
             productDTOS.add(dto);
         }
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);

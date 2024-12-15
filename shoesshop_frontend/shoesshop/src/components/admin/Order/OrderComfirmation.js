@@ -149,12 +149,12 @@ const OrderComfirmation = () => {
           >
             Giao hàng
           </button>
-          <button
+          {/* <button
             className="button3"
             onClick={() => showDeleteConfirm(record.order_id)}
           >
             Xóa
-          </button>
+          </button> */}
         </div>
       ),
     },

@@ -12,13 +12,11 @@ const GenderFill = () => {
 
   const fetchData = () => {
     axios
-      .get("http://localhost:8080/api/v1/productTypes/full",
-        {
-          headers: {
-            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
-          },
-        }
-      )
+      .get("http://localhost:8080/api/v1/productTypes/full", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         let formattedType = response.data.map((_type) => {
           return {
@@ -40,13 +38,11 @@ const GenderFill = () => {
       });
 
     axios
-      .get("http://localhost:8080/api/v1/products/allcolor",
-        {
-          headers: {
-            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
-          },
-        }
-      )
+      .get("http://localhost:8080/api/v1/products/allcolor", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         let formattedColor = response.data.map((color) => ({
           name: color,
@@ -65,13 +61,11 @@ const GenderFill = () => {
       });
 
     axios
-      .get("http://localhost:8080/api/v1/products/allsize",
-        {
-          headers: {
-            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
-          },
-        }
-      )
+      .get("http://localhost:8080/api/v1/products/allsize", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         let formattedSize = response.data.map((Size) => ({
           name: Size,
@@ -198,13 +192,11 @@ const GenderFill = () => {
     fetchData();
 
     axios
-      .get("http://localhost:8080/api/v1/products/full",
-        {
-          headers: {
-            Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
-          },
-        }
-      )
+      .get("http://localhost:8080/api/v1/products/full", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
+        },
+      })
       .then((response) => {
         const filteredData = response.data.filter(
           (item) => item.gender_for !== "FEMALE"
@@ -316,8 +308,22 @@ const GenderFill = () => {
                   </div>
                 </div>
                 <div className="shoes_bottom">
-                  <h4>{shoes.price} Vnđ</h4>
+                  {/* <h4>{shoes.price} Vnđ</h4> */}
                   {/* <span> {(shoes.price * (1 - shoes.sale_percent / 100)).toFixed(2)}Vnđ</span> */}
+                  {shoes.sale_percent !== 0 ? (
+                    <>
+                      <h4>
+                        {(shoes.price * (1 - shoes.sale_percent / 100)).toFixed(
+                          0
+                        )}
+                        vnđ
+                      </h4>
+                      <span>{shoes.price}vnđ</span>
+                      {/* <h5>-{shoes.sale_percent}%</h5> */}
+                    </>
+                  ) : (
+                    <h4>{shoes.price} vnđ</h4>
+                  )}
                 </div>
               </Link>
             );

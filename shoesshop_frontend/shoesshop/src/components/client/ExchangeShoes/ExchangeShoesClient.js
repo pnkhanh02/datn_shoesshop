@@ -8,10 +8,13 @@ import {
   Tag,
   Flex,
   Modal,
+  Input,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
 import "./ExchangeShoesClient.css";
+import "../../admin/Paginate/Pagination.js";
+import Pagination from "../../admin/Paginate/Pagination.js";
 
 const ExchangeShoesClient = () => {
   const { confirm } = Modal;
@@ -20,22 +23,31 @@ const ExchangeShoesClient = () => {
   const [exchangeShoesData, setExchangeShoesData] = useState([]); // State to store API data
   const [loading, setLoading] = useState(false); // Loading state
   const userData = JSON.parse(localStorage.getItem("user"));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
 
   // Fetch data from API
-  const fetchData = () => {
+  const fetchData = (page = 1) => {
     console.log(localStorage.getItem("user"));
     setLoading(true);
 
     axios
       .get(
-        `http://localhost:8080/api/v1/exchange-shoes/getAllByCustomerId/${userData.id}?page=0&size=99&sort=id,asc`,
+        `http://localhost:8080/api/v1/exchange-shoes/getAllByCustomerId/${userData.id}`,
         {
+          params: {
+            page: page,
+            size: 10,
+            sort: "id,desc",
+          },
           headers: {
             Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
           },
         }
       )
       .then((response) => {
+        const { content, totalPages, totalElements } = response.data;
         const data = response.data.content.map((sl, index) => {
           return {
             key: sl.id,
@@ -43,9 +55,12 @@ const ExchangeShoesClient = () => {
             exchangeShoesName: sl.exchangeShoesName,
             status: sl.status,
             exchangeShoesSales: sl.exchangeShoesSales,
+            used: sl.used,
           };
         });
         setExchangeShoesData(data);
+        setTotalPages(totalPages);
+        setTotalElements(totalElements);
         setLoading(false);
       })
       .catch((error) => {
@@ -56,8 +71,17 @@ const ExchangeShoesClient = () => {
 
   // Use effect to fetch data on component mount
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(currentPage);
+  }, [currentPage]);
+
+  const handleSearch = () => {
+    setCurrentPage(1);
+    fetchData(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   // Table columns
   const columns = [
@@ -108,6 +132,13 @@ const ExchangeShoesClient = () => {
       title: "Giảm giá",
       dataIndex: "exchangeShoesSales",
       key: "exchangeShoesSales",
+      render: (text) => (text + " đ"),
+    },
+    {
+      title: "Sử dụng",
+      dataIndex: "used",
+      key: "used",
+      render: (text) => (text ? "Đã sử dụng" : "Chưa sử dụng"),
     },
     {
       title: "Chức năng",
@@ -229,13 +260,19 @@ const ExchangeShoesClient = () => {
         columns={columns}
         dataSource={exchangeShoesData}
         loading={loading}
-        pagination={true}
+        pagination={false}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {},
           };
         }}
         size="large"
+      />
+      {/* Pagination component */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </div>
   );

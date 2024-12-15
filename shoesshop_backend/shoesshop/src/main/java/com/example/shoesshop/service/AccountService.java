@@ -74,7 +74,7 @@ public class AccountService implements UserDetailsService {
     public Page<Account> getAllAccounts(Pageable pageable, String search) {
         Specification<Account> where = null;
         if(!StringUtils.isEmpty(search)){
-            AccountSpecification accountSpecification = new AccountSpecification("name","LIKE", search);
+            AccountSpecification accountSpecification = new AccountSpecification("username","LIKE", search);
             where = Specification.where(accountSpecification);
         }
         return accountRepository.findAll(Specification.where(where), pageable);

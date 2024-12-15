@@ -11,6 +11,45 @@ const Chatbot = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const chatBoxRef = useRef(null);
   const userData = JSON.parse(localStorage.getItem("user"));
+  const customerId = userData ? userData.id : null;
+
+  // Hàm gọi API để lấy lịch sử chat của user
+  const fetchChatHistory = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/chatbot/getAllByCustomerId/${customerId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
+      const chatHistory = response.data;
+
+      // Chuyển đổi dữ liệu chat history thành format phù hợp để hiển thị
+      const formattedMessages = [];
+      // Lặp qua tất cả các bản ghi chat để thêm vào formattedMessages
+      chatHistory.forEach((chat) => {
+        const userMessage = {
+          role: "user",
+          content: chat.message, // Tin nhắn người dùng
+        };
+        const botMessage = {
+          role: "assistant",
+          content: chat.response, // Tin nhắn chatbot
+        };
+
+        // Thêm tin nhắn người dùng và chatbot vào cùng một cặp
+        formattedMessages.push(userMessage);
+        formattedMessages.push(botMessage);
+      });
+
+      // Cập nhật messages với lịch sử chat
+      setMessages(formattedMessages);
+    } catch (error) {
+      console.error("Error fetching chat history:", error);
+    }
+  };
 
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
@@ -30,7 +69,7 @@ const Chatbot = () => {
           },
         }
       );
-      
+
       setUserInput("");
 
       const botMessage = {
@@ -38,7 +77,6 @@ const Chatbot = () => {
         content: response.data.candidates[0].content.parts[0].text,
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
-
     } catch (error) {
       console.error("Error communicating with the chatbot API:", error);
       setMessages((prevMessages) => [
@@ -53,6 +91,13 @@ const Chatbot = () => {
 
   const toggleChat = () => {
     setIsChatOpen((prev) => !prev);
+
+    // Đặt thanh cuộn xuống cuối khi mở khung chat
+    if (!isChatOpen && chatBoxRef.current) {
+      setTimeout(() => {
+        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+      }, 0); // Chờ một chút để DOM render xong
+    }
   };
 
   // Cuộn xuống cuối mỗi khi tin nhắn thay đổi
@@ -62,6 +107,13 @@ const Chatbot = () => {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   }, [messages.length]);
+
+  // Gọi API khi component mount để lấy lịch sử chat
+  useEffect(() => {
+    if (customerId) {
+      fetchChatHistory();
+    }
+  }, [customerId]);
 
   return (
     <div className="chatbot-header-container">

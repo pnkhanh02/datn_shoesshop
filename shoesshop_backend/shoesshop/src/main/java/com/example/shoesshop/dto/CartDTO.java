@@ -12,6 +12,8 @@ public class CartDTO {
     private String name;
     private String brand;
     private String color;
+//    private int saleId;
+//    private float sale_percent;
 
     public CartDTO() {
     }
@@ -27,6 +29,8 @@ public class CartDTO {
         this.brand = brand;
         this.color = color;
     }
+
+
 
     public int getOrderItem_id() {
         return orderItem_id;
@@ -99,6 +103,22 @@ public class CartDTO {
     public void setColor(String color) {
         this.color = color;
     }
+
+//    public int getSaleId() {
+//        return saleId;
+//    }
+//
+//    public void setSaleId(int saleId) {
+//        this.saleId = saleId;
+//    }
+//
+//    public float getSale_percent() {
+//        return sale_percent;
+//    }
+//
+//    public void setSale_percent(float sale_percent) {
+//        this.sale_percent = sale_percent;
+//    }
 
     @JsonProperty("imgSrc")
     public String getimgSrc() {

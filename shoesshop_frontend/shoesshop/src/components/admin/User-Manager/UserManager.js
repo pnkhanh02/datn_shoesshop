@@ -3,6 +3,7 @@ import "./UserManager.css";
 import axios from "axios";
 import { Button, Input, Table } from "antd";
 import {useNavigate } from "react-router-dom";
+import Pagination from '../Paginate/Pagination.js';
 
 const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -21,7 +22,7 @@ const UserManager = () => {
     axios
       .get(`http://localhost:8080/api/v1/accounts/getAll`, {
         params: {
-          page: page - 1,
+          page: page,
           size: 10,
           sort: "id,desc",
           search: search,
@@ -118,6 +119,14 @@ const UserManager = () => {
         columns={columns}
         rowKey={(record) => record.id}
         dataSource={data}
+        pagination={false}
+      />
+
+      {/* Pagination component */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
 
       {/* <div style={{ marginTop: 20, textAlign: "center" }}>

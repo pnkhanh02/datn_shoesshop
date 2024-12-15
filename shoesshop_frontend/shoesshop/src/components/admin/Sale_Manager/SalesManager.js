@@ -1,9 +1,10 @@
-import { Breadcrumb, Button, Flex, message, Modal, Table } from "antd";
+import { Breadcrumb, Button, Flex, Input, message, Modal, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import "./SalesManager.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
+import Pagination from "../Paginate/Pagination.js";
 
 const SalesManager = () => {
   const { confirm } = Modal;
@@ -16,27 +17,40 @@ const SalesManager = () => {
     JSON.parse(localStorage.getItem("user"))
   );
   const userData = JSON.parse(localStorage.getItem("user"));
+  const [searchText, setSearchText] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
 
-  const fetchData = () => {
+  const fetchData = (page = 1, search = "") => {
     setLoading(true);
     axios
-      .get("http://localhost:8080/api/v1/sales?page=0&size=99&sort=id,asc&search=", {
+      .get("http://localhost:8080/api/v1/sales", {
+        params: {
+          page: page,
+          size: 10,
+          sort: "id,desc",
+          search: search,
+        },
         headers: {
           Authorization: `Bearer ${userData.token}`,
         },
       })
       .then((response) => {
+        const { content, totalPages, totalElements } = response.data;
         const data = response.data.content.map((sl, index) => {
           return {
             key: sl.id,
             id: sl.id,
             sale_info: sl.sale_info,
             percent_sale: sl.percent_sale,
-            start_date: moment(sl.start_date).format('YYYY-MM-DD'),
-            end_date: moment(sl.end_date).format('YYYY-MM-DD'),
+            start_date: moment(sl.start_date).format("YYYY-MM-DD"),
+            end_date: moment(sl.end_date).format("YYYY-MM-DD"),
           };
         });
         setSales(data);
+        setTotalPages(totalPages);
+        setTotalElements(totalElements);
         setLoading(false);
       })
       .catch((error) => {
@@ -47,8 +61,17 @@ const SalesManager = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchData();
-  }, []);
+    fetchData(currentPage, searchText);
+  }, [currentPage, searchText]);
+
+  const handleSearch = () => {
+    setCurrentPage(1);
+    fetchData(1, searchText);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   const successMessage = () => {
     messageApi.open({
@@ -104,7 +127,10 @@ const SalesManager = () => {
       dataIndex: "update_sales",
       render: (_, record) => (
         <Link to={`/admin/sales/${record.id}`}>
-          <i className="fa-solid fa-pen-to-square" style={{ fontSize: "18px" }}></i>
+          <i
+            className="fa-solid fa-pen-to-square"
+            style={{ fontSize: "18px" }}
+          ></i>
         </Link>
       ),
     },
@@ -121,9 +147,7 @@ const SalesManager = () => {
   const handleDeleteSales = () => {
     axios
       .delete(
-        `http://localhost:8080/api/v1/sales?ids=${salesSelected.join(
-          ","
-        )}`,
+        `http://localhost:8080/api/v1/sales?ids=${salesSelected.join(",")}`,
         {
           headers: {
             Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
@@ -150,7 +174,12 @@ const SalesManager = () => {
   };
 
   return (
-    <Flex className="SalesManager" vertical="true" gap={20} style={{ position: "relative" }}>
+    <Flex
+      className="SalesManager"
+      vertical="true"
+      gap={20}
+      style={{ position: "relative" }}
+    >
       {contextHolder}
       <Breadcrumb
         items={[
@@ -161,6 +190,14 @@ const SalesManager = () => {
             title: "Quản lý khuyến mãi",
           },
         ]}
+      />
+
+      <Input
+        placeholder="Search by name"
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        style={{ marginBottom: 20, width: 300 }}
+        onPressEnter={handleSearch}
       />
 
       {optionVisible && (
@@ -191,12 +228,18 @@ const SalesManager = () => {
         columns={columns}
         dataSource={sales}
         loading={loading}
-        pagination={true}
+        pagination={false}
         size="large"
+      />
+
+      {/* Pagination component */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </Flex>
   );
 };
 
 export default SalesManager;
-

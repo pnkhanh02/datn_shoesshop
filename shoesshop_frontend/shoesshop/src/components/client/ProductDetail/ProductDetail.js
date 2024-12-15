@@ -206,7 +206,7 @@ const ProductDetail = () => {
                 <>
                   <h3>
                     {(product.price * (1 - product.sale_percent / 100)).toFixed(
-                      2
+                      0
                     )}
                     vnđ
                   </h3>

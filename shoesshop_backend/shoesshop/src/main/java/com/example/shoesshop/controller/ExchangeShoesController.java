@@ -4,6 +4,7 @@ import com.example.shoesshop.dto.ExchangeShoesDTO;
 import com.example.shoesshop.entity.ExchangeShoes;
 import com.example.shoesshop.request.ExchangeShoesRequest;
 import com.example.shoesshop.request.ExchangeShoesUpdateRequest;
+import com.example.shoesshop.request.ExchangeShoesUsedRequest;
 import com.example.shoesshop.service.ExchangeShoesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -74,6 +75,12 @@ public class ExchangeShoesController {
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<?> updateStatusExchangeShoes(@PathVariable(name = "id") int id, @RequestBody ExchangeShoesUpdateRequest exchangeShoesUpdateRequest) {
         exchangeShoesService.updateStatusExchangeShoes(id, exchangeShoesUpdateRequest);
+        return new ResponseEntity<String>("Update successfully", HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "updateUsed/{id}")
+    public  ResponseEntity<?> updateUsedExchangeShoes(@PathVariable(name = "id") int id, @RequestBody ExchangeShoesUsedRequest exchangeShoesUsedRequest){
+        exchangeShoesService.updateUsedExchangeShoes(id, exchangeShoesUsedRequest);
         return new ResponseEntity<String>("Update successfully", HttpStatus.CREATED);
     }
 
