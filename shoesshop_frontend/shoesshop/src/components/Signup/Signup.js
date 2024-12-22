@@ -52,7 +52,7 @@ const Signup = () => {
     let tempErrors = {};
     tempErrors.username = formData.username ? "" : "Nhập tên đăng nhập!";
     tempErrors.password = formData.password ? "" : "Nhập mật khẩu!";
-    tempErrors.firstName = formData.firstName ? "" : "Nhập họ và tên lót!";
+    tempErrors.firstName = formData.firstName ? "" : "Nhập họ và tên đệm!";
     tempErrors.lastName = formData.lastName ? "" : "Nhập tên!";
     tempErrors.address = formData.address ? "" : "Nhập địa chỉ!";
     tempErrors.phone = formData.phone ? "" : "Nhập số điện thoại!";

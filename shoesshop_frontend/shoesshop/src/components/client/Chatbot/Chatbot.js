@@ -93,11 +93,11 @@ const Chatbot = () => {
     setIsChatOpen((prev) => !prev);
 
     // Đặt thanh cuộn xuống cuối khi mở khung chat
-    if (!isChatOpen && chatBoxRef.current) {
-      setTimeout(() => {
-        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-      }, 0); // Chờ một chút để DOM render xong
-    }
+    // if (!isChatOpen && chatBoxRef.current) {
+    //   setTimeout(() => {
+    //     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    //   }, 0); 
+    // }
   };
 
   // Cuộn xuống cuối mỗi khi tin nhắn thay đổi
@@ -106,7 +106,8 @@ const Chatbot = () => {
       console.log("hello");
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  }, [messages.length]);
+  }, [messages.length, isChatOpen]);
+
 
   // Gọi API khi component mount để lấy lịch sử chat
   useEffect(() => {

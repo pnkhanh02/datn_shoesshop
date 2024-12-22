@@ -223,6 +223,7 @@ const Checkout = () => {
     }
   };
 
+
   const handleChangeCityOption = (selectedCityOption) => {
     setSelectedCityOption(selectedCityOption);
     console.log(selectedCityOption);
