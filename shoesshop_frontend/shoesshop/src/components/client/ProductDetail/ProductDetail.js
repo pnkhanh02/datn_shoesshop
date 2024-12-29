@@ -23,6 +23,7 @@ const ProductDetail = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [feedbacks, setFeedbacks] = useState([]);
+  const [randomProducts, setRandomProducts] = useState([]);
 
   const userData = JSON.parse(localStorage.getItem("user"));
   const [messageApi, contextHolder] = message.useMessage();
@@ -165,10 +166,50 @@ const ProductDetail = () => {
 
   const calculateAverageRating = (feedbacks) => {
     if (feedbacks.length === 0) return 0; // Nếu không có đánh giá, trả về 0
-    const totalRating = feedbacks.reduce((sum, feedback) => sum + feedback.rating, 0);
+    const totalRating = feedbacks.reduce(
+      (sum, feedback) => sum + feedback.rating,
+      0
+    );
     return (totalRating / feedbacks.length).toFixed(1); // Làm tròn đến 1 chữ số thập phân
   };
-  
+
+
+  //sản phẩm ngẫu nhiên
+  useEffect(() => {
+    const getRandomProducts = (products, count) => {
+      const selected = new Set();
+      while (selected.size < count && selected.size < products.length) {
+        const randomIndex = Math.floor(Math.random() * products.length);
+        selected.add(randomIndex);
+      }
+      return Array.from(selected).map((index) => products[index]);
+    };
+
+    const randomSelection = getRandomProducts(recommendedProduct, 10);
+    setRandomProducts(randomSelection);
+  }, [recommendedProduct]);
+
+
+  //sản phẩm cùng loại
+  // useEffect(() => {
+  //   const getRecommendedProductsByType = (products, currentType, count) => {
+  //     // Lọc sản phẩm có cùng type_name
+  //     const filteredProducts = products.filter(
+  //       (item) => item.type_name === currentType && item.id !== product.id
+  //     );
+  //     // Giới hạn số lượng sản phẩm hiển thị
+  //     return filteredProducts.slice(0, count);
+  //   };
+
+  //   if (recommendedProduct.length > 0 && product.type_name) {
+  //     const recommendedByType = getRecommendedProductsByType(
+  //       recommendedProduct,
+  //       product.type_name,
+  //       10
+  //     );
+  //     setRandomProducts(recommendedByType);
+  //   }
+  // }, [recommendedProduct, product]);
 
   return (
     <div className="ProductDetail">
@@ -281,19 +322,25 @@ const ProductDetail = () => {
       </div>
 
       <div className="ProductDetail_recommended">
-      <div style={{ display: "flex", alignItems: "center" }}>
-    <h3>Đánh giá</h3>
-    {feedbacks.length > 0 && (
-      <div style={{ marginLeft: "10px", display: "flex", alignItems: "center" }}>
-        <span>({calculateAverageRating(feedbacks)})</span>
-        {/* <Rate
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <h3>Đánh giá</h3>
+          {feedbacks.length > 0 && (
+            <div
+              style={{
+                marginLeft: "10px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <span>({calculateAverageRating(feedbacks)})</span>
+              {/* <Rate
           value={calculateAverageRating(feedbacks)}
           disabled
           style={{ fontSize: "16px", marginRight: "5px" }}
         /> */}
-      </div>
-    )}
-  </div>
+            </div>
+          )}
+        </div>
         <div style={{ marginLeft: "20px" }}>
           {feedbacks.map((feedback, index) => (
             <div
@@ -337,7 +384,7 @@ const ProductDetail = () => {
       <div className="ProductDetail_recommended">
         <h3>Sản phẩm tương tự</h3>
         <div className="Shop_right">
-          {recommendedProduct.slice(0, 10).map((shoes) => {
+          {randomProducts.map((shoes) => {
             return (
               <Link
                 className="Shop_right_shoes"

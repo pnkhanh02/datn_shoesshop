@@ -3,6 +3,8 @@ package com.example.shoesshop.service;
 import com.example.shoesshop.entity.Account;
 import com.example.shoesshop.entity.Customer;
 import com.example.shoesshop.entity.Order;
+import com.example.shoesshop.exception.CustomException;
+import com.example.shoesshop.exception.ErrorResponseEnum;
 import com.example.shoesshop.repository.AccountRepository;
 import com.example.shoesshop.repository.CustomerRepository;
 import com.example.shoesshop.repository.OrderRepository;
@@ -22,6 +24,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -48,6 +51,20 @@ public class CustomerService {
     }
 
     public void createCustomer(AccountRequest accountRequest) throws ParseException {
+        Account account = accountRepository.findByUsername(accountRequest.getUsername());
+        if(account != null){
+            throw new CustomException(ErrorResponseEnum.USERNAME_EXISTED);
+        }
+
+        Optional<Account> optionalEmail = accountRepository.findByEmail(accountRequest.getEmail());
+        if(optionalEmail.isPresent()){
+            throw new CustomException(ErrorResponseEnum.EMAIL_EXISTED);
+        }
+
+        if(accountRequest.getPassword().length() < 6){
+            throw new CustomException(ErrorResponseEnum.PASSWORD_LESSTHAN_6CHARACTERS);
+        }
+
         LocalDate createDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthday =  LocalDate.parse(accountRequest.getBirthday(), formatter);

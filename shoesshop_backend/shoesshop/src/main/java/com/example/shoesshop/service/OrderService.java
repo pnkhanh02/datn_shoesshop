@@ -95,8 +95,8 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public List<Object[]> getTotalAmountByMonthForCurrentYear() {
-        return orderRepository.getTotalAmountByMonthForCurrentYear();
+    public List<Object[]> getTotalAmountByMonthForCurrentYear(int year) {
+        return orderRepository.getTotalAmountByMonthForCurrentYear(year);
     }
 
     public void createCart(OrderRequest orderRequest) {
@@ -112,8 +112,8 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public List<MonthlyRevenueDTO> getMonthlyRevenues() {
-        List<Object[]> results = orderRepository.getTotalAmountByMonthForCurrentYear();
+    public List<MonthlyRevenueDTO> getMonthlyRevenues(int year) {
+        List<Object[]> results = orderRepository.getTotalAmountByMonthForCurrentYear(year);
         List<MonthlyRevenueDTO> revenues = new ArrayList<>();
         for (Object[] result : results) {
 //                BigDecimal totalAmount = (BigDecimal) result[0];
@@ -188,8 +188,8 @@ public class OrderService {
         return null;
     }
 
-    public List<MonthlyOrderCountDTO> getMonthlyCount() {
-        List<Object[]> results = orderRepository.getOrderCountByMonthForCurrentYear();
+    public List<MonthlyOrderCountDTO> getMonthlyCount(int year) {
+        List<Object[]> results = orderRepository.getOrderCountByMonthForCurrentYear(year);
         List<MonthlyOrderCountDTO> countDTOS = new ArrayList<>();
         for (Object[] result : results) {
 //                BigInteger count = new BigInteger(result[0].toString());

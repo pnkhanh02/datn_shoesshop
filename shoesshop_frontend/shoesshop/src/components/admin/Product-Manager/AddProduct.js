@@ -246,12 +246,6 @@ const AddProduct = () => {
         <Form.Item
           label="Mã giảm giá"
           name="sale"
-          rules={[
-            {
-              required: true,
-              message: "Chọn mã giảm giá!",
-            },
-          ]}
         >
           <Select>
             {sales.map((sale) => {

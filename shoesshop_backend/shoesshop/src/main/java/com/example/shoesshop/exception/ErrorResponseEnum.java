@@ -4,6 +4,8 @@ public enum ErrorResponseEnum {
     NOT_FOUND_PRODUCT(404, "Không tìm thấy sản phẩm"),
     NOT_FOUND_ACCOUNT(404, "Không tìm thấy người dùng"),
     USERNAME_EXISTED(400, "Username đã tồn tại!"),
+    EMAIL_EXISTED(400, "Email đã tồn tại"),
+    PASSWORD_LESSTHAN_6CHARACTERS(400, "Phải nhập mật khẩu tối thiểu 6 ký tự"),
 
     USERNAME_NOT_FOUND(401, "Username không tồn tại"),
     PASSWORD_FAILS(401, "Sai password"),

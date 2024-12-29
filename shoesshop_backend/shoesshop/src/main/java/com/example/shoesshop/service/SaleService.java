@@ -4,11 +4,14 @@ import com.example.shoesshop.entity.Sale;
 import com.example.shoesshop.repository.SaleRepository;
 import com.example.shoesshop.request.SaleRequest;
 import com.example.shoesshop.specification.SaleSpecification;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
@@ -17,9 +20,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
+@Slf4j
 public class SaleService {
     @Autowired
     private SaleRepository saleRepository;
+
+    //tạo schedule cứ 30s sẽ tự động update những sale_percent = 0 nếu sale đó hết hạn
+    @Scheduled(fixedRate = 30000) // 30 seconds in milliseconds
+    @Transactional
+    public void scheduleUpdateExpiredSales() {
+        updateExpiredSales();
+        log.info("Scheduled task executed: Updated expired sales.");
+    }
+
+    @Transactional
+    public void updateExpiredSales() {
+        saleRepository.updateExpiredSales();
+    }
 
     //get All Sales
     public Page<Sale> getAllSale(Pageable pageable, String search) {

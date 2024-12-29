@@ -295,14 +295,14 @@ public class OrderController {
     }
 
     @GetMapping("/monthly")
-    public ResponseEntity<?> getMonthlyRevenues() {
-        List<MonthlyRevenueDTO> revenues = orderService.getMonthlyRevenues();
+    public ResponseEntity<?> getMonthlyRevenues(@RequestParam(name="year") int year) {
+        List<MonthlyRevenueDTO> revenues = orderService.getMonthlyRevenues(year);
         return ResponseEntity.ok(revenues);
     }
 
     @GetMapping("/CountOrderMonthly")
-    public ResponseEntity<?> getCountOrderMonthly() {
-        List<MonthlyOrderCountDTO> orderCountDTOS = orderService.getMonthlyCount();
+    public ResponseEntity<?> getCountOrderMonthly(@RequestParam(name="year") int year) {
+        List<MonthlyOrderCountDTO> orderCountDTOS = orderService.getMonthlyCount(year);
         return ResponseEntity.ok(orderCountDTOS);
     }
 }

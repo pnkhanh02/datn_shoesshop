@@ -41,18 +41,18 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "MONTH(o.orderDate) AS month " +
             "FROM `Order` o " +
             "WHERE o.oderStatus IN ('COMPLETED', 'FEEDBACK_COMPLETED') " +
-            "AND YEAR(o.orderDate) = YEAR(CURDATE()) " +
+            "AND YEAR(o.orderDate) = :year " +
             "GROUP BY MONTH(o.orderDate) " +
             "ORDER BY MONTH(o.orderDate)",
             nativeQuery = true)
-    List<Object[]> getTotalAmountByMonthForCurrentYear();
+    List<Object[]> getTotalAmountByMonthForCurrentYear(@Param("year") int year);
 
     @Query(value = "SELECT MONTH(o.orderDate) AS month, COUNT(*) AS orderCount " +
             "FROM `Order` o " +
             "WHERE o.oderStatus IN ('COMPLETED', 'FEEDBACK_COMPLETED') " +
-            "AND YEAR(o.orderDate) = YEAR(CURDATE()) " +
+            "AND YEAR(o.orderDate) = :year " +
             "GROUP BY MONTH(o.orderDate) " +
             "ORDER BY MONTH(o.orderDate)",
             nativeQuery = true)
-    List<Object[]> getOrderCountByMonthForCurrentYear();
+    List<Object[]> getOrderCountByMonthForCurrentYear(@Param("year") int year);
 }

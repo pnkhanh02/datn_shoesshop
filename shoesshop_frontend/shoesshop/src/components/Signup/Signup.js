@@ -99,9 +99,33 @@ const Signup = () => {
           "Đăng ký không thành công",
           error.response?.data || error.message
         );
-        notification.error({
-          message: "Đăng ký không thành công",
-        });
+
+        // Nếu có lỗi từ backend
+        if (error.response && error.response.data) {
+          const { message } = error.response.data;
+
+          // Hiển thị message từ backend lên thông báo
+          notification.error({
+            message: "Đăng ký không thành công",
+            description: message,
+          });
+
+          // Kiểm tra và gán lỗi cho các trường hợp cụ thể
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            username: message.includes("Username")
+              ? message
+              : prevErrors.username,
+            email: message.includes("Email") ? message : prevErrors.email,
+            password: message.includes("password")
+              ? message
+              : prevErrors.password,
+          }));
+        } else {
+          notification.error({
+            message: "Đăng ký không thành công",
+          });
+        }
         window.scrollTo(0, 0); // Cuộn trang lên đầu nếu đăng ký thất bại
       }
     }

@@ -26,4 +26,9 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
 
     <T> Page<Sale> findAll(Specification<T> where, Pageable pageable);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Sale s SET s.percent_sale = 0 WHERE CURRENT_TIMESTAMP NOT BETWEEN s.start_date AND s.end_date")
+    void updateExpiredSales();
+
 }
