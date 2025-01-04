@@ -34,10 +34,17 @@ const ProductDetail = () => {
     });
   };
 
-  const errorMessage = () => {
+  // const errorMessage = () => {
+  //   messageApi.open({
+  //     type: "error",
+  //     content: "Thêm sản phẩm thất bại",
+  //   });
+  // };
+
+  const errorMessage = (content) => {
     messageApi.open({
       type: "error",
-      content: "Thêm sản phẩm thất bại",
+      content, // Hiển thị nội dung được truyền vào
     });
   };
 
@@ -70,7 +77,12 @@ const ProductDetail = () => {
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
-          errorMessage();
+
+          // Lấy message từ phản hồi của backend
+        const errorMessageFromBackend =
+        error.response?.data?.message || "Thêm sản phẩm thất bại";
+
+          errorMessage(errorMessageFromBackend);
         });
     } else {
       errorMessage2();

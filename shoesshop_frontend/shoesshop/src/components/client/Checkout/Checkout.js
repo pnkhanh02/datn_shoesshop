@@ -46,6 +46,7 @@ const Checkout = () => {
     });
   };
 
+  // huyện
   const getDistrict = (cityId) => {
     axios
       .get(`https://esgoo.net/api-tinhthanh/2/${cityId}.htm`)
@@ -68,6 +69,7 @@ const Checkout = () => {
       });
   };
 
+  // xã
   const getWard = (districtId) => {
     axios
       .get(`https://esgoo.net/api-tinhthanh/3/${districtId}.htm`)
@@ -224,18 +226,21 @@ const Checkout = () => {
   };
 
 
+  // tỉnh, thành phố
   const handleChangeCityOption = (selectedCityOption) => {
     setSelectedCityOption(selectedCityOption);
     console.log(selectedCityOption);
     getDistrict(selectedCityOption);
   };
 
+  // quận, huyện
   const handleChangeDistrictOption = (selectedCityOption) => {
     setSelectedDistrictOption(selectedCityOption);
     console.log(selectedCityOption);
     getWard(selectedCityOption);
   };
 
+  // xã
   const handleChangeWardOption = (selectedDistrictOption) => {
     setSelectedWardOption(selectedDistrictOption);
   };

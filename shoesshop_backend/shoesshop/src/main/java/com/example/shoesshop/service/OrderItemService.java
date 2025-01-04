@@ -1,6 +1,8 @@
 package com.example.shoesshop.service;
 
 import com.example.shoesshop.entity.*;
+import com.example.shoesshop.exception.CustomException;
+import com.example.shoesshop.exception.ErrorResponseEnum;
 import com.example.shoesshop.repository.*;
 import com.example.shoesshop.request.OrderItemRequest;
 import com.example.shoesshop.request.OrderItemUpdateRequest;
@@ -52,6 +54,15 @@ public class OrderItemService {
             }
         }
         ProductDetail productDetail = productDetailRepository.getDetailById(orderItemRequest.getProduct_detail_id());
+        if(productDetail == null){
+            throw new CustomException(ErrorResponseEnum.NOT_ENOUGH_INFORMATION_COLOR_SIZE);
+        }
+        if(productDetail.getQuantity() == 0){
+            throw new CustomException(ErrorResponseEnum.OUT_OF_PRODUCT);
+        }
+        if(productDetail.getQuantity() < orderItemRequest.getQuantity()){
+            throw new CustomException(ErrorResponseEnum.NOT_ENOUGH_QUANTITY_OF_PRODUCT);
+        }
         Product product = productDetail.getProduct_detail();
         Order order = orderRepository.getOrderById(order_id);
         List<OrderItem> orderItems = order.getOrderItems();

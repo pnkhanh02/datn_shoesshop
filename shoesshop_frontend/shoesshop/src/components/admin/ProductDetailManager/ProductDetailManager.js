@@ -24,7 +24,7 @@ const ProductDetailManager = () => {
 
         axios
           .get(
-            `http://localhost:8080/api/v1/productDetails?page=1&size=99&sort=id,asc&search=`
+            `http://localhost:8080/api/v1/productDetails?page=1&size=999&sort=id,asc&search=`
             ,
             {
               headers: {
