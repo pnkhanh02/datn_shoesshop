@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -65,7 +66,9 @@ public class OrderService {
 //        return repository.findByOderStatus(Order.OderStatus.TO_PAY);
     }
 
-    public void customer_createOder(OrderCustomerRequest orderCustomerRequest) {
+    // tạo đơn hàng
+//    @Transactional
+    public Order customer_createOder(OrderCustomerRequest orderCustomerRequest) {
         Account customer = customerRepository.getAccountById(orderCustomerRequest.getCustomer_id());
         PaymentMethod paymentMethod = paymentMethodRepository.getPaymentMethodById(orderCustomerRequest.getPayment_method_id());
         LocalDate creating_date = LocalDate.now();
@@ -92,7 +95,8 @@ public class OrderService {
 
         }
         order.setTotal_amount(total_amout);
-        orderRepository.save(order);
+        Order newOrder = orderRepository.save(order);
+        return newOrder;
     }
 
     public List<Object[]> getTotalAmountByMonthForCurrentYear(int year) {

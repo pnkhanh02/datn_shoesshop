@@ -120,7 +120,7 @@ const Login = (props) => {
                 size="large"
               />
             </Form.Item>
-            <Form.Item>
+            {/* <Form.Item>
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Nhớ lần đăng nhập này</Checkbox>
               </Form.Item>
@@ -128,7 +128,7 @@ const Login = (props) => {
               <a className="login-form-forgot" href="">
                 Quên mật khẩu?
               </a>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item>
               <Button
                 type="primary"

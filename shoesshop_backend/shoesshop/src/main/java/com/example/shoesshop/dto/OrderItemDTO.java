@@ -11,12 +11,11 @@ public class OrderItemDTO {
     private String size;
     private String color;
     private String url_img;
-    private boolean isFeedbackReceived;
 
     public OrderItemDTO() {
     }
 
-    public OrderItemDTO(int id, float sell_price, float subtotal, int quantity, int order_id, int product_detail_id, String product_detail_name, String size, String color, String url_img, boolean isFeedbackReceived) {
+    public OrderItemDTO(int id, float sell_price, float subtotal, int quantity, int order_id, int product_detail_id, String product_detail_name, String size, String color, String url_img) {
         this.id = id;
         this.sell_price = sell_price;
         this.subtotal = subtotal;
@@ -27,7 +26,6 @@ public class OrderItemDTO {
         this.size = size;
         this.color = color;
         this.url_img = url_img;
-        this.isFeedbackReceived = isFeedbackReceived;
     }
 
     public OrderItemDTO(int id, float sell_price, float subtotal, int quantity, int order_id, int product_detail_id) {
@@ -119,11 +117,4 @@ public class OrderItemDTO {
         this.url_img = url_img;
     }
 
-    public boolean isFeedbackReceived() {
-        return isFeedbackReceived;
-    }
-
-    public void setFeedbackReceived(boolean isFeedbackReceived) {
-        this.isFeedbackReceived = isFeedbackReceived;
-    }
 }

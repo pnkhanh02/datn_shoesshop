@@ -20,7 +20,7 @@ const Checkout = () => {
   const [selectedDistrictOption, setSelectedDistrictOption] = useState(null);
   const [selectedWardOption, setSelectedWardOption] = useState(null);
   const [customerName, setCustomerName] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
+  // const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerNote, setCustomerNote] = useState("");
@@ -91,7 +91,7 @@ const Checkout = () => {
     const usertemp = JSON.parse(localStorage.getItem("user"));
     setCurrentUser(usertemp);
     setCustomerName(usertemp.fullName);
-    setCustomerEmail(usertemp.email);
+    // setCustomerEmail(usertemp.email);
     setCustomerPhone(usertemp?.phone);
 
     if (orders == null) navigate("/cart");
@@ -192,14 +192,64 @@ const Checkout = () => {
   const totalAmount = handleGetTotal() + shippingCost - exchangeShoesSales;
   const handleOrderCheckout = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/v1/payment/vn-pay",
+      const selectedCity = citys.find(
+        (city) => city.value === selectedCityOption
+      );
+      const selectedDistrict = districts.find(
+        (district) => district.value === selectedDistrictOption
+      );
+      const selectedWard = wards.find(
+        (ward) => ward.value === selectedWardOption
+      );
+  
+      const selectedPaymentMethod = isPaymentMethod.find(
+        (paymentMethod) => paymentMethod.value === selectedMethod
+      );
+  
+      if (
+        !selectedCity ||
+        !selectedDistrict ||
+        !selectedWard ||
+        !selectedPaymentMethod
+      ) {
+        messageApi.open({
+          type: "error",
+          content: "Vui lòng điền đầy đủ thông tin!",
+        });
+        return; // Nếu thiếu thông tin, không gửi yêu cầu.
+      }
+
+      let fullAddress =
+      customerAddress +
+      ", " +
+      selectedWard.label +
+      ", " +
+      selectedDistrict.label +
+      ", " +
+      selectedCity.label;
+
+      const newOrder = {
+        address: fullAddress,
+        phone: customerPhone,
+        customer_id: currentUser.id,
+        payment_method_id: selectedPaymentMethod.value,
+        orderItemForms: productForCheckout.map((pdfc) => {
+          return {
+            id: pdfc.id,
+            quantity_item: pdfc.quantity,
+          };
+        }),
+      };
+
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/payment/vn-pay", newOrder,
         {
           headers: {
             Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
           },
           params: {
             // Thêm các tham số cần thiết nếu có, ví dụ:
+
             amount: totalAmount, // Tổng tiền thanh toán
             vnp_BankCode: "NCB", // Mã ngân hàng, có thể để null nếu không chọn
           },
@@ -207,7 +257,7 @@ const Checkout = () => {
       );
       if (response.data.code === 200) {
         const { paymentUrl } = response.data.data;
-        handleCompleteOrder();
+        // handleCompleteOrder();
         // Kiểm tra nếu có selectedExchangeShoeData và gọi updateUsedExchangeShoes
         if (selectedExchangeShoeData) {
           updateUsedExchangeShoes(selectedExchangeShoeData.id, {
@@ -442,14 +492,14 @@ const Checkout = () => {
                 }}
               />
             </div>
-            <div className="Checkout_left_row">
+            {/* <div className="Checkout_left_row">
               <span>Email</span>
               <input
                 type="text"
                 placeholder="Nhập email"
                 value={customerEmail}
               />
-            </div>
+            </div> */}
 
             <test className="Checkout_left_row">
               <span>Tỉnh (Thành phố)</span>

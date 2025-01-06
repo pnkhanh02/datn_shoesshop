@@ -28,14 +28,7 @@ public class OrderItem implements Serializable  {
     @JoinColumn(name="product_detailId", nullable = true)
     private ProductDetail product_detail_order;
 
-    @Column(name = "isfeedback", nullable = false)
-    private boolean isFeedbackReceived;
-
     public OrderItem() {
-    }
-
-    public boolean isFeedbackReceived() {
-        return isFeedbackReceived;
     }
 
     public OrderItem(float sell_price, float subtotal, int quantity, Order order, ProductDetail product_detail_order) {
@@ -44,10 +37,6 @@ public class OrderItem implements Serializable  {
         this.quantity = quantity;
         this.order = order;
         this.product_detail_order = product_detail_order;
-    }
-
-    public void setFeedbackReceived(boolean isFeedbackReceived) {
-        this.isFeedbackReceived = isFeedbackReceived;
     }
 
     public int getId() {

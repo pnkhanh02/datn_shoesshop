@@ -55,12 +55,12 @@ public class FeedbackService {
             Feedback feedback = new Feedback(feedbackRequest.getComment(),creating_date, feedbackRequest.getRating(), customer, product);
             feedbackRepository.save(feedback);
             List<OrderItem> orderItemList = order.getOrderItems();
-            for(OrderItem orderItem : orderItemList){
-                if(orderItem.getProduct_detail_order().getProduct_detail().getId() == feedbackRequest.getProduct_id()){
-                    orderItem.setFeedbackReceived(true);
-                    System.out.println(orderItem);
-                }
-            }
+//            for(OrderItem orderItem : orderItemList){
+//                if(orderItem.getProduct_detail_order().getProduct_detail().getId() == feedbackRequest.getProduct_id()){
+//                    orderItem.setFeedbackReceived(true);
+//                    System.out.println(orderItem);
+//                }
+//            }
             order.setOrderItems(orderItemList);
             orderRepository.save(order);
         }

@@ -112,9 +112,9 @@ const AdminLayout = () => {
                 <Menu.Item key="product_type" icon={<BarsOutlined />}>
                   <Link to="products-type">Loại sản phẩm</Link>
                 </Menu.Item>
-                <Menu.Item key="product_detail" icon={<BarsOutlined />}>
+                {/* <Menu.Item key="product_detail" icon={<BarsOutlined />}>
                   <Link to="products-detail">Chi tiết sản phẩm</Link>
-                </Menu.Item>
+                </Menu.Item> */}
               </Menu.SubMenu>
             )}
             {userData?.role === "ADMIN" && (

@@ -172,8 +172,7 @@ public class OrderController {
                     orderItem.getProduct_detail_order().getProduct_detail().getName(),
                     orderItem.getProduct_detail_order().getSize(),
                     orderItem.getProduct_detail_order().getColor(),
-                    orderItem.getProduct_detail_order().getImg_url(),
-                    orderItem.isFeedbackReceived());
+                    orderItem.getProduct_detail_order().getImg_url());
             orderItemDTOS.add(dto);
         }
         return new ResponseEntity<>(orderItemDTOS, HttpStatus.OK);
