@@ -127,6 +127,12 @@ const OrderComfirmation = () => {
     {
       title: "Status",
       dataIndex: "status",
+      filters: [
+        { text: "TO_PAY", value: "TO_PAY" },
+        { text: "TO_RECEIVE", value: "TO_RECEIVE" },
+        { text: "COMPLETED", value: "COMPLETED" },
+      ],
+      onFilter: (value, record) => record.status === value,
     },
     {
       title: "Order Date",

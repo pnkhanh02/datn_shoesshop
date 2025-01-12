@@ -2,6 +2,8 @@ package com.example.shoesshop.service;
 
 import com.example.shoesshop.entity.Account;
 import com.example.shoesshop.entity.Admin;
+import com.example.shoesshop.exception.CustomException;
+import com.example.shoesshop.exception.ErrorResponseEnum;
 import com.example.shoesshop.repository.AdminRepository;
 import com.example.shoesshop.request.AccountRequest;
 import com.example.shoesshop.request.AccountUpdateRequest;
@@ -26,8 +28,8 @@ public class AdminService {
 
     public Page<Admin> getAllAdmins(Pageable pageable, String search) {
         Specification<Admin> where = null;
-        if(!StringUtils.isEmpty(search)){
-            AdminSpecification adminSpecification = new AdminSpecification("name","LIKE", search);
+        if (!StringUtils.isEmpty(search)) {
+            AdminSpecification adminSpecification = new AdminSpecification("name", "LIKE", search);
             where = Specification.where(adminSpecification);
         }
         return adminRepository.findAll(Specification.where(where), pageable);
@@ -41,7 +43,7 @@ public class AdminService {
         LocalDate createDate = LocalDate.now();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate birthday =  LocalDate.parse(accountRequest.getBirthday(), formatter);
+        LocalDate birthday = LocalDate.parse(accountRequest.getBirthday(), formatter);
         String password = PasswordEncoder.getInstance().encodePassword(accountRequest.getPassword());
         Admin admin = new Admin();
         admin.setUsername(accountRequest.getUsername());
@@ -64,26 +66,33 @@ public class AdminService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if(accountRequest.getPassword() != null){
-            String password = PasswordEncoder.getInstance().encodePassword(accountRequest.getPassword());
-            admin.setPassword(password);
+//        if(accountRequest.getPassword() != null){
+//            String password = PasswordEncoder.getInstance().encodePassword(accountRequest.getPassword());
+//            admin.setPassword(password);
+//        }
+        if (accountRequest.getFirstName() == null) {
+            throw new CustomException(ErrorResponseEnum.FRISTNAME_NULL);
         }
-        if(accountRequest.getFirstName() != null){
-            admin.setFirstName(accountRequest.getFirstName());
+        if (accountRequest.getLastName() == null) {
+            throw new CustomException(ErrorResponseEnum.LASTNAME_NULL);
         }
-        if(accountRequest.getLastName() != null){
-            admin.setLastName(accountRequest.getLastName());
+        if (accountRequest.getAddress() == null) {
+            throw new CustomException(ErrorResponseEnum.ADDRESS_NULL);
         }
-        if(accountRequest.getAddress() != null) {
-            admin.setAddress(accountRequest.getAddress());
+        if (accountRequest.getBirthday() == null) {
+            throw new CustomException(ErrorResponseEnum.BIRTHDAY_NULL);
         }
-        if(accountRequest.getBirthday() != null){
-            LocalDate birthday =  LocalDate.parse(accountRequest.getBirthday(), formatter);
-            admin.setBirthday(birthday);
-        }
+        admin.setFirstName(accountRequest.getFirstName());
+
+        admin.setLastName(accountRequest.getLastName());
+
+        admin.setAddress(accountRequest.getAddress());
+
+        LocalDate birthday = LocalDate.parse(accountRequest.getBirthday(), formatter);
+        admin.setBirthday(birthday);
 
         adminRepository.save(admin);
-    }
+}
 
     public Admin getAdminById(int id) {
         return adminRepository.getAdminById(id);
@@ -94,7 +103,7 @@ public class AdminService {
     }
 
     public void deleteAdmins(List<Integer> ids) {
-        for(Integer id : ids){
+        for (Integer id : ids) {
             adminRepository.deleteById(id);
         }
     }

@@ -328,13 +328,15 @@ const UpdateProduct = () => {
             ]}
           >
             <Select>
-              {sales.map((sale) => {
-                return (
-                  <Select.Option value={sale.id} key={sale.id}>
-                    {sale.sale_info} ({sale.percent_sale}%)
-                  </Select.Option>
-                );
-              })}
+              <Select.Option value="">Không chọn</Select.Option>{" "}
+              {/* Tùy chọn để không chọn gì */}
+              {sales
+              // .filter((sale) => sale.percent_sale > 0) // Lọc những mã giảm giá có percent_sale > 0
+              .map((sale) => (
+                <Select.Option value={sale.id} key={sale.id}>
+                  {sale.sale_info} ({sale.percent_sale}%)
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item

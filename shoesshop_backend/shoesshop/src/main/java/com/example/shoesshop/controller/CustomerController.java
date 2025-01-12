@@ -75,6 +75,8 @@ public class CustomerController {
         dto.setAddress(customer.getAddress());
         dto.setBirthday(customer.getBirthday());
         dto.setEmail(customer.getEmail());
+        dto.setPhone(customer.getPhone());
+        dto.setRole(customer.getRole());
         dto.setCreatedDate(customer.getCreatedDate());
         dto.setGender(customer.getGender());
         return new ResponseEntity<CustomerDTO>(dto, HttpStatus.OK);

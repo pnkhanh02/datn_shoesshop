@@ -28,7 +28,7 @@ function convertDateTimeFormat(originalDateTimeString) {
   const minutes = originalDate.getMinutes().toString().padStart(2, "0");
 
   // Định dạng ngày giờ mới
-  const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}`;
+  const formattedDateTime = `${day}/${month}/${year}`;
 
   return formattedDateTime;
 }
@@ -254,9 +254,8 @@ function TO_PAY() {
           };
         });
 
-        dataForState = dataForState.filter((pd) => {
-          return pd.status === "TO_PAY";
-        });
+        dataForState = dataForState.filter((pd) => pd.status === "TO_PAY"
+        ).sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
 
         console.log(dataForState);
 
@@ -386,7 +385,7 @@ function TO_RECEIVE() {
 
         dataForState = dataForState.filter((pd) => {
           return pd.status === "TO_RECEIVE";
-        });
+        }).sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));;
 
         console.log(dataForState);
 
@@ -511,7 +510,7 @@ function COMPLETED() {
 
         dataForState = dataForState.filter((pd) => {
           return (pd.status === "COMPLETED" || pd.status === "FEEDBACK_COMPLETED") ;
-        });
+        }).sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));;
 
         console.log(dataForState);
 

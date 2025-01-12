@@ -1,7 +1,17 @@
-import { Badge, Breadcrumb, Button, Flex, message, Modal, Table } from "antd";
+import {
+  Badge,
+  Breadcrumb,
+  Button,
+  Flex,
+  Input,
+  message,
+  Modal,
+  Table,
+} from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Pagination from "../Paginate/Pagination.js";
 
 const ProductManager = () => {
   const { confirm } = Modal;
@@ -12,6 +22,10 @@ const ProductManager = () => {
   const [productTypes, setProductTypes] = useState([]);
   const [productSelected, setProductSelected] = useState([]);
   const userData = JSON.parse(localStorage.getItem("user"));
+  const [searchText, setSearchText] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
 
   const successMessage = () => {
     messageApi.open({
@@ -42,35 +56,46 @@ const ProductManager = () => {
     });
   };
 
-  const fetchData = () => {
+  const fetchData = (page = 1, search = "") => {
     setLoading(true);
     axios
-      .get("http://localhost:8080/api/v1/products/full", {
+      .get("http://localhost:8080/api/v1/products/all", {
+        params: {
+          page: page,
+          size: 10,
+          sort: "id,desc",
+          search: search,
+        },
         headers: {
           Authorization: `Bearer ${userData.token}`, // Đính kèm token vào header
         },
       })
       .then((response) => {
-        const productsFormatted = response.data.map((product) => {
-          return {
-            key: product.id,
-            name: { id: product.id, name: product.name },
-            description: product.description,
-            image: product.image_url,
-            price: product.price,
-            gender_type: product.gender_for,
-            sale_percent: product.sale_percent,
-            type_name: product.type_name,
-            update_product: product.id,
-          };
-        })
-        .sort((a, b) => b.key - a.key);
+        const { content, totalPages, totalElements } = response.data;
+        const productsFormatted = response.data.content
+          .map((product, index) => {
+            return {
+              key: product.id,
+              name: { id: product.id, name: product.name },
+              description: product.description,
+              image: product.image_url,
+              price: product.price,
+              gender_type: product.gender_for,
+              sale_percent: product.sale_percent,
+              type_name: product.type_name,
+              update_product: product.id,
+            };
+          })
+          .sort((a, b) => b.key - a.key);
 
         setProducts(productsFormatted);
+        setTotalPages(totalPages);
+        setTotalElements(totalElements);
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setLoading(false);
       });
 
     axios
@@ -91,8 +116,17 @@ const ProductManager = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    fetchData();
-  }, []);
+    fetchData(currentPage, searchText);
+  }, [currentPage, searchText]);
+
+  const handleSearch = () => {
+    setCurrentPage(1);
+    fetchData(1, searchText);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   const columns = [
     {
@@ -226,6 +260,14 @@ const ProductManager = () => {
         ]}
       />
 
+      <Input
+        placeholder="Search by name"
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        style={{ marginBottom: 20, width: 300 }}
+        onPressEnter={handleSearch}
+      />
+
       {optionVisible && (
         <Flex className="option-sticky" justify="space-between" align="center">
           <span>{`Đã chọn ${productSelected?.length} sản phẩm`}</span>
@@ -253,13 +295,19 @@ const ProductManager = () => {
         columns={columns}
         dataSource={products}
         loading={loading}
-        pagination={true}
+        pagination={false}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {},
           };
         }}
         size="large"
+      />
+      {/* Pagination component */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </Flex>
   );

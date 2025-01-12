@@ -98,23 +98,28 @@ public class CustomerService {
     public void updateCustomer(int id, AccountUpdateRequest accountUpdateRequest) throws ParseException {
         Customer customer = customerRepository.getCustomerById(id);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        if(accountUpdateRequest.getPassword() != null){
-            String password = PasswordEncoder.getInstance().encodePassword(accountUpdateRequest.getPassword());
-            customer.setPassword(password);
+//        if(accountUpdateRequest.getPassword() != null){
+//            String password = PasswordEncoder.getInstance().encodePassword(accountUpdateRequest.getPassword());
+//            customer.setPassword(password);
+//        }
+        if (accountUpdateRequest.getFirstName() == null) {
+            throw new CustomException(ErrorResponseEnum.FRISTNAME_NULL);
         }
-        if(accountUpdateRequest.getFirstName() != null){
-            customer.setFirstName(accountUpdateRequest.getFirstName());
+        if (accountUpdateRequest.getLastName() == null) {
+            throw new CustomException(ErrorResponseEnum.LASTNAME_NULL);
         }
-        if(accountUpdateRequest.getLastName() != null){
-            customer.setLastName(accountUpdateRequest.getLastName());
+        if (accountUpdateRequest.getAddress() == null) {
+            throw new CustomException(ErrorResponseEnum.ADDRESS_NULL);
         }
-        if(accountUpdateRequest.getAddress() != null) {
-            customer.setAddress(accountUpdateRequest.getAddress());
+        if (accountUpdateRequest.getBirthday() == null) {
+            throw new CustomException(ErrorResponseEnum.BIRTHDAY_NULL);
         }
-        if(accountUpdateRequest.getBirthday() != null){
-            LocalDate birthday =  LocalDate.parse(accountUpdateRequest.getBirthday(), formatter);
-            customer.setBirthday(birthday);
-        }
+        customer.setFirstName(accountUpdateRequest.getFirstName());
+        customer.setLastName(accountUpdateRequest.getLastName());
+        customer.setAddress(accountUpdateRequest.getAddress());
+
+        LocalDate birthday = LocalDate.parse(accountUpdateRequest.getBirthday(), formatter);
+        customer.setBirthday(birthday);
         customerRepository.save(customer);
     }
 

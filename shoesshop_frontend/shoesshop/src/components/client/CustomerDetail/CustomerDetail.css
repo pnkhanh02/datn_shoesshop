@@ -1,18 +1,68 @@
 .customer-detail-container {
-  background-color: #f9f9f9;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.customer-detail-form .ant-form-item {
+.customer-detail-section {
+  display: flex;
+  gap: 100px;
+  width: 80%;
+  max-width: 1200px;
+}
+
+.customer-detail-left,
+.customer-detail-right {
+  flex: 1;
+}
+
+.customer-detail-item {
+  display: flex;
+  justify-content: space-between; /* Đặt label và value ở hai đầu */
   margin-bottom: 16px;
 }
 
-.customer-detail-form input,
-.customer-detail-form .ant-picker,
-.customer-detail-form .ant-select {
-  border-radius: 4px;
+.label {
+  font-weight: bold;
+  min-width: 120px; /* Đảm bảo chiều rộng đồng nhất cho label */
+  text-align: left; /* Canh phải để thẳng hàng dấu ":" */
+  padding-right: 8px; /* Tạo khoảng cách giữa label và value */
+}
+
+.value {
+  color: #555;
+  flex: 1; /* Đảm bảo value chiếm khoảng trống còn lại */
+  text-align: left; /* Canh trái value */
+}
+
+.customer-detail-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.update-button-container {
+  display: flex;
+  justify-content: center; /* Căn giữa nút */
+  margin-top: 20px;
+}
+
+.update-button {
+  background-color: #1890ff; /* Màu xanh chuẩn của Ant Design */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+  background-color: #40a9ff; /* Màu hover */
 }

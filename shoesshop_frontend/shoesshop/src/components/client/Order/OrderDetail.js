@@ -13,7 +13,7 @@ function convertDateTimeFormat(originalDateTimeString) {
   const year = originalDate.getFullYear();
   const hours = originalDate.getHours().toString().padStart(2, "0");
   const minutes = originalDate.getMinutes().toString().padStart(2, "0");
-  const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}`;
+  const formattedDateTime = `${day}/${month}/${year}`;
 
   return formattedDateTime;
 }

@@ -68,10 +68,10 @@ public class EmployeeService {
         Employee employee = employeeRepository.getEmployeeById(id);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        if(accountUpdateRequest.getPassword() != null){
-            String password = PasswordEncoder.getInstance().encodePassword(accountUpdateRequest.getPassword());
-            employee.setPassword(password);
-        }
+//        if(accountUpdateRequest.getPassword() != null){
+//            String password = PasswordEncoder.getInstance().encodePassword(accountUpdateRequest.getPassword());
+//            employee.setPassword(password);
+//        }
         if(accountUpdateRequest.getFirstName() != null){
             employee.setFirstName(accountUpdateRequest.getFirstName());
         }

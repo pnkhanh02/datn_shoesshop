@@ -14,7 +14,7 @@ public class AccountDTO {
     private  String firstName;
     private String phone;
     private String address;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
     private String createdDate;
     private Account.Role role;

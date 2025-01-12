@@ -207,6 +207,8 @@ const Checkout = () => {
       );
   
       if (
+        !customerName ||
+        !customerPhone ||
         !selectedCity ||
         !selectedDistrict ||
         !selectedWard ||
@@ -214,7 +216,7 @@ const Checkout = () => {
       ) {
         messageApi.open({
           type: "error",
-          content: "Vui lòng điền đầy đủ thông tin!",
+          content: "Vui lòng điền đầy đủ thông tin (tên, số điện thoại, địa chỉ, phương thức thanh toán)",
         });
         return; // Nếu thiếu thông tin, không gửi yêu cầu.
       }

@@ -14,6 +14,8 @@ public class CustomerDTO {
     private String firstName;
     private String lastName;
     private String email;
+    private String phone;
+    private Account.Role role;
     private Account.Gender gender;
     private LocalDate createdDate;
 
@@ -96,6 +98,22 @@ public class CustomerDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Account.Role getRole() {
+        return role;
+    }
+
+    public void setRole(Account.Role role) {
+        this.role = role;
     }
 
     public Account.Gender getGender() {
